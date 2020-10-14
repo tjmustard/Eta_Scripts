@@ -55,7 +55,7 @@ Snippets are text files holding configuration information. In the case of input 
 
 ## Requirements:
 * Python 3
-  * All Python code was written in Python 3 and as such all the scripts ask for python3.
+** All Python code was written in Python 3 and as such all the scripts ask for python3.
 
 ## ZSH profile setup:
 Place this text into your SH profile to
