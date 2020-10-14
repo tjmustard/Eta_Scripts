@@ -75,6 +75,7 @@ Place this text into your SH profile to
 
 ##Scripts Explained:
 ###nVisualize-... Scripts:
+
 In general these scripts copy the XYZ or PDB files into a subdirectory named "Pymol-Picture" as well as some pymol scripts. You can then open the Visual-Script.pml from that directory or from within Pymol to load the structures and styles.
 
 This script generates images like this:
