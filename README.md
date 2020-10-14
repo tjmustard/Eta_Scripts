@@ -23,8 +23,8 @@ Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong. unpublished results.
 
 ## How is everything organized?
 Folder Setup:
-    
-    Eta_Scripts/
+```
+    Eta_Scripts/
      |
       ——> EtaLib/      #Contains the majority of the code functions
           Pymol/       #Pymol related scripts
@@ -35,6 +35,7 @@ Folder Setup:
                    /snippets  #Contains files that augment the scripts
                    /aux       #Scripts and files that are called directly from other scripts and are
                                not meant to be user accessible
+```
 
 ## Snippets:
 
@@ -58,7 +59,7 @@ Snippets are text files holding configuration information. In the case of input 
 
 ## ZSH profile setup:
 Place this text into your SH profile to
-
+```
     ################################################################################
     #Eta_Scripts profile settings:
     ################################################################################
@@ -70,7 +71,7 @@ Place this text into your SH profile to
     export PATH=$ETADIR/Pymol/scripts:$PATH
     
     ################################################################################
-
+```
 
 ##Scripts Explained:
 ###nVisualize-... Scripts:
