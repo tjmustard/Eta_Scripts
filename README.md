@@ -59,7 +59,7 @@ Snippets are text files holding configuration information. In the case of input 
 ## ZSH profile setup:
 Place this text into your SH profile to
 
-    ################################################################################
+    ################################################################################
     #Eta_Scripts profile settings:
     ################################################################################
     export ETADIR=DIRECTORY_TO_SCRIPTS/Eta_Scripts
