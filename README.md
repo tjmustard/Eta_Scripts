@@ -17,7 +17,6 @@ These scripts were written mostly by myself, but I had some help and they deserv
 You may acknowledge the use of the scripts/programs in published material as:
 Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong. unpublished results.
 
-* [Eta_Scripts](http://tjmustard.github.io/Eta_Scripts/) ("attractive" one)
 * [Eta_Scripts](http://github.com/tjmustard/Eta_Scripts) (here)
 * [PHYC Group](http://phyc.chem.oregonstate.edu/)
 
@@ -77,6 +76,8 @@ Place this text into your SH profile to
 ###nVisualize-... Scripts:
 In general these scripts copy the XYZ or PDB files into a subdirectory named "Pymol-Picture" as well as some pymol scripts. You can then open the Visual-Script.pml from that directory or from within Pymol to load the structures and styles.
 
+This script generates images like this:
+![C60](/Pymol/Example/c_60.png)
 
 I hope you like the scripts!
 
