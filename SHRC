@@ -1,0 +1,11 @@
+################################################################################
+#Eta_Scripts profile settings:
+################################################################################
+export ETADIR=/SOME/DIR/TO/Eta_Scripts
+export PATH=$ETADIR:$PATH
+export PYTHONPATH=$PYTHONPATH:$ETADIR/EtaLib
+
+#Pymol settings
+export PATH=$ETADIR/Pymol/scripts:$PATH
+
+################################################################################
