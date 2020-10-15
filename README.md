@@ -17,15 +17,14 @@ These scripts were written mostly by myself, but I had some help and they deserv
 You may acknowledge the use of the scripts/programs in published material as:
 Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong. unpublished results.
 
-* [Eta_Scripts](http://tjmustard.github.io/Eta_Scripts/) ("attractive" one)
 * [Eta_Scripts](http://github.com/tjmustard/Eta_Scripts) (here)
 * [PHYC Group](http://phyc.chem.oregonstate.edu/)
 
 
 ## How is everything organized?
 Folder Setup:
-    
-    Eta_Scripts/
+```
+    Eta_Scripts/
      |
       ——> EtaLib/      #Contains the majority of the code functions
           Pymol/       #Pymol related scripts
@@ -36,6 +35,7 @@ Folder Setup:
                    /snippets  #Contains files that augment the scripts
                    /aux       #Scripts and files that are called directly from other scripts and are
                                not meant to be user accessible
+```
 
 ## Snippets:
 
@@ -55,12 +55,12 @@ Snippets are text files holding configuration information. In the case of input 
 
 ## Requirements:
 * Python 3
-  * All Python code was written in Python 3 and as such all the scripts ask for python3.
+  * All Python code was written in Python 3 and as such all the scripts ask for python3.
 
 ## ZSH profile setup:
 Place this text into your SH profile to
-
-    ################################################################################
+```
+    ################################################################################
     #Eta_Scripts profile settings:
     ################################################################################
     export ETADIR=DIRECTORY_TO_SCRIPTS/Eta_Scripts
@@ -71,12 +71,15 @@ Place this text into your SH profile to
     export PATH=$ETADIR/Pymol/scripts:$PATH
     
     ################################################################################
-
+```
 
 ##Scripts Explained:
 ###nVisualize-... Scripts:
+
 In general these scripts copy the XYZ or PDB files into a subdirectory named "Pymol-Picture" as well as some pymol scripts. You can then open the Visual-Script.pml from that directory or from within Pymol to load the structures and styles.
 
+This script generates images like this:
+![C60](/Pymol/Example/c_60.png)
 
 I hope you like the scripts!
 
