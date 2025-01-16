@@ -1,0 +1,4 @@
+#CONFIG
+#mPW1PW91/6-311+G(2d,p) scf=(maxcycle=300,direct,tight)
+NMR density=current
+#END

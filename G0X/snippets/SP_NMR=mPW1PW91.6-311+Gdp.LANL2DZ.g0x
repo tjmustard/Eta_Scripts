@@ -1,0 +1,7 @@
+#CONFIG
+#mPW1PW91/gen pseudo=read scf=(maxcycle=300,direct,tight)
+NMR=(GIAO,PRINTEIGENVECTORS) density=current 
+#END
+#ECP
+6-311+G(2d,p)/LANL2DZ
+#END

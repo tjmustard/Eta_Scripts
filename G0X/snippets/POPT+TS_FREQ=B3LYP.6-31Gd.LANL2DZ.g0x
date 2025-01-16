@@ -1,0 +1,15 @@
+#CONFIG
+# b3lyp/gen pseudo=read gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+opt=(maxcycle=250,modredundant) 
+#END
+#ECP
+6-31G*/LANL2DZ
+#END
+#CLOSE
+--link1--
+# b3lyp/gen pseudo=read gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+opt=(maxcycle=250,calcfc,ts,noeigentest) freq=noraman guess=read geom=allcheck
+#END
+#ECPCLOSE
+6-31G*/LANL2DZ
+#END

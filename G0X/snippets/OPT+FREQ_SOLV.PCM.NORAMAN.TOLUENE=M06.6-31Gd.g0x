@@ -1,0 +1,4 @@
+#CONFIG
+#m06/6-31G(d) scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=Toluene) opt=(maxcycle=250) freq=noraman
+#END

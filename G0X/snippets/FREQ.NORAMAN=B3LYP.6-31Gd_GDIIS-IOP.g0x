@@ -1,0 +1,4 @@
+#CONFIG
+# B3LYP/6-31G* gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+iop(1/8=18) freq=noraman
+#END

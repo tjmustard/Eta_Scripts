@@ -1,0 +1,13 @@
+#CONFIG
+dftname=M06
+basis=LACVP*
+iacc=2
+igeopt=1
+maxitg=300
+iaccg=2
+isolv=2
+solvent=dichloromethane
+ifreq=1
+auto_scale=1
+irder=1
+#END

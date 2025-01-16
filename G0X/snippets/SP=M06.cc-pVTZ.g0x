@@ -1,0 +1,3 @@
+#CONFIG
+# M06/cc-pVTZ gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+#END

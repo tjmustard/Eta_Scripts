@@ -1,0 +1,40 @@
+#CONFIG
+#Terachem input file for: BASE!
+#Scripted by Thomas J. L. Mustard, O. Maduka Ogba, and Paul Ha-Yeon Cheong
+#Source code: https://github.com/tjmustard/Eta_Scripts
+
+# basis set
+basis  6-31g
+
+# SCF method (rhf/blyp/b3lyp/etc...): DFT-BLYP
+method  b3lyp
+
+# add dispersion correction (DFT-D) (this is emperical!)
+dftd  no
+
+# grid size for SCF enrgy convergence larger is better but takes longer
+dftgrid  1
+
+# dynamic grid uses a grid size of 0 for fast convergence then the "dftgrid" number fo final SCF energy (FASTER!!!)
+dynamicgrid  yes
+
+# SCF iterations default 100
+maxit  300
+
+# molecule charge
+charge  CHARGE!
+
+# spin multiplicity
+spinmult MULTI!
+
+# type of the job (energy/gradient/md/minimize/ts): single-point energy
+run  gradient
+
+# Coordinates for the job
+coordinates BASE!
+
+# Scratch Directory
+scrdir  SCRDIR!
+
+end
+#END

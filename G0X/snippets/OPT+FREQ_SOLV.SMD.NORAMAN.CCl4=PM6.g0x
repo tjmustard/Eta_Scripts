@@ -1,0 +1,4 @@
+#CONFIG
+#pm6 scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=CCl4,SMD) opt=(maxcycle=250) freq=noraman
+#END

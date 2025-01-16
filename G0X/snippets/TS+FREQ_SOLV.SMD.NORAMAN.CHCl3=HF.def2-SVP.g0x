@@ -1,0 +1,4 @@
+#CONFIG
+#hf/gen  scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=CHCl3,SMD) opt=(maxcycle=250,ts,calcfc,noeigentest) freq=noraman
+#END

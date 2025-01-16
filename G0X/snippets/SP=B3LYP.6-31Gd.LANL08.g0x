@@ -1,0 +1,6 @@
+#CONFIG
+# B3LYP/gen pseudo=read gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+#END
+#ECP
+6-31G*/LANL08
+#END

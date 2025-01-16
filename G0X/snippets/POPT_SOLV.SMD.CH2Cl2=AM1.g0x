@@ -1,0 +1,4 @@
+#CONFIG
+#am1 scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=CH2Cl2,SMD) opt=(maxcycle=250,modredundant)
+#END

@@ -1,0 +1,4 @@
+#CONFIG
+#HF/6-31+g(d,p) scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=DMSO,READ)
+#END

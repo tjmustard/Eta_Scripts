@@ -1,0 +1,4 @@
+#CONFIG
+#pm3 scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=DMSO) freq=noraman
+#END

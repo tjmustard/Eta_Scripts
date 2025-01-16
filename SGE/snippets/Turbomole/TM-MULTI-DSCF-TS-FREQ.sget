@@ -1,0 +1,110 @@
+# Initialization for Turbomole 6.3 serial execution
+export PARA_ARCH=SMP
+export PARNODES=PROCS!
+export TURBOTMPDIR=/state/partition1/$USER-BASENAME!-$JOB_ID-TEMP
+export TURBODIR=$APPBASE/COSMOlogic11/TURBOMOLE
+export TURBOWINDIR=$APPBASE/COSMOlogic11/TURBOMOLE/bin/x86_64-unknown-linux-gnu
+export PATH=/bin:/sbin:/usr/bin:/usr/sbin:$APPBASE/openbabel-2.3.0/bin:/opt/gridengine/bin/lx26-amd64
+export PATH=$TURBODIR/scripts:$APPBASE/psw/local/Turbomole/6.XX/aux:$PATH
+export PATH=$TURBODIR/bin/`sysname`:$PATH
+mkdir $TURBOTMPDIR
+
+basedir=`pwd`
+echo "CPUs USED= PROCS!" >> $basedir/BASENAME!.log
+
+echo ""
+echo "____________________________________________________________________________________"
+echo "TURBOMOLE 6.31 SGE SUBMISSION SCRIPT"
+echo "Started by USER:      $USER"
+echo "JOB ID: $JOB_ID"
+echo "PWD directory:        $PWD"
+
+# Run the TURBOMOLE program
+echo "Started on:           " `hostname -s`
+echo "Started at:           " `date`
+
+TM-TS 1
+JOBEX-MemEdit.sh QUE! PROCS!
+
+ulimit -s unlimited
+ulimit -c unlimited
+ulimit -a
+
+echo""
+echo "Making temp directory and moving the files to the node."
+mkdir /state/partition1/$USER-BASENAME!-$JOB_ID
+cp -rfv * /state/partition1/$USER-BASENAME!-$JOB_ID
+cd /state/partition1/$USER-BASENAME!-$JOB_ID
+rm BASENAME!.log
+#rm BASENAME!.joblog
+
+touch lockfile
+function slave2 {
+while test -f lockfile
+do
+baseslave=`wc -l slave2.tmp`
+nodeslave=`wc -l slave2.output`
+#echo "test" >> $basedir/slave*.output
+if [[ $baseslave != $nodeslave ]]
+then
+cat slave2.output > $basedir/slave2.output 
+cat slave2.output > slave2.tmp
+fi
+sleep 60
+if test -f $basedir/update
+then
+	rm $basedir/update
+	tmmolden-no-open
+	mv -vf BASENAME!.mldn $basedir/
+fi
+if test -f $basedir/stop
+then
+	rm -rfv $basedir/stop
+	rm -rfv CC* slave2.tmp slave*.output
+	echo "Copying files back to head node and killing job."
+	cp -rfv * $basedir/
+fi
+done
+}
+slave2 &
+
+if test -f job.last
+then
+	cat job.last >> $basedir/BASENAME!.log
+	mv job.last job.old
+fi
+
+	echo ""
+	echo "Running JOBEX TRANS DSCF!"
+	JOBEX-MemEdit.sh QUE! PROCS!
+	jobex -trans -c 300 -v -outfile $basedir/BASENAME!.log 
+
+if test -f job.last
+then
+	cat job.last >> $basedir/BASENAME!.log
+	mv job.last job.old
+fi
+
+
+finished=`grep "CONVERGENCY CRITERIA FULFILLED" $basedir/BASENAME!.log|cut -c -30|tail -n1`
+if [[ $finished = "CONVERGENCY CRITERIA FULFILLED" ]]
+then
+	echo ""
+	echo "Running AOFORCE!"
+	AOFORCE-MemEdit.sh QUE! PROCS!
+	aoforce >> $basedir/BASENAME!.log
+else
+	echo "OPTIMIZATION FAILED!"
+fi
+
+echo ""
+rm -rfv lockfile
+rm -rfv slave2.tmp slave*.output BASENAME!.joblog
+echo "Moving everything back and removing the files from the node."
+mv -fv /state/partition1/$USER-BASENAME!-$JOB_ID/* $basedir
+rm -rfv /state/partition1/$USER-BASENAME!-$JOB_ID
+cd $basedir
+
+echo "  Finished at:          " `date`
+
+

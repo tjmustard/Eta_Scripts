@@ -1,0 +1,26 @@
+# Initialization for Gaussian09 serial execution
+g09root="/export/apps"
+mkdir /state/partition1/$USER-BASENAME!-$JOB_ID
+GAUSS_SCRDIR=/state/partition1/$USER-BASENAME!-$JOB_ID
+export g09root GAUSS_SCRDIR
+. $g09root/g09-D.01/bsd/g09.profile
+
+echo ""
+echo "____________________________________________________________________________________"
+echo "Gaussian09 SGE SUBMISSION SCRIPT"
+echo "  Started by USER:      $USER"
+echo "  JOB ID:               $JOB_ID"
+echo "  APP directory:         $g09root/g09-D.01"
+echo "  PWD directory:        $PWD"
+echo "  SCRATCH directory:    $GAUSS_SCRDIR"
+
+# Run the Gaussian09 program
+echo "  Started on:           " `hostname -s`
+echo "  Started at:           " `date`
+
+/export/apps/psw/local/Gaussian/0X/scripts/G09-InfiniteLoop.sh BASENAME!.com
+
+echo "  Finished at:          " `date`
+rm -rvf /state/partition1/$USER-BASENAME!-$JOB_ID
+
+

@@ -1,0 +1,7 @@
+#CONFIG
+# b3lyp/gen pseudo=read gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+NMR=(GIAO,PRINTEIGENVECTORS)
+#END
+#ECP
+6-31G*/LANL2DZ
+#END

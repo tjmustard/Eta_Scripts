@@ -1,0 +1,7 @@
+#CONFIG
+dftname=M06
+basis=LACVP*
+iacc=2
+isolv=2
+solvent=dichloromethane
+#END

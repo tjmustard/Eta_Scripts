@@ -1,0 +1,4 @@
+#CONFIG
+#hf 6-31G** scf=(maxcycle=300,direct,tight) density=current
+opt=(maxcycle=250) freq=noraman SCRF=(Solvent=Dichloromethane)
+#END

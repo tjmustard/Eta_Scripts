@@ -1,0 +1,7 @@
+#CONFIG
+#m06/gen pseudo=read scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=Cyclohexane) opt=(maxcycle=250,ts,calcfc,noeigentest,gdiis) iop(1/8=18) freq=noraman
+#END
+#ECP
+6-31G*/LANL2DZ
+#END

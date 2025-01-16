@@ -1,0 +1,37 @@
+Heat
+ &cntrl
+  ntpr=1, 	!print out every n steps
+  imin=0,	!0: md 1: minimize
+  ntx=1,	!1: read in coords only 5: read in coords and velocities
+  irest=0,	!0: remake restart 1: restart with previous data
+  nstlim=2500,	!number of steps
+  dt=0.001,	!step size
+  tempi=0.0,	!Start temp
+  temp0=300.0,	!equilibrium temp
+  ntwx=1,	!write frequency
+  ntf=2,	!1: ??? 2: no H bond interaction shake 3: ???
+  ntc=2,	!1: no SHAKE 2: bonds involving H are constrained 3: all bonds constrained
+  ntb=1,	!0: no PBC 1: constant volume 2: constant pressure
+  ntp=0,	!0: no pressure scaling
+  ntt=3,	!Thermostat 0: constant E 1: constant T 2: Anderson 3:Langevin
+  ig=-1,	!randome number for seed is -1
+  cut=8.0,	!cutof distance
+  gamma_ln=1.0,	!collision freq in ps-1
+  ifqnt = 1,	!turn on qmmm
+ /
+ &qmmm
+  qmmask = ':1',
+  qmcharge = QUE!, spin = 1,
+  qm_theory = 'EXTERN',
+  !qmcut = 15,
+  qm_ewald = 0,
+ /
+ &gau
+  method = 'B3LYP',
+  basis  = '6-31G*',
+  num_threads = PROCS!,
+  mem = 'MEM!GB',
+ /
+&wt type='TEMP0', istep1=0, istep2=9000, value1=0.0, value2=300.0 /
+&wt type='TEMP0', istep1=9001, istep2=10000, value1=300.0, value2=300.0 /
+&wt type='END' /

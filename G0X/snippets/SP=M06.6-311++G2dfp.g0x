@@ -1,0 +1,3 @@
+#CONFIG
+# M06/6-311++G(2df,p) gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+#END

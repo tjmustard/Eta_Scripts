@@ -1,0 +1,4 @@
+#CONFIG
+# b3lyp/6-31G* gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+opt=(maxcycle=250,gdiis,modredundant) 
+#END

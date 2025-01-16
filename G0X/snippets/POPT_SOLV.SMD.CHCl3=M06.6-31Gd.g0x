@@ -1,0 +1,4 @@
+#CONFIG
+#m06/6-31G(d) scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=CHCl3,SMD) opt=(maxcycle=250,modredundant)
+#END

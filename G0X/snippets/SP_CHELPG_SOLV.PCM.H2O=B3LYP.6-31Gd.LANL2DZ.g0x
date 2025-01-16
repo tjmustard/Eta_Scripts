@@ -1,0 +1,10 @@
+#CONFIG
+#b3lyp/gen pseudo=read scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=H2O) pop=(full,nbo,ChelpG,ReadRadii)
+#END
+#ECP
+6-31G*/LANL2DZ
+#END
+#CLOSE
+Nb 2.3
+#END

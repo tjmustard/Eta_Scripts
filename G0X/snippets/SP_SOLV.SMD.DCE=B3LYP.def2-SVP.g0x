@@ -1,0 +1,4 @@
+#CONFIG
+#b3lyp/gen  scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=DiChloroEthane,SMD)
+#END

@@ -1,0 +1,4 @@
+#CONFIG
+# b3lyp/3-21G* gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
+opt=(maxcycle=250,calcall,ts,noeigentest) 
+#END

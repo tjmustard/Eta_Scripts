@@ -1,0 +1,14 @@
+#CONFIG
+#b3lyp/gen pseudo=read scf=(maxcycle=300,direct,tight,xqc) density=current
+SCRF=(PCM,SOLVENT=Toluene) 
+#END
+#ECP
+6-31+G**/LANL2DZ
+#END
+#CLOSE
+--link1-- 
+#b3lyp/gen pseudo=read scf=(direct,xqc,maxcycle=300,tight) guess=read geom=allcheck
+#END
+#ECPCLOSE
+6-31+G**/LANL2DZ
+#END

@@ -253,7 +253,6 @@ alter (name Fe) and *_high,vdw=1.8
 alter (name Ga) and *_high,vdw=1.87
 alter (name H) and *_high,vdw=1.20
 alter (name He) and *_high,vdw=1.40
-alter (name Hf) and *_high,vdw=1.85
 alter (name Hg) and *_high,vdw=1.55
 alter (name I) and *_high,vdw=1.98
 alter (name In) and *_high,vdw=1.93
@@ -276,12 +275,10 @@ alter (name Se) and *_high,vdw=1.90
 alter (name Si) and *_high,vdw=2.10
 alter (name Sn) and *_high,vdw=2.17
 alter (name Te) and *_high,vdw=2.06
-alter (name Ti) and *_high,vdw=1.85
 alter (name Tl) and *_high,vdw=1.96
 alter (name U) and *_high,vdw=1.86
 alter (name Xe) and *_high,vdw=2.16
 alter (name Zn) and *_high,vdw=1.39
-alter (name Zr) and *_high,vdw=1.85
 
 #------------------------------------------------------------------------------------------------------------------------------------------
 #COPY! for Medium
@@ -305,7 +302,6 @@ alter elem Fe and *_med,vdw=0.71
 alter elem Ga and *_med,vdw=0.74
 alter elem H and *_med,vdw=0.47
 alter elem He and *_med,vdw=0.55
-alter elem Hf and *_med,vdw=0.75
 alter elem Hg and *_med,vdw=0.61
 alter elem I and *_med,vdw=0.78
 alter elem In and *_med,vdw=0.76
@@ -328,12 +324,10 @@ alter elem Se and *_med,vdw=0.75
 alter elem Si and *_med,vdw=0.83
 alter elem Sn and *_med,vdw=0.86
 alter elem Te and *_med,vdw=0.81
-alter elem Ti and *_med,vdw=0.75
 alter elem Tl and *_med,vdw=0.77
 alter elem U and *_med,vdw=0.73
 alter elem Xe and *_med,vdw=0.85
 alter elem Zn and *_med,vdw=0.55
-alter elem Zr and *_med,vdw=0.75
 
 #===============================================================================
 #Low Level settings

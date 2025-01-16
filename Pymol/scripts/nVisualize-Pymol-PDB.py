@@ -44,16 +44,7 @@ import os
 from sys import *
 import sys
 import getopt
-
-
-def make_dir(directory):
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-    return
-
-def getbasename(name, extension):
-    basename = name[::-1].replace(extension[::-1], '')[::-1]
-    return basename
+import etaatom
 
 ### --- Arguments --- ###
 
@@ -68,7 +59,7 @@ visual = 'Pymolv1.3-Visualize.pml'
 try:
     (myopts, args) = getopt.getopt(sys.argv[1:], 'b:v:dh')
 except getopt.GetoptError:
-    print(program + ' -d (generate distances) -h')
+    print program + ' -d (generate distances) -h'
     sys.exit(2)
 
 ###############################
@@ -84,15 +75,15 @@ for (o, a) in myopts:
     elif o == '-b':
         build = a
     elif o == '-h':
-        print(program + ' -h')
+        print program + ' -h'
         sys.exit(0)
     else:
-        print('Usage: %s -h' % sys.argv[0])
+        print 'Usage: %s -h' % sys.argv[0]
         sys.exit(0)
 
 ### --- Make the Pymol folder --- ###
 
-make_dir('Pymol-Picture')
+etaatom.make_dir('Pymol-Picture')
 
 ### --- Grab the build and visualize configuration file --- ###
 
@@ -117,7 +108,7 @@ f.write('''#==========================================
 for i in os.listdir(os.getcwd()):
     if i.endswith('.pdb'):
         ifile = i
-        basename = getbasename(ifile, '.pdb')
+        basename = etaatom.basename(ifile, '.pdb')
         os.system('cp ' + basename + '.pdb Pymol-Picture/' + basename
                   + '_orig.pdb')
         os.system('cp ' + basename + '.pdb Pymol-Picture/' + basename
@@ -428,9 +419,6 @@ for line in vislines:
     f.write(line)
 
 f.close()
-
-print("Run \"pymol Visual-Script.pml\", or your pymol program name, "\
-      "in the created Pymol-Picture directory")
 
 os.system('open Pymol-Picture/Visual-Script.pml')
 

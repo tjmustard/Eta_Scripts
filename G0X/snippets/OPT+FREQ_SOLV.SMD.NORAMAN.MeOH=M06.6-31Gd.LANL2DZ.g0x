@@ -1,0 +1,7 @@
+#CONFIG
+#m06/gen pseudo=read scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=Methanol,SMD) opt=(maxcycle=250) freq=noraman
+#END
+#ECP
+6-31G*/LANL2DZ
+#END

@@ -1,0 +1,4 @@
+#CONFIG
+#b3lyp/6-31G(d) scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=Dichloromethane,SMD) opt=(maxcycle=250) freq=noraman
+#END

@@ -1,0 +1,7 @@
+#CONFIG
+#b3lyp/gen pseudo=read scf=(maxcycle=300,direct,tight) density=current
+SCRF=(PCM,SOLVENT=Dichloromethane) opt=(maxcycle=250,ts,calcfc,noeigentest) freq=noraman
+#END
+#ECP
+6-31G*/LANL2DZ
+#END
