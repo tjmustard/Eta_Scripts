@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 #   Copyright (c) 2014, Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong
@@ -190,25 +190,25 @@ kcalmolTokjoulemol = 4.184
 ###==================================================================================================================###
 
 def write_template():
-    print '#Input file'
-    print 'parentFolder = '
-    print '#Library folder to use'
-    print 'childFolder = '
-    print '#Output folder'
-    print 'outputFolder = '
-    print '#Base name for files'
-    print 'baseName = '
-    print '#End name for files'
-    print 'endName = '
-    print '#Quatfit location'
-    print 'quatfit = /opt/apps/Quatfit/quatfit'
-    print '#List of atoms to align to'
-    print 'parent = '
-    print 'child = '
-    print 'weights = '
-    print '#List of atoms to delete from the input (parent) file'
-    print 'deleteParent = '
-    print 'deleteChild = '
+    print('#Input file')
+    print('parentFolder = ')
+    print('#Library folder to use')
+    print('childFolder = ')
+    print('#Output folder')
+    print('outputFolder = ')
+    print('#Base name for files')
+    print('baseName = ')
+    print('#End name for files')
+    print('endName = ')
+    print('#Quatfit location')
+    print('quatfit = /opt/apps/Quatfit/quatfit')
+    print('#List of atoms to align to')
+    print('parent = ')
+    print('child = ')
+    print('weights = ')
+    print('#List of atoms to delete from the input (parent) file')
+    print('deleteParent = ')
+    print('deleteChild = ')
     return
 
 
@@ -285,7 +285,7 @@ def expand_temp_lists(mapinput):
         if '-' in str(mapinput.parentDeleteTemp[i]):  # Use the '-' symbol to denote all atoms between the former and latter
             line = str(mapinput.parentDeleteTemp[i]).split('-')
             start = int(line[0])
-            for j in xrange(int(line[0]), int(line[1]) + 1):
+            for j in range(int(line[0]), int(line[1]) + 1):
 
         # print j
 
@@ -296,7 +296,7 @@ def expand_temp_lists(mapinput):
         if '-' in str(mapinput.childDeleteTemp[i]):  # Use the '-' symbol to denote all atoms between the former and latter
             line = str(mapinput.childDeleteTemp[i]).split('-')
             start = int(line[0])
-            for j in xrange(int(line[0]), int(line[1]) + 1):
+            for j in range(int(line[0]), int(line[1]) + 1):
 
         # print j
 
@@ -340,14 +340,14 @@ def make_align_file(mapinput):
 
 def align_parents(mapinput):
     mainparent = ''
-    print 'Aligning parent strutures:'
+    print('Aligning parent strutures:')
     for aF in os.listdir(mapinput.parentFolder):
         if aF.endswith('.xyz'):
             parentfile = mapinput.parentFolder + '/' + aF
             if mainparent == '':
                 mainparent = parentfile
             else:
-                print 'Aligning ' + parentfile + ' to ' + mainparent
+                print('Aligning ' + parentfile + ' to ' + mainparent)
                 os.system(mapinput.quatfit + ' -r' + mainparent + ' -f '
                            + parentfile + ' -p '
                           + mapinput.outputFolder
@@ -364,7 +364,7 @@ def align_children(mapinput, triangle):
   # ## --- If the parents and children are the same or triangle is enforced only run the triangle of matches --- ###
 
     if mapinput.parentFolder == mapinput.childFolder or triangle:
-        print 'Running only the triangle TRIANGLE!'
+        print('Running only the triangle TRIANGLE!')
 
     # ## --- Iterating through the parent files in the parent folder and children files in the children folder making lists --- ###
 
@@ -387,7 +387,7 @@ def align_children(mapinput, triangle):
                 childfiletemp = mapinput.outputFolder + '/temp/' \
                     + childfile
 
-                print 'Aligning ' + parentfile + ' and ' + childfile
+                print('Aligning ' + parentfile + ' and ' + childfile)
 
         # ## Running program outside the script. ###
 
@@ -397,7 +397,7 @@ def align_children(mapinput, triangle):
                               + childfile + ' -p '
                               + mapinput.outputFolder + '/align.txt -o '
                                + childfiletemp)
-                    print '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+                    print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
                 else:
                     os.system(mapinput.quatfit + ' -r' + parentfile
                               + ' -f ' + mapinput.childFolder + '/'
@@ -417,7 +417,8 @@ def align_children(mapinput, triangle):
                 if mapinput.baseName == '':
                     if mapinput.endName == '':
                         newfilename = ''.join(parentfilelol[1]) + '-' \
-                            + ''.join(libfilelol[1]) + '.xyz'
+                            + childfile
+                            #TJLM EDIT #+ ''.join(libfilelol[1]) + '.xyz'
                     else:
                         newfilename = ''.join(parentfilelol[1]) + '-' \
                             + ''.join(libfilelol[1]) + '-' \
@@ -432,10 +433,11 @@ def align_children(mapinput, triangle):
                             + ''.join(parentfilelol[1]) + '-' \
                             + ''.join(libfilelol[1]) + '-' \
                             + mapinput.endName + '.xyz'
-                print 'Exporting ' + newfilename
+                print('!!!!Exporting ' + newfilename)
 
         # ## --- Output file WITHOUT parentDelete atoms and with the childfile atoms --- ###
-
+                print(mapinput.outputFolder)
+                print(newfilename)
                 f = open(mapinput.outputFolder + '/' + newfilename, 'w+'
                          )
                 f.write(str(newfileatomnum) + '\n')
@@ -479,7 +481,7 @@ def align_children(mapinput, triangle):
                 for i in os.listdir(mapinput.childFolder):
                     if i.endswith('.xyz'):
                         childfile = i
-                        print 'Aligning ' + pf + ' and ' + i
+                        print('Aligning ' + pf + ' and ' + i)
 
             # ## Running program outside the script. ###
 
@@ -492,7 +494,7 @@ def align_children(mapinput, triangle):
                                     + '/align.txt -o '
                                     + mapinput.outputFolder + '/temp/'
                                     + childfile)
-                            print '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+                            print('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
                         else:
                             os.system(mapinput.quatfit + ' -r'
                                     + parentfile + ' -f '
@@ -524,26 +526,29 @@ def align_children(mapinput, triangle):
                             + int(libfilelol[0]) \
                             - len(mapinput.parentDelete) \
                             - len(mapinput.childDelete)
-                        if mapinput.baseName == '':
-                            if mapinput.endName == '':
-                                newfilename = ''.join(parentfilelol[1]) \
-                                    + '-' + ''.join(libfilelol[1]) \
-                                    + '.xyz'
-                            else:
-                                newfilename = ''.join(parentfilelol[1]) \
-                                    + '-' + ''.join(libfilelol[1]) \
-                                    + '-' + mapinput.endName + '.xyz'
-                        else:
-                            if mapinput.endName == '':
-                                newfilename = mapinput.baseName + '-' \
-                                    + ''.join(parentfilelol[1]) + '-' \
-                                    + ''.join(libfilelol[1]) + '.xyz'
-                            else:
-                                newfilename = mapinput.baseName + '-' \
-                                    + ''.join(parentfilelol[1]) + '-' \
-                                    + ''.join(libfilelol[1]) + '-' \
-                                    + mapinput.endName + '.xyz'
-                        print 'Exporting ' + newfilename
+                        newfilename = ''.join(parentfilelol[1]) \
+                                     + '-' + i
+                        #if mapinput.baseName == '':
+                        #    if mapinput.endName == '':
+                        #        newfilename = ''.join(parentfilelol[1]) \
+                        #            + '-' + childfile
+                        #            #TJLM EDIT#+ '-' + ''.join(libfilelol[1]) \
+                        #            #+ '.xyz'
+                        #    else:
+                        #        newfilename = ''.join(parentfilelol[1]) \
+                        #            + '-' + ''.join(libfilelol[1]) \
+                        #            + '-' + mapinput.endName + '.xyz'
+                        #else:
+                        #    if mapinput.endName == '':
+                        #        newfilename = mapinput.baseName + '-' \
+                        #            + ''.join(parentfilelol[1]) + '-' \
+                        #            + ''.join(libfilelol[1]) + '.xyz'
+                        #    else:
+                        #        newfilename = mapinput.baseName + '-' \
+                        #            + ''.join(parentfilelol[1]) + '-' \
+                        #            + ''.join(libfilelol[1]) + '-' \
+                        #            + mapinput.endName + '.xyz'
+                        print('?????Exporting ' + newfilename)
 
             # ## --- Output file WITHOUT parentDelete atoms and with the childfile atoms --- ###
 

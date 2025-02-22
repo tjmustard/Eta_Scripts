@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2014, Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong
@@ -65,8 +65,8 @@ triangle = False
 try:
     (myopts, args) = getopt.getopt(sys.argv[1:], 'i:tThD')
 except getopt.GetoptError:
-    print program \
-        + ' -i <inputfile.map> -t <print out template map file> -T <only build the triangle of the posible combinations>'
+    print(program \
+        + ' -i <inputfile.map> -t <print out template map file> -T <only build the triangle of the posible combinations>')
     sys.exit(2)
 
 ###############################
@@ -84,12 +84,12 @@ for (o, a) in myopts:
     elif o == '-T':
         triangle = True
     elif o == '-h':
-        print program \
-            + ' -i <inputfile.map> -t <print out template map file> -T <only build the triangle of the posible combinations>'
+        print(program \
+            + ' -i <inputfile.map> -t <print out template map file> -T <only build the triangle of the posible combinations>')
         sys.exit(0)
     else:
-        print 'Usage: %s -i inputfile.map -t <print out template map file> -T <only build the triangle of the posible combinations>' \
-            % sys.argv[0]
+        print('Usage: %s -i inputfile.map -t <print out template map file> -T <only build the triangle of the posible combinations>' \
+            % sys.argv[0])
         sys.exit(0)
 
 if writetemplatemap == 1:

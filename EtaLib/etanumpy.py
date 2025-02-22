@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 #   Copyright (c) 2014, Thomas J. L. Mustard, Joshua J. Kincaid, O. Maduka Ogba, Paul Ha-Yeon Cheong
@@ -48,7 +48,7 @@
 import os
 from sys import *
 import math
-import etaatom
+from . import etaatom
 from numpy import *
 from decimal import *
 

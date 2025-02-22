@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2014, Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong
@@ -49,8 +49,8 @@ import shutil
 import etaatom
 import etamap
 from decimal import *
-from Tkinter import *
-import tkFileDialog
+from tkinter import *
+import tkinter.filedialog
 
 # Create the window
 
@@ -63,7 +63,7 @@ main.geometry('450x400')
 
 
 def get_rel_path():
-    filePath = tkFileDialog.askdirectory()
+    filePath = tkinter.filedialog.askdirectory()
     rel_path = os.path.relpath(filePath)
     return rel_path
 
@@ -259,7 +259,7 @@ def runnMAP():
 def saveConfig():
 
     mapinput = grab_arguments()
-    ofile = tkFileDialog.asksaveasfilename()
+    ofile = tkinter.filedialog.asksaveasfilename()
     f = open(ofile, 'w')
     f.write('#Input file' + '\n')
     f.write('parentFolder = ' + mapinput.parentFolder + '\n')
@@ -301,7 +301,7 @@ def saveConfig():
 
 
 def loadConfig():
-    ofile = tkFileDialog.askopenfilename(defaultextension='map',
+    ofile = tkinter.filedialog.askopenfilename(defaultextension='map',
             initialdir='./')
     mapinput = etamap.MAPArguments()
     mapinput = etamap.parse_input_file(ofile)

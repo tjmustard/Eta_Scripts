@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # Copyright (c) 2014, Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong
@@ -42,8 +42,8 @@
 
 import os
 from sys import *
-import etaatom
-import etanumpy
+from . import etaatom
+from . import etanumpy
 import time
 import shutil
 from numpy import *
@@ -261,7 +261,7 @@ def reset_pots_variables(pots):
 
 def parse_scan_file(pots):
     if pots.debug >= 1:
-        print 'parse_scan_file'
+        print('parse_scan_file')
     f = open(pots.scanfile, 'r')
     scanlist = f.readlines()
     f.close()
@@ -313,19 +313,19 @@ def parse_scan_file(pots):
                         'Please turn this on (#SCAN=yes) if you want this feature.'
                         ], pots.verbose, pots.joblog)
     if pots.debug >= 1:
-        print pots.scanSize
-        print pots.scan
-        print pots.ts
-        print pots.scanLength
-        print pots.scanStepNow
-        print pots.minTSScanVar
-        print pots.waitSize
-        print pots.scanType
-        print pots.atomList
-        print pots.breakpoint
-        print pots.breakatoms
-        print pots.minorTS
-        print pots.TCscratchDir
+        print(pots.scanSize)
+        print(pots.scan)
+        print(pots.ts)
+        print(pots.scanLength)
+        print(pots.scanStepNow)
+        print(pots.minTSScanVar)
+        print(pots.waitSize)
+        print(pots.scanType)
+        print(pots.atomList)
+        print(pots.breakpoint)
+        print(pots.breakatoms)
+        print(pots.minorTS)
+        print(pots.TCscratchDir)
     return pots
 
 
@@ -333,7 +333,7 @@ def parse_scan_file(pots):
 
 def make_temp_scan_file(pots):
     if pots.debug >= 1:
-        print 'make_temp_scan_file'
+        print('make_temp_scan_file')
     if os.path.isfile('Scan.txt'):
         if pots.QMtype == 'G09' or pots.QMtype == 'G03':
             for i in os.listdir(os.getcwd()):
@@ -341,7 +341,7 @@ def make_temp_scan_file(pots):
                     ofile = 'Scan-' + etaatom.basename(i, '.com') \
                         + '.txt'
                     shutil.copyfile('Scan.txt', ofile)
-                    print ofile
+                    print(ofile)
         elif pots.QMtype == 'Turbomole':
             for i in os.listdir(os.getcwd()):
                 if i.endswith('.Turbomole'):
@@ -349,44 +349,44 @@ def make_temp_scan_file(pots):
                         + '/Scan-' + etaatom.basename(i, '.Turbomole') \
                         + '.txt'
                     shutil.copyfile('Scan.txt', ofile)
-                    print ofile
+                    print(ofile)
             for i in os.listdir(os.getcwd()):
                 if i.endswith('.tmol'):
                     ofile = 'Scan-' + etaatom.basename(i, '.tmol') \
                         + '.txt'
                     shutil.copyfile('Scan.txt', ofile)
-                    print ofile
+                    print(ofile)
         elif pots.QMtype == 'Terachem':
             for i in os.listdir(os.getcwd()):
                 if i.endswith('.tc'):
                     ofile = 'Scan-' + etaatom.basename(i, '.tc') \
                         + '.txt'
                     shutil.copyfile('Scan.txt', ofile)
-                    print ofile
+                    print(ofile)
         elif pots.QMtype.upper() == 'JAGUAR':
             for i in os.listdir(os.getcwd()):
                 if i.endswith('.in'):
                     ofile = 'Scan-' + etaatom.basename(i, '.in') \
                         + '.txt'
                     shutil.copyfile('Scan.txt', ofile)
-                    print ofile
+                    print(ofile)
         shutil.move('Scan.txt', 'Scan.distributed')
     else:
         f = open('Scan.txt', 'w')
-        print '#SCAN = YES/NO'
-        print '#TS = YES/DYN/NO'
-        print '#VARIABLE = bond/angle/dihedral 1 2 3 4'
-        print '#SCANLENGTH = 30'
-        print '#SCANSTEPNOW = 0'
-        print '#STEPSIZE = -0.05'
-        print '#MINTSSCANSIZE = loose/none/tight/verytight'
-        print '#WAIT = 0'
-        print '#BREAKPOINT: 2.3 2 4'
-        print '#MINORTS = YES/ONE/NO'
-        print '#TCSCRDIR = ./scr-h2o'
-        print '============================================================================'
-        print 'Edit the new Scan.txt file and rerun nPersistantOTS.py -T and the Scan.txt '
-        print 'will be distributed for all input files.'
+        print('#SCAN = YES/NO')
+        print('#TS = YES/DYN/NO')
+        print('#VARIABLE = bond/angle/dihedral 1 2 3 4')
+        print('#SCANLENGTH = 30')
+        print('#SCANSTEPNOW = 0')
+        print('#STEPSIZE = -0.05')
+        print('#MINTSSCANSIZE = loose/none/tight/verytight')
+        print('#WAIT = 0')
+        print('#BREAKPOINT: 2.3 2 4')
+        print('#MINORTS = YES/ONE/NO')
+        print('#TCSCRDIR = ./scr-h2o')
+        print('============================================================================')
+        print('Edit the new Scan.txt file and rerun nPersistantOTS.py -T and the Scan.txt ')
+        print('will be distributed for all input files.')
 
     # Write the temp scan file
 
@@ -411,9 +411,9 @@ def print_and_write(alist, verbose, sfile):
     f = open(sfile, 'a')
     for i in alist:
         if verbose == 1:
-            print i
+            print(i)
         elif verbose == 3:
-            print i.center(80, ' ')
+            print(i.center(80, ' '))
         f.write(str(i) + '\n')
     f.close()
     return

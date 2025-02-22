@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 #   Copyright (c) 2014, Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong
@@ -343,7 +343,7 @@ def return_modified_string_list(itext, otext, flist):
     printlines = []
     for line in flist:
         if itext in line:
-            print 'Found instance of: ' + itext
+            print('Found instance of: ' + itext)
             line = line.replace(itext, otext)
         printlines.append(line)
     return printlines
@@ -1478,8 +1478,8 @@ def xyz_lol(ifile):
   # If the XYZ file is longer or shorter than the list of data should be, warn the user.
 
     if int(ifilelol[0]) + 2 != ifilelength:
-        print 'Your file is the wrong length!'
-        print 'Make sure you have the right number of atoms.'
+        print('Your file is the wrong length!')
+        print('Make sure you have the right number of atoms.')
         exit(0)
     return ifilelol
 
@@ -1601,7 +1601,7 @@ def print_geom(geom):
     # else print the string (number of atoms or comment line)
 
             line = str(geom[i])
-        print line
+        print(line)
     return
 
 
@@ -1688,7 +1688,7 @@ def interactive_config(SOMETHING):
 
   # Figure out the method
 
-    var = input('Method:')
+    var = eval(input('Method:'))
     if var == 1:
         config.append('#B3LYP/')
     elif var == 2:
@@ -1700,16 +1700,16 @@ def interactive_config(SOMETHING):
 
   # Figure out the basis set
 
-    var = input('Will there be ECPs? (y/n)')
+    var = eval(input('Will there be ECPs? (y/n)'))
     if var.lower() == 'y':
-        var = input('ECPs Type:')
+        var = eval(input('ECPs Type:'))
         if var == 1:
             config.append('gen ')
             ecp.append('LANL2DZ')
         elif var == 2:
             config.append('gen ')
             ecp.append('SOMETHINGELSE')
-    var = input('Basis set:')
+    var = eval(input('Basis set:'))
     if var == 1:
         config.append('6-31G* ')
     elif var == 2:
@@ -2162,7 +2162,7 @@ def translate_g0x_output(logfile, trans, printtype):
          ]
     if trans == 'translate':
         for line in initlines:
-            print line
+            print(line)
 
   # Global Variables
 
@@ -2254,7 +2254,7 @@ def translate_g0x_output(logfile, trans, printtype):
     f.close()
     for (i, var) in enumerate(filelist):
         if i == 0 and 'Entering Gaussian System' not in var:
-            print 'Error! Not a Gaussian log file.'
+            print('Error! Not a Gaussian log file.')
             exit(0)
         elif 'Cite this work as:' in var:
 
@@ -2918,7 +2918,7 @@ def translate_jaguar_output(logfile, trans, printtype):
          ]
     if trans == 'translate':
         for line in initlines:
-            print line
+            print(line)
 
   # Global Variables
 
@@ -3688,7 +3688,7 @@ def translate_tm_output(logfile, trans, printtype):
          ]
     if trans == 'translate':
         for line in initlines:
-            print line
+            print(line)
 
   # Global Variables
 
@@ -4392,7 +4392,7 @@ def translate_tc_output(logfile, trans, printtype):
          ]
     if trans == 'translate':
         for line in initlines:
-            print line
+            print(line)
 
   # Global Variables
 
@@ -5009,11 +5009,11 @@ def parse_output_gulp(ifile):
                 geom = 1
             if geom >= 3:
                 alist.append(line)
-    print alist
+    print(alist)
     the_file.close()
     alistdedup = [x for x in alist if 'number of k points' not in x]
     numatoms = int(alistdedup[-1].split()[0])
-    print numatoms
+    print(numatoms)
     finalgeom = [0] * (numatoms + 2)
     finalgeom[0] = str(numatoms)
     finalgeom[1] = 'Energy: '
