@@ -316,6 +316,7 @@ def make_align_file(mapinput):
     if len(mapinput.alignWeights) < len(mapinput.alignParent):
         for i in range(len(mapinput.alignParent)):
             mapinput.alignWeights.append(1)
+    #Create Parent/child align file
     f = open(mapinput.outputFolder + '/align.txt', 'w+')
     f.write(str(len(mapinput.alignParent)) + '\n')
     for i in range(len(mapinput.alignParent)):
@@ -324,6 +325,7 @@ def make_align_file(mapinput):
             + str(mapinput.alignWeights[i]) + '\n'  # ie. 3 4 1 (atoms 3 and 4 will be aligned with a weight of 1)
         f.write(linetemp)
     f.close()
+    #Create parent/parent align file.
     f = open(mapinput.outputFolder + '/alignparent.txt', 'w+')
     f.write(str(len(mapinput.alignParent)) + '\n')
     for i in range(len(mapinput.alignParent)):

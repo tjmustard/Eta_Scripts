@@ -2,3 +2,5 @@
 *.bak
 *.map
 *.swp
+*.pyc
+.DS_Store

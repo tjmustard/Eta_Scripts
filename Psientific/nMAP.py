@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-# Copyright (c) 2014, Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong
+# Copyright (c) 2025, Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong
 #
 #   PHYC Group
 #   Oregon State University
