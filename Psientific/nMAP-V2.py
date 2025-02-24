@@ -40,20 +40,10 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
 from sys import *
-import sys
-import getopt
-from decimal import *
-import shutil
-import etaatom
-import etamap
 import etastructure
 import quatfit
-
 import argparse
-import os
 
 
 def parse_args():
@@ -84,7 +74,7 @@ def read_input_file(file_name):
     """
     Read an input file with key-value pairs and store them in variables.
 
-    Parameters:
+    Args:
         file_name (str): The name of the input file
 
     Returns:
@@ -114,6 +104,20 @@ def read_input_file(file_name):
     return data
 
 def pull_xyz_coords(struct, align, all=False):
+    """
+        Extract just the X, Y, and Z coordinates from the ChemicalStructure class and return as a list of tuples.
+        If an alignment list is provided return only those atoms in the order of the atom indexes provided
+        If all is True return the entire list of atom coordinates.
+
+        Args:
+            struct: ChemicalStructure class
+            allign: List of atom indexes to select
+            all: Boolean to return all atoms or only a list of atoms.
+
+        Returns:
+            A list of coordinate tuples
+        """
+
     coords = []
     if all:
         for atom in struct.atoms:
@@ -126,6 +130,17 @@ def pull_xyz_coords(struct, align, all=False):
     return coords
 
 def expand_temp_lists(atom_list):
+    """
+        Expand the list of atoms to delete. If a "-" is used to denote all atom indexes between
+        the numbers split it out to alist ionlcuding all those numbers.
+
+        Args:
+            atom_list: List of strings provided by the user.
+
+        Return:
+            A list of ints
+    """
+
     expanded_atom_list = []
     for i in range(len(atom_list)):
         if '-' in str(atom_list[i]):  # Use the '-' symbol to denote all atoms between the former and latter
@@ -160,10 +175,8 @@ def merge_lists(child_remove_atoms, child_atoms, parent_remove_atoms, parent_ato
 
 def main():
     """
-    The main function where everything gets executed.
-
-    Returns:
-        None: This is the typical signature of a Python `main` method that doesn't explicitly indicate any value being returned. If needed in your code, consider returning something (if applicable).
+    A tool to align two molecules to each other based on a list of atoms provided for both. (Must be equal in length.)
+    Also removes atoms provided by the user and creates an aligned and mapped output.
     """
 
     # Get parsed arguments
@@ -177,35 +190,44 @@ def main():
     pst = etastructure.ChemicalStructure.load_xyz(args.parent_file)
     cst = etastructure.ChemicalStructure.load_xyz(args.child_file)
 
+    # Pull coordinates for allignemnt
     pcoords = pull_xyz_coords(pst, args.parent_align)
     ccoords = pull_xyz_coords(cst, args.child_align)
     accoords = pull_xyz_coords(cst, args.child_align, all=True)
 
+    # Run alignment
     aligned_child, rms = quatfit.fit_fragment(accoords, ccoords, pcoords)
 
-    print("RMS: {}Å".format(rms))
+    print("Alignment RMSD: {}Å".format(rms))
 
+    # Save aligned coordinates back to the child molecule
     for atomindex, coord in enumerate(aligned_child):
         cst.atoms[atomindex]['x'] = coord[0]
         cst.atoms[atomindex]['y'] = coord[1]
         cst.atoms[atomindex]['z'] = coord[2]
 
-
+    # Export the aligned child before atom deletion
     etastructure.ChemicalStructure.export_xyz(cst, "aligned.xyz")
 
+    #Create a new ChemicalStructure
     newst = etastructure.ChemicalStructure()
+
+    # Remove delete atoms from child and parent and merge them to one list.
     newatoms = merge_lists(expand_temp_lists(args.child_delete), cst.atoms,
                            expand_temp_lists(args.parent_delete), pst.atoms)
 
+    # Add merged list of atoms to the new ChemicalStructure
     for atom in newatoms:
         newst.add_atom(atom['element'], atom['x'], atom['y'], atom['z'])
 
+    # Export the aligned and merged structure
     etastructure.ChemicalStructure.export_xyz(newst, "replaced.xyz")
 
     # Check if verbose output is enabled
     if args.verbose:
         print("Verbose mode: ON")
 
+    # Potential to use a map file in the future
     if args.map_file:
         data = read_input_file(args.map_file)
         print(data)
