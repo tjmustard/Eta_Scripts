@@ -68,10 +68,10 @@ def parse_args():
     parser = argparse.ArgumentParser(description='Example ArgParse Script')
     parser.add_argument('-p', '--parent_file', required=True, help='Path to parent file')
     parser.add_argument('--parent_align', nargs='+', type=int, help='List of atoms to align with from parent structure.')
-    parser.add_argument('--parent_delete', nargs='+', type=int, help='List of atoms to delete from parent structure.')
+    parser.add_argument('--parent_delete', nargs='+', type= str, help='List of atoms to delete from parent structure.')
     parser.add_argument('-c', '--child_file', required=True, help='Path to child file')
     parser.add_argument('--child_align', nargs='+', type=int, help='List of atoms to align with from child structure.')
-    parser.add_argument('--child_delete', nargs='+', type=int, help='List of atoms to delete from child structure.')
+    parser.add_argument('--child_delete', nargs='+', type=str, help='List of atoms to delete from child structure.')
     parser.add_argument('-m', '--map_file', required=False, help='Path to map file')
 
     # Add boolean flag for verbose output
@@ -121,9 +121,42 @@ def pull_xyz_coords(struct, align, all=False):
             coords.append([atom['x'], atom['y'], atom['z']])
     else:
         for atom in align:
-            print("{} {} {} {}".format(struct.atoms[atom-1]['element'], struct.atoms[atom-1]['x'], struct.atoms[atom-1]['y'], struct.atoms[atom-1]['z']))
+            #print("{} {} {} {}".format(struct.atoms[atom-1]['element'], struct.atoms[atom-1]['x'], struct.atoms[atom-1]['y'], struct.atoms[atom-1]['z']))
             coords.append([struct.atoms[atom-1]['x'], struct.atoms[atom-1]['y'], struct.atoms[atom-1]['z']])
     return coords
+
+def expand_temp_lists(atom_list):
+    expanded_atom_list = []
+    for i in range(len(atom_list)):
+        if '-' in str(atom_list[i]):  # Use the '-' symbol to denote all atoms between the former and latter
+            line = str(atom_list[i]).split('-')
+            start = int(line[0])
+            for j in range(int(line[0]), int(line[1]) + 1):
+                expanded_atom_list.append(j)
+        if '-' not in str(atom_list[i]):  # If not one of the special symbols just add it to the final list
+            expanded_atom_list.append(int(atom_list[i]))
+    return expanded_atom_list
+
+def merge_lists(child_remove_atoms, child_atoms, parent_remove_atoms, parent_atoms):
+    """
+    Removes specific indexes from two lists of tuples and combines them into a single list.
+
+    Args:
+        - child_remove_atoms (list): A list of indexes to be removed from the child list.
+        - child_atoms (list): The initial child list of tuples.
+        - parent_remove_atoms (list): A list of indexes or values to be removed from the parent list based on their position in this list.
+        - parent_atoms (list): The initial parent list of tuples.
+
+    Returns:
+        - result_list (list): A combined and filtered version of both lists as a single output.
+    """
+    # Filter out specific values and indexes from child_atoms
+    remaining_child_atoms = [child_tuple for idx, child_tuple in enumerate(child_atoms) if idx + 1 not in child_remove_atoms]
+
+    # Remove items based on their position specified by parent_remove_atoms
+    remaining_parent_atoms = [parent_tuple for idx, parent_tuple in enumerate(parent_atoms) if idx + 1 not in parent_remove_atoms]
+
+    return remaining_child_atoms + remaining_parent_atoms
 
 def main():
     """
@@ -144,48 +177,30 @@ def main():
     pst = etastructure.ChemicalStructure.load_xyz(args.parent_file)
     cst = etastructure.ChemicalStructure.load_xyz(args.child_file)
 
-    print("Child align atom indexes:")
-    print(args.child_align)
-    print("Parent align atom indexes:")
-    print(args.parent_align)
-
     pcoords = pull_xyz_coords(pst, args.parent_align)
-
-    print("Align Parent coords:")
-    print("____________________________________")
-    print(pcoords)
-
     ccoords = pull_xyz_coords(cst, args.child_align)
-
-    print("Align Child coords:")
-    print("____________________________________")
-    print(ccoords)
-
     accoords = pull_xyz_coords(cst, args.child_align, all=True)
-
-    print("ALL Child coords:")
-    print("____________________________________")
-    print(len(accoords))
-    print(accoords)
 
     aligned_child, rms = quatfit.fit_fragment(accoords, ccoords, pcoords)
 
-    #aligned_child = quatfit.find_coordinates(len(pcoords), pcoords, ccoords, accoords)
-
-    #print("Aligned coords:")
-    #print("____________________________________")
-    #print(len(aligned_child))
-    #print(aligned_child)
-    print("RMS:")
-    print("____________________________________")
-    print(rms)
+    print("RMS: {}Å".format(rms))
 
     for atomindex, coord in enumerate(aligned_child):
         cst.atoms[atomindex]['x'] = coord[0]
         cst.atoms[atomindex]['y'] = coord[1]
         cst.atoms[atomindex]['z'] = coord[2]
 
+
     etastructure.ChemicalStructure.export_xyz(cst, "aligned.xyz")
+
+    newst = etastructure.ChemicalStructure()
+    newatoms = merge_lists(expand_temp_lists(args.child_delete), cst.atoms,
+                           expand_temp_lists(args.parent_delete), pst.atoms)
+
+    for atom in newatoms:
+        newst.add_atom(atom['element'], atom['x'], atom['y'], atom['z'])
+
+    etastructure.ChemicalStructure.export_xyz(newst, "replaced.xyz")
 
     # Check if verbose output is enabled
     if args.verbose:
