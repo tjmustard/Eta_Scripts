@@ -24,6 +24,8 @@ Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong. unpublished results.
 * [Eta_Scripts](http://github.com/tjmustard/Eta_Scripts) (here)
 * [PHYC Group](http://phyc.chem.oregonstate.edu/)
 
+This repository started in ~2014, all the original code is in my [thesis] (https://ir.library.oregonstate.edu/concern/graduate_thesis_or_dissertations/xp68kn058) and some updates were made over the years. The repository was deleted/taken down and then reuploaded with the same name. Recently an update to python 3 was made.
+
 
 ## How is everything organized?
 Folder Setup:
