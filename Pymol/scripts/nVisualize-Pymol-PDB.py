@@ -59,7 +59,7 @@ visual = 'Pymolv1.3-Visualize.pml'
 try:
     (myopts, args) = getopt.getopt(sys.argv[1:], 'b:v:dh')
 except getopt.GetoptError:
-    print program + ' -d (generate distances) -h'
+    print(program + ' -d (generate distances) -h')
     sys.exit(2)
 
 ###############################
@@ -75,10 +75,10 @@ for (o, a) in myopts:
     elif o == '-b':
         build = a
     elif o == '-h':
-        print program + ' -h'
+        print(program + ' -h')
         sys.exit(0)
     else:
-        print 'Usage: %s -h' % sys.argv[0]
+        print('Usage: %s -h' % sys.argv[0])
         sys.exit(0)
 
 ### --- Make the Pymol folder --- ###
