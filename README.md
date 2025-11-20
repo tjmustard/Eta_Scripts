@@ -1,3 +1,5 @@
+THIS CODE WAS INITIALLY CREATED BETWEEN 2010-2015 WHILE I WAS ATTENDING GRADUATE SCHOOL AT OREGON STATE UNIVERSITY. A VERSION OF THIS CODE CAN BE FOUND IN MY THESIS HERE: https://ir.library.oregonstate.edu/concern/graduate_thesis_or_dissertations/xp68kn058
+
 ###WARNING:
 Several updates may have broken some scripts/libraries. Please use the 0.4a branch until this notice is changed.
 
@@ -23,6 +25,8 @@ Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong. unpublished results.
 * [Eta_Scripts](http://tjmustard.github.io/Eta_Scripts/) ("attracticve" one)
 * [Eta_Scripts](http://github.com/tjmustard/Eta_Scripts) (here)
 * [PHYC Group](http://phyc.chem.oregonstate.edu/)
+
+This repository started in ~2014, all the original code is in my [thesis](https://ir.library.oregonstate.edu/concern/graduate_thesis_or_dissertations/xp68kn058) and some updates were made over the years. The repository was deleted/taken down and then reuploaded with the same name. Recently an update to python 3 was made.
 
 
 ## How is everything organized?
