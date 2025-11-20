@@ -40,44 +40,45 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'Submit.One.Amber-G09.Core=8-GEN02.py'
+program = "Submit.One.Amber-G09.Core=8-GEN02.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     inputfile = sys.argv[1]
 except IndexError:
-    inputfile = '-h'
+    inputfile = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if inputfile == '-h':
-    argv.append('-h')
-    argv.append('-h')
-elif inputfile == '-d':
-    argv.append('-d')
-    argv.append('-d')
-elif inputfile == '--hold':
-    argv.append('--hold')
-    argv.append('--hold')
+if inputfile == "-h":
+    argv.append("-h")
+    argv.append("-h")
+elif inputfile == "-d":
+    argv.append("-d")
+    argv.append("-d")
+elif inputfile == "--hold":
+    argv.append("--hold")
+    argv.append("--hold")
 debug = 0
 hold = 0
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'dh', ['hold'])
+    (myopts, args) = getopt.getopt(sys.argv[2:], "dh", ["hold"])
 except getopt.GetoptError:
-    print program + ''' <TM input file> -d --hold'''
+    print(program + """ <TM input file> -d --hold""")
     sys.exit(2)
 
 ###############################
@@ -86,37 +87,37 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         debug += 1
-    elif o == '--hold':
+    elif o == "--hold":
         hold = 1
-    elif o == '-h':
-        print program + ''' <TM input file> -d --hold'''
+    elif o == "-h":
+        print(program + """ <TM input file> -d --hold""")
         sys.exit(0)
     else:
-        print 'Usage: %s  <TM input file> -d --hold' % sys.argv[0]
+        print("Usage: %s  <TM input file> -d --hold" % sys.argv[0])
         sys.exit(0)
 
 if debug >= 1:
-    print inputfile
+    print(inputfile)
 
 #########################################################
 ### --- Job settings --- ###
 
-program = 'QMMM'
+program = "QMMM"
 nodeprocs = 8  # Number of procs on node
 nodemem = 64000  # Total memory on node in MB
 nproc = 8  # Number of procs to be used
 memory = str(int(math.floor(nodemem / nodeprocs * nproc * 0.90)))
-queue = 'gen02'  # Queue name
-EtaDir = os.environ['ETADIR']
+queue = "gen02"  # Queue name
+EtaDir = os.environ["ETADIR"]
 
-header = EtaDir + '/SGE/headers/Fermi.SMP.sget'
-snippet = EtaDir + '/SGE/snippets/hidden/AMBER-G09-QMMM.sget'
+header = EtaDir + "/SGE/headers/Fermi.SMP.sget"
+snippet = EtaDir + "/SGE/snippets/hidden/AMBER-G09-QMMM.sget"
 
 #########################################################
 
-basedir = os.system('pwd')
+basedir = os.system("pwd")
 
 i = inputfile
 
@@ -124,7 +125,7 @@ i = inputfile
 ### --- Get the 'basename' of the file --- ###
 # Assuming the input file ends with '.prmtop'
 
-basename = etaatom.basename(inputfile, '.prmtop')
+basename = etaatom.basename(inputfile, ".prmtop")
 
 headerLines = etaatom.return_modified_snippet(
     basename,
@@ -133,7 +134,7 @@ headerLines = etaatom.return_modified_snippet(
     nproc,
     memory,
     header,
-    )
+)
 snippetLines = etaatom.return_modified_snippet(
     basename,
     program,
@@ -141,9 +142,9 @@ snippetLines = etaatom.return_modified_snippet(
     nproc,
     memory,
     snippet,
-    )
+)
 
-f = open(basename + '.sge', 'w')
+f = open(basename + ".sge", "w")
 for line in headerLines:
     f.write(line)
 for line in snippetLines:
@@ -151,9 +152,9 @@ for line in snippetLines:
 f.close()
 
 if hold == 0:
-    os.system('qsub ' + basename + '.sge |tee ' + basename + '.joblog')
+    os.system("qsub " + basename + ".sge |tee " + basename + ".joblog")
 else:
-    print 'The job ' + basename + '.sge will be made but not submitted.'
+    print("The job " + basename + ".sge will be made but not submitted.")
 
 ######################################################################
 ### END OF SCRIPT

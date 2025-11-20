@@ -45,73 +45,73 @@
 # Without his help several scripts/programs would be useless.
 # Thank you for your assistance Joshua.
 
-import os
-from sys import *
 import math
-from . import etaatom
-from numpy import *
+import os
 from decimal import *
+from sys import *
 
+from numpy import *
+
+from . import etaatom
 
 ### --- Functions to get geometric data --- ###
 ###==================================================================================================================###
 
 ### --- Distance function --- ###
 
+
 def get_distance(at1, at2, lol):
     if isinstance(lol[at1], etaatom.Atom):
         atom1 = array([lol[at1].x, lol[at1].y, lol[at1].z])
         atom2 = array([lol[at2].x, lol[at2].y, lol[at2].z])
     else:
-        atom1 = array([float(lol[at1][1]), float(lol[at1][2]),
-                      float(lol[at1][3])])
-        atom2 = array([float(lol[at2][1]), float(lol[at2][2]),
-                      float(lol[at2][3])])
+        atom1 = array([float(lol[at1][1]), float(lol[at1][2]), float(lol[at1][3])])
+        atom2 = array([float(lol[at2][1]), float(lol[at2][2]), float(lol[at2][3])])
     vector1 = atom2 - atom1
     dist = linalg.norm(vector1)
 
-  # print dist
+    # print dist
 
     return dist
 
 
 ### --- Angle function --- ###
 
+
 def get_angle(
     at1,
     at2,
     at3,
     lol,
-    ):
+):
 
     if isinstance(lol[at1], etaatom.Atom):
 
-    # put positions in array
+        # put positions in array
 
         atom1 = array([lol[at1].x, lol[at1].y, lol[at1].z])
         atom2 = array([lol[at2].x, lol[at2].y, lol[at2].z])
         atom3 = array([lol[at3].x, lol[at3].y, lol[at3].z])
     else:
-        atom1 = array([float(lol[at1][1]), float(lol[at1][2]),
-                      float(lol[at1][3])])
-        atom2 = array([float(lol[at2][1]), float(lol[at2][2]),
-                      float(lol[at2][3])])
-        atom3 = array([float(lol[at3][1]), float(lol[at3][2]),
-                      float(lol[at3][3])])
+        atom1 = array([float(lol[at1][1]), float(lol[at1][2]), float(lol[at1][3])])
+        atom2 = array([float(lol[at2][1]), float(lol[at2][2]), float(lol[at2][3])])
+        atom3 = array([float(lol[at3][1]), float(lol[at3][2]), float(lol[at3][3])])
 
-  # making appropriate vectors and normals
+    # making appropriate vectors and normals
 
     vector1 = atom1 - atom2
     vector2 = atom3 - atom2
-    angle = arccos(dot(vector1, vector2) / (linalg.norm(vector1)
-                   * linalg.norm(vector2)))
+    angle = arccos(
+        dot(vector1, vector2) / (linalg.norm(vector1) * linalg.norm(vector2))
+    )
 
-  # print degrees(angle)
+    # print degrees(angle)
 
     return degrees(angle)
 
 
 ### --- Dihedral angle function --- ###
+
 
 def get_dihedral(
     at1,
@@ -119,27 +119,23 @@ def get_dihedral(
     at3,
     at4,
     lol,
-    ):
+):
 
     if isinstance(lol[at1], etaatom.Atom):
 
-    # put positions in array
+        # put positions in array
 
         atom1 = array([lol[at1].x, lol[at1].y, lol[at1].z])
         atom2 = array([lol[at2].x, lol[at2].y, lol[at2].z])
         atom3 = array([lol[at3].x, lol[at3].y, lol[at3].z])
         atom4 = array([lol[at4].x, lol[at4].y, lol[at4].z])
     else:
-        atom1 = array([float(lol[at1][1]), float(lol[at1][2]),
-                      float(lol[at1][3])])
-        atom2 = array([float(lol[at2][1]), float(lol[at2][2]),
-                      float(lol[at2][3])])
-        atom3 = array([float(lol[at3][1]), float(lol[at3][2]),
-                      float(lol[at3][3])])
-        atom4 = array([float(lol[at4][1]), float(lol[at4][2]),
-                      float(lol[at4][3])])
+        atom1 = array([float(lol[at1][1]), float(lol[at1][2]), float(lol[at1][3])])
+        atom2 = array([float(lol[at2][1]), float(lol[at2][2]), float(lol[at2][3])])
+        atom3 = array([float(lol[at3][1]), float(lol[at3][2]), float(lol[at3][3])])
+        atom4 = array([float(lol[at4][1]), float(lol[at4][2]), float(lol[at4][3])])
 
-  # making appropriate vectors and normals
+    # making appropriate vectors and normals
 
     vector1 = atom2 - atom1
     vector2 = atom3 - atom2
@@ -148,21 +144,22 @@ def get_dihedral(
     vector4 = atom4 - atom3
     plane2 = cross(vector3, vector4)
 
-  # finding dihedral angle
+    # finding dihedral angle
 
-    dihedral = arccos(-dot(plane1, plane2) / (linalg.norm(plane1)
-                      * linalg.norm(plane2)))
+    dihedral = arccos(
+        -dot(plane1, plane2) / (linalg.norm(plane1) * linalg.norm(plane2))
+    )
 
-  # checking the sign of the dihedral then displaying result
+    # checking the sign of the dihedral then displaying result
 
     if dot(plane1, vector4) > 0:
 
-    # print degrees(dihedral)
+        # print degrees(dihedral)
 
         return degrees(dihedral)
     else:
 
-    # print -degrees(dihedral)
+        # print -degrees(dihedral)
 
         return -degrees(dihedral)
 
@@ -183,25 +180,24 @@ def get_dihedral(
 
 ### --- Distance function TWOSTRUCTURE --- ###
 
+
 def two_structure_get_distance(
     at1,
     at2,
     lol1,
     lol2,
-    ):
+):
 
     if isinstance(lol1[at1], etaatom.Atom):
         atom1 = array([lol1[at1].x, lol1[at1].y, lol1[at1].z])
         atom2 = array([lol2[at2].x, lol2[at2].y, lol2[at2].z])
     else:
-        atom1 = array([float(lol1[at1][1]), float(lol1[at1][2]),
-                      float(lol1[at1][3])])
-        atom2 = array([float(lol2[at2][1]), float(lol2[at2][2]),
-                      float(lol2[at2][3])])
+        atom1 = array([float(lol1[at1][1]), float(lol1[at1][2]), float(lol1[at1][3])])
+        atom2 = array([float(lol2[at2][1]), float(lol2[at2][2]), float(lol2[at2][3])])
     vector1 = atom2 - atom1
     dist = linalg.norm(vector1)
 
-  # print dist
+    # print dist
 
     return dist
 
@@ -212,6 +208,7 @@ def two_structure_get_distance(
 ###==================================================================================================================###
 ### --- Get bonds --- ###
 
+
 def get_bonds(fileatom):
     ifileatomnum = fileatom[0]
     ifilename = fileatom[1]
@@ -221,42 +218,46 @@ def get_bonds(fileatom):
     nearestneighbor = []
     neighborstart = [0, 1000000]
 
-  # Iterate through the file
+    # Iterate through the file
 
     for (i, linei) in enumerate(fileatom):
 
-    # Set a placeholder for the nearest neighbor
+        # Set a placeholder for the nearest neighbor
 
         nearestneighbor.append(list(neighborstart))
 
-    # Iterate throught the file again
+        # Iterate throught the file again
 
         for (j, linej) in enumerate(fileatom):
             if i != j:
                 distij = getdistance(i + 2, j + 2, fileatom)
                 if j > i:
-                    if distij <= 2.25 and fileatom[i + 2][0] != 1 \
-                        and fileatom[j + 2][0] != 1 \
-                        and etaatom.get_element_name(fileatom[i
-                            + 2][0]).lower() \
-                        not in etaatom.elementLarge \
-                        and etaatom.get_element_name(fileatom[j
-                            + 2][0]).lower() \
-                        not in etaatom.elementLarge:
+                    if (
+                        distij <= 2.25
+                        and fileatom[i + 2][0] != 1
+                        and fileatom[j + 2][0] != 1
+                        and etaatom.get_element_name(fileatom[i + 2][0]).lower()
+                        not in etaatom.elementLarge
+                        and etaatom.get_element_name(fileatom[j + 2][0]).lower()
+                        not in etaatom.elementLarge
+                    ):
                         distlist = [i + 1, j + 1, distij]
                         covbonds.append(distlist)
-                    elif distij <= 1.3 and (fileatom[i + 2][0] == 1
-                            or fileatom[j + 2][0] == 1):
+                    elif distij <= 1.3 and (
+                        fileatom[i + 2][0] == 1 or fileatom[j + 2][0] == 1
+                    ):
 
-            # print str(i + 2) + "\t" + str(j + 2) + "\t" + str(distij)
+                        # print str(i + 2) + "\t" + str(j + 2) + "\t" + str(distij)
 
                         distlist = [i + 1, j + 1, distij]
                         covhbonds.append(distlist)
-                    elif distij <= 3 \
-                        and etaatom.get_element_name(fileatom[i
-                            + 2][0]).lower() in etaatom.elementLarge \
-                        and etaatom.get_element_name(fileatom[j
-                            + 2][0]).lower() in etaatom.elementLarge:
+                    elif (
+                        distij <= 3
+                        and etaatom.get_element_name(fileatom[i + 2][0]).lower()
+                        in etaatom.elementLarge
+                        and etaatom.get_element_name(fileatom[j + 2][0]).lower()
+                        in etaatom.elementLarge
+                    ):
 
                         distlist = [i + 1, j + 1, distij]
                         covtmbonds.append(distlist)
@@ -264,26 +265,29 @@ def get_bonds(fileatom):
                     nearestneighbor[i][0] = j + 1
                     nearestneighbor[i][1] = distij
 
-  # ## --- Remove hydrogen bonds from bond list --- ###
+    # ## --- Remove hydrogen bonds from bond list --- ###
 
     for i in range(0, len(covhbonds)):
-        if covhbonds[i][0] != nearestneighbor[covhbonds[i][0]][0] \
-            and covhbonds[i][1] != nearestneighbor[covhbonds[i][0]][0]:
+        if (
+            covhbonds[i][0] != nearestneighbor[covhbonds[i][0]][0]
+            and covhbonds[i][1] != nearestneighbor[covhbonds[i][0]][0]
+        ):
             del covhbonds[i]
 
-  # print "Covalent bonds to Hydrogen:"
-  # print covhbonds
-  # print "Covalent bonds between \"heavy\" atoms."
-  # print covbonds
-  # print "Covalent bonds between TM atoms."
-  # print covtmbonds
-  # print nearestneighbor
+    # print "Covalent bonds to Hydrogen:"
+    # print covhbonds
+    # print "Covalent bonds between \"heavy\" atoms."
+    # print covbonds
+    # print "Covalent bonds between TM atoms."
+    # print covtmbonds
+    # print nearestneighbor
 
     return fileatom
 
 
 ### --- Build a list that contains all atoms starting with at1
 #  on one side of the molecule that is opposite the other atom atm2
+
 
 def build_bond_list(at1, at2, filelol):
     bondedlist = [1, 2, 3, 4]
@@ -302,36 +306,37 @@ def build_bond_list(at1, at2, filelol):
 # 3. complex zmatrix files dependent on bonding
 # You must give the (up to) 4 atoms nessecary to get the zmat for the atom
 
+
 def get_zmat(
     i,
     j,
     k,
     l,
     ifilelol,
-    ):
+):
 
-  # If the line i is in Atom format find the relevant distance, angle, and dihedral
+    # If the line i is in Atom format find the relevant distance, angle, and dihedral
 
     if isinstance(ifilelol[i], etaatom.Atom):
         line = []
         line.append(i - 1)
         line.append(ifilelol[i].e)
 
-    # If the atom is not the first in the file get the distance to the last atom
+        # If the atom is not the first in the file get the distance to the last atom
 
         if i > 2:
             line.append(j - 1)
             dist = getdistance(j, i, ifilelol)
             line.append(dist)
 
-    # If the atom is not the first or second in the file get the angle to the last two atoms
+        # If the atom is not the first or second in the file get the angle to the last two atoms
 
         if i > 3:
             line.append(k - 1)
             angle = getangle(k, j, i, ifilelol)
             line.append(angle)
 
-    # If the atom is not the first, second, or third in the file get the dihedral to the last three atoms
+        # If the atom is not the first, second, or third in the file get the dihedral to the last three atoms
 
         if i > 4:
             line.append(l - 1)
@@ -339,7 +344,7 @@ def get_zmat(
             line.append(dihedral)
     else:
 
-  # If not an Atom (ie first two lines) print them back out
+        # If not an Atom (ie first two lines) print them back out
 
         line = [ifilelol[i]]
     line.append(-1)
@@ -348,19 +353,20 @@ def get_zmat(
     line.append(-1)
     line.append(-1)
     line.append(-1)
-    line.append('\n')
+    line.append("\n")
     return line
 
 
 ### --- Get the XYZ coordinates from distance, angle and dihedral data --- ###
 
+
 def get_xyz_from_zmat(zmatlol):
-    xyzlol = ['0'] * len(zmatlol)
+    xyzlol = ["0"] * len(zmatlol)
     xyzlol[0] = zmatlol[0][0]
     xyzlol[1] = zmatlol[1][0]
     for i in range(2, len(zmatlol)):
 
-    # ## Set up the variables to be used for the function
+        # ## Set up the variables to be used for the function
 
         dist = float(zmatlol[i][3])
         angle = float(zmatlol[i][5])
@@ -375,7 +381,7 @@ def get_xyz_from_zmat(zmatlol):
         y = 0
         z = 0
 
-    # ## Start to place the atoms in their locations
+        # ## Start to place the atoms in their locations
 
         if at4 == 2:
             x = 0.00000
@@ -395,83 +401,101 @@ def get_xyz_from_zmat(zmatlol):
             z = -dist * sin(math.pi - anglerad)
         elif at4 >= 5:
 
-      # ###The at4 x,y,z coordinates from spherical coord
+            # ###The at4 x,y,z coordinates from spherical coord
 
             sx = dist * sin(anglerad) * cos(dihedralrad)
-            sy = -dist * sin(anglerad) * sin(dihedralrad)  # For some reason I need to have a negative here to get the correct sign in the output..... weird
+            sy = (
+                -dist * sin(anglerad) * sin(dihedralrad)
+            )  # For some reason I need to have a negative here to get the correct sign in the output..... weird
             sz = dist * cos(anglerad)
             at4l = [sx, sy, sz]
 
-      # ##Finding the angle theta
-      # Make the list of lists for the three point (z-axis, origin, and translated atom 2) needed for an angle calculation
+            # ##Finding the angle theta
+            # Make the list of lists for the three point (z-axis, origin, and translated atom 2) needed for an angle calculation
 
-            z32 = [[0, 0, 0, 1], [0, 0, 0, 0], [0, xyzlol[at2].x
-                   - xyzlol[at3].x, xyzlol[at2].y - xyzlol[at3].y,
-                   xyzlol[at2].z - xyzlol[at3].z]]
+            z32 = [
+                [0, 0, 0, 1],
+                [0, 0, 0, 0],
+                [
+                    0,
+                    xyzlol[at2].x - xyzlol[at3].x,
+                    xyzlol[at2].y - xyzlol[at3].y,
+                    xyzlol[at2].z - xyzlol[at3].z,
+                ],
+            ]
 
-      # Get theta using the getangle function
+            # Get theta using the getangle function
 
             theta = radians(getangle(0, 1, 2, z32))
 
-      # print "theta: " +str(theta)
+            # print "theta: " +str(theta)
 
-      # ##Rodrigues' rotation formula
-      # Create the vectors needed to calculate k
+            # ##Rodrigues' rotation formula
+            # Create the vectors needed to calculate k
 
-            vector3 = array([xyzlol[at3].x, xyzlol[at3].y,
-                            xyzlol[at3].z])
-            vector2 = array([xyzlol[at2].x, xyzlol[at2].y,
-                            xyzlol[at2].z])
+            vector3 = array([xyzlol[at3].x, xyzlol[at3].y, xyzlol[at3].z])
+            vector2 = array([xyzlol[at2].x, xyzlol[at2].y, xyzlol[at2].z])
             vector0 = array([0, 0, 1])
 
-      # Calculate k for the Rodrigues rotation formula
+            # Calculate k for the Rodrigues rotation formula
 
-            k = cross(vector2 - vector3, vector0) \
-                / linalg.norm(cross(vector2 - vector3, vector0))
+            k = cross(vector2 - vector3, vector0) / linalg.norm(
+                cross(vector2 - vector3, vector0)
+            )
 
-      # Generate an array for translated 1
+            # Generate an array for translated 1
 
-            t1 = [xyzlol[at1].x - xyzlol[at3].x, xyzlol[at1].y
-                  - xyzlol[at3].y, xyzlol[at1].z - xyzlol[at3].z]
+            t1 = [
+                xyzlol[at1].x - xyzlol[at3].x,
+                xyzlol[at1].y - xyzlol[at3].y,
+                xyzlol[at1].z - xyzlol[at3].z,
+            ]
 
-      # Calculate the Rodrigues rotation matrix
+            # Calculate the Rodrigues rotation matrix
 
-            rr23t1 = dot(t1, cos(theta)) + dot(cross(k, t1),
-                    sin(theta)) + dot(dot(k, dot(k, t1)), 1
-                    - cos(theta))
+            rr23t1 = (
+                dot(t1, cos(theta))
+                + dot(cross(k, t1), sin(theta))
+                + dot(dot(k, dot(k, t1)), 1 - cos(theta))
+            )
 
-      # Make the list of lists for the four points (x-axis, z-axis, origin, and rotated translated 1) needed for a dihedral calculation
+            # Make the list of lists for the four points (x-axis, z-axis, origin, and rotated translated 1) needed for a dihedral calculation
 
-            xz31 = [[0, 1, 0, 0], [0, 0, 0, 1], [0, 0, 0, 0], [0,
-                    rr23t1[0], rr23t1[1], rr23t1[2]]]
+            xz31 = [
+                [0, 1, 0, 0],
+                [0, 0, 0, 1],
+                [0, 0, 0, 0],
+                [0, rr23t1[0], rr23t1[1], rr23t1[2]],
+            ]
 
-      # Get phi using the getdihedral function
+            # Get phi using the getdihedral function
 
             phi = radians(getdihedral(0, 1, 2, 3, xz31))
 
-      # ##Rotation matrix
-      # Create the array for the rotation matrix including dihedral phi
+            # ##Rotation matrix
+            # Create the array for the rotation matrix including dihedral phi
 
-            rm = array([[cos(phi), sin(phi), 0], [-sin(phi), cos(phi),
-                       0], [0, 0, 1]])
+            rm = array([[cos(phi), sin(phi), 0], [-sin(phi), cos(phi), 0], [0, 0, 1]])
 
-      # Calculate the dot product of the rotation matrix and the coordinates for 4 (from spherical)
+            # Calculate the dot product of the rotation matrix and the coordinates for 4 (from spherical)
 
             rm4 = dot(rm, at4l)
 
-      # Calculate the rotated coordinates of the rotated coordinates of atom 4
+            # Calculate the rotated coordinates of the rotated coordinates of atom 4
 
-            rrn23rm4 = dot(rm4, cos(-theta)) + dot(cross(k, rm4),
-                    sin(-theta)) + dot(dot(k, dot(k, rm4)), 1
-                    - cos(-theta))
+            rrn23rm4 = (
+                dot(rm4, cos(-theta))
+                + dot(cross(k, rm4), sin(-theta))
+                + dot(dot(k, dot(k, rm4)), 1 - cos(-theta))
+            )
 
-      # Final coordinates that are rotated, rotated and translated
+            # Final coordinates that are rotated, rotated and translated
 
             x = rrn23rm4[0] + xyzlol[at3].x
             y = rrn23rm4[1] + xyzlol[at3].y
             z = rrn23rm4[2] + xyzlol[at3].z
 
-    # Putting everything into a Atom list to send back
+        # Putting everything into a Atom list to send back
 
         xyzlol[i] = etaatom.Atom()
         xyzlol[i].e = zmatlol[i][1]
@@ -483,6 +507,7 @@ def get_xyz_from_zmat(zmatlol):
 
 
 ### --- Generate a list of lists for the zmatrix of the structure --- ###
+
 
 def gen_zmat_basic(ifilelol):
     zmatlol = []
@@ -503,6 +528,7 @@ def gen_zmat_double_sided(ifilelol, list1, list2):
 ###==================================================================================================================###
 
 # Compute the f and qt for the vibrational lists. Used for KIE
+
 
 def compute_f_qt(vib, hkt, scaling):
     u = [0.00000] * len(vib)
@@ -532,6 +558,7 @@ def compute_f_qt(vib, hkt, scaling):
 
 # Compute the KIE
 
+
 def compute_kie(
     tsnatvib,
     tsisovib,
@@ -539,11 +566,11 @@ def compute_kie(
     subisovib,
     temp,
     scaling,
-    ):
+):
 
     # Calculate hkt
 
-    hkt = 6.626E-34 / (1.381E-23 * temp) * 30000000000
+    hkt = 6.626e-34 / (1.381e-23 * temp) * 30000000000
 
     # Calculate the u and qt for each vibration list
 
@@ -557,5 +584,3 @@ def compute_kie(
     kie = tsisou * subnatu / (tsnatu * subisou)
     qkie = tsisou * subnatu / (tsnatu * subisou) * tsnatqt / tsisoqt
     return (kie, qkie)
-
-

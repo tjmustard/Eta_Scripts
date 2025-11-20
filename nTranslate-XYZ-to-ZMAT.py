@@ -40,29 +40,30 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
-import etanumpy
+import math
+import os
+import sys
 from decimal import *
+from sys import *
+
 from numpy import *
+
+from EtaLib import etaatom, etanumpy
 
 ### --- Arguments --- ###
 
-program = 'XYZ-to-ZMAT.py'
-ifile = ''
-ofile = ''
+program = "XYZ-to-ZMAT.py"
+ifile = ""
+ofile = ""
 printfile = 0
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 'i:o:ph')
+    (myopts, args) = getopt.getopt(sys.argv[1:], "i:o:ph")
 except getopt.GetoptError:
-    print program + ' -i <inputfile.xyz> -o <outputfile.zmat>'
+    print(program + " -i <inputfile.xyz> -o <outputfile.zmat>")
     sys.exit(2)
 
 ###############################
@@ -71,18 +72,17 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-i':
+    if o == "-i":
         ifile = a
-    elif o == '-o':
+    elif o == "-o":
         ofile = a
-    elif o == '-p':
+    elif o == "-p":
         printfile = 1
-    elif o == '-h':
-        print program + ' -i <inputfile.xyz> -o <outputfile.zmat>'
+    elif o == "-h":
+        print(program + " -i <inputfile.xyz> -o <outputfile.zmat>")
         sys.exit(0)
     else:
-        print 'Usage: %s -i <inputfile.xyz> -o <outputfile.zmat>' \
-            % sys.argv[0]
+        print("Usage: %s -i <inputfile.xyz> -o <outputfile.zmat>" % sys.argv[0])
         sys.exit(0)
 
 ### --- Open parent file --- ###
@@ -100,10 +100,10 @@ for i in range(0, len(ifilelol)):
 
 ### --- Output file in Z-matrix format --- ###
 
-f = open(ofile, 'w+')
+f = open(ofile, "w+")
 for i in range(0, len(ifilelol)):
     linetemp = [x for x in zmatlol[i] if x != -1]
-    line = '\t'.join(str(e) for e in linetemp)  # , e != -1)
+    line = "\t".join(str(e) for e in linetemp)  # , e != -1)
     f.write(line)
 f.close()
 
@@ -113,12 +113,17 @@ if printfile == 1:
     xyzLOL = etanumpy.get_xyz_from_zmat(zmatlol)
     for i in range(len(xyzLOL)):
         if i <= 1:
-            print xyzLOL[i]
+            print(xyzLOL[i])
         else:
-            print xyzLOL[i].e + '  ' \
-                + str('{:.6f}'.format(xyzLOL[i].x)) + '  ' \
-                + str('{:.6f}'.format(xyzLOL[i].y)) + '  ' \
-                + str('{:.6f}'.format(xyzLOL[i].z))
+            print(
+                xyzLOL[i].e
+                + "  "
+                + str("{:.6f}".format(xyzLOL[i].x))
+                + "  "
+                + str("{:.6f}".format(xyzLOL[i].y))
+                + "  "
+                + str("{:.6f}".format(xyzLOL[i].z))
+            )
 
     # #####################################################################
     # ## END OF SCRIPT

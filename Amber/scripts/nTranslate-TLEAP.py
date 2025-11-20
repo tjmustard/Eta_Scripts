@@ -40,34 +40,35 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-from sys import *
-import sys
 import getopt
-import etaatom
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-TLEAP-from-G0XOutput.py'
+program = "nTranslate-TLEAP-from-G0XOutput.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     snippet = sys.argv[1]
 except IndexError:
-    snippet = '-h'
+    snippet = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if snippet == '-h':
-    argv.append('-h')
-    argv.append('-h')
+if snippet == "-h":
+    argv.append("-h")
+    argv.append("-h")
 
 # If interactive mode is wanted allow the skipping of a snippet
 
-if snippet == '-i':
-    argv.append('-i')
-    argv.append('-i')
+if snippet == "-i":
+    argv.append("-i")
+    argv.append("-i")
 
 # Unless the charge is stated via the -c argument the charge will be assumed to be 0
 
@@ -80,7 +81,7 @@ multi = 1
 multiset = False
 modred = []
 writemod = 0
-ionicCM = ''
+ionicCM = ""
 ionicswitch = 0
 debug = 0
 interactive = 0
@@ -88,11 +89,12 @@ interactive = 0
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'c:m:dih', ['mod=',
-                                   'ionic='])
+    (myopts, args) = getopt.getopt(sys.argv[2:], "c:m:dih", ["mod=", "ionic="])
 except getopt.GetoptError:
-    print program \
-        + ''' <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d'''
+    print(
+        program
+        + """ <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d"""
+    )
     sys.exit(2)
 
 ###############################
@@ -101,61 +103,65 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-c':
+    if o == "-c":
         charge = a
         chargeset = True
-    elif o == '-m':
+    elif o == "-m":
         multi = a
         multiset = True
-    elif o == '-d':
+    elif o == "-d":
         debug += 1
-    elif o == '--mod':
+    elif o == "--mod":
         modred.append(a)
         writemod = 1
-    elif o == '--ionic':
+    elif o == "--ionic":
         ionicCM = a
         ionicswitch = 1
-    elif o == '-i':
+    elif o == "-i":
         interactive = 1
-    elif o == '-h':
-        print program \
-            + ''' <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d'''
+    elif o == "-h":
+        print(
+            program
+            + """ <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d"""
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod="constraint" --ionic=reg/mno -d' \
+        print(
+            'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod="constraint" --ionic=reg/mno -d'
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if debug >= 1:
-    print 'Charge: ' + str(charge)
-    print 'Multiplicity: ' + str(multi)
-    print 'Snippet: ' + snippet
-    print 'Modredundant Variable: '
-    print modred
+    print("Charge: " + str(charge))
+    print("Multiplicity: " + str(multi))
+    print("Snippet: " + snippet)
+    print("Modredundant Variable: ")
+    print(modred)
 
 ### --- Open and parse the xyz files in the folder --- ###
 
-print 'Currently Translating:'
+print("Currently Translating:")
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.mol2'):
+    if i.endswith(".mol2"):
         ifile = i
-        print i
-        ofile = etaatom.basename(ifile, '.mol2')
+        print(i)
+        ofile = etaatom.basename(ifile, ".mol2")
 
-    # ## --- Relace the snippet file information --- ###
+        # ## --- Relace the snippet file information --- ###
 
         printlines = etaatom.return_modified_snippet(
             ofile,
-            'Amber14',
-            'None',
-            'None',
-            'None',
+            "Amber14",
+            "None",
+            "None",
+            "None",
             snippet,
-            )
+        )
 
-    # ## --- Creat tleap input file --- ###
+        # ## --- Creat tleap input file --- ###
 
-        f = open(ofile + '-tleap.in', 'w')
+        f = open(ofile + "-tleap.in", "w")
         for line in printlines:
             f.write(line)
         f.close()
@@ -166,4 +172,3 @@ for i in os.listdir(os.getcwd()):
     # #####################################################################
     # ## END OF SCRIPT
     # #####################################################################
-

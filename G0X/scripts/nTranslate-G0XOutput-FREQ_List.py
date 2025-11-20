@@ -40,20 +40,21 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
-import time
+import math
+import os
 import shutil
+import sys
+import time
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-G0XOutput-FREQ_List.py'
-ifile = ''
-ofile = ''
+program = "nTranslate-G0XOutput-FREQ_List.py"
+ifile = ""
+ofile = ""
 allindir = 0
 numatoms = 0
 
@@ -62,23 +63,23 @@ numatoms = 0
 try:
     ifile = sys.argv[1]
 except IndexError:
-    ifile = '-h'
+    ifile = "-h"
 
 # If help is wanted allow the skipping of a input file
 
-if ifile == '-h':
-    argv.append('-h')
-    argv.append('-h')
-if ifile == '-d':
-    argv.append('-d')
-    argv.append('-d')
+if ifile == "-h":
+    argv.append("-h")
+    argv.append("-h")
+if ifile == "-d":
+    argv.append("-d")
+    argv.append("-d")
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'dh')
+    (myopts, args) = getopt.getopt(sys.argv[2:], "dh")
 except getopt.GetoptError:
-    print program + ' <input file (G0X log)> -d (all in dir)'
+    print(program + " <input file (G0X log)> -d (all in dir)")
     sys.exit(2)
 
 ###############################
@@ -87,42 +88,41 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         allindir = 1
-    elif o == '-h':
-        print program + '  <input file (G0X log)> -d (all in dir)'
+    elif o == "-h":
+        print(program + "  <input file (G0X log)> -d (all in dir)")
         sys.exit(0)
     else:
-        print 'Usage: %s <input file (G0X log)> -d (all in dir)' \
-            % sys.argv[0]
+        print("Usage: %s <input file (G0X log)> -d (all in dir)" % sys.argv[0])
         sys.exit(0)
 
 
 def g0x_vibrations(ifile):
 
-  # Print some information to the screen
+    # Print some information to the screen
 
-    print ifile + ' will be parsed to find all the vibrations.'
+    print(ifile + " will be parsed to find all the vibrations.")
 
-  # print "and will be augmented by the vibrational frequency " + str(vibration) + "."
+    # print "and will be augmented by the vibrational frequency " + str(vibration) + "."
 
-  # Grab the xyz changes for the SCREWERing and place them all into one big list
+    # Grab the xyz changes for the SCREWERing and place them all into one big list
 
     freqswitch = False
     freqlist = []
-    the_file = open(ifile, 'r')
+    the_file = open(ifile, "r")
     for (idx, line) in enumerate(the_file):
 
-    # print line
+        # print line
 
-        if line.strip() != '':
-            if line.split()[0] == 'NAtoms=':
+        if line.strip() != "":
+            if line.split()[0] == "NAtoms=":
                 numatoms = int(line.split()[1])
-            if 'Low frequencies' in line:
+            if "Low frequencies" in line:
                 freqswitch = True
-            elif line.split()[0] == 'Frequencies' and freqswitch:
+            elif line.split()[0] == "Frequencies" and freqswitch:
 
-        # Store the frequencies
+                # Store the frequencies
 
                 freqlist.append(float(line.split()[2]))
                 if len(line.split()) >= 4:
@@ -131,17 +131,17 @@ def g0x_vibrations(ifile):
                     freqlist.append(float(line.split()[4]))
 
     for vib in freqlist:
-        print vib
+        print(vib)
 
 
 if allindir == 1:
     for i in os.listdir(os.getcwd()):
-        if i.endswith('.log'):
+        if i.endswith(".log"):
             ifile = i
             g0x_vibrations(ifile)
 else:
     g0x_vibrations(ifile)
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

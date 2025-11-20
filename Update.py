@@ -40,10 +40,9 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-from sys import *
+import subprocess
 
-os.sys('rm master.zip')
-os.sys('wget https://github.com/tjmustard/Eta_Scripts/archive/master.zip')
-os.sys('unzip master.zip')
-os.sys('mv Eta-')
+subprocess.run(['rm', 'master.zip'], check=False)
+subprocess.run(['wget', 'https://github.com/tjmustard/Eta_Scripts/archive/master.zip'], check=True)
+subprocess.run(['unzip', 'master.zip'], check=True)
+subprocess.run(['mv', 'Eta-'], check=True)

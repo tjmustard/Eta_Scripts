@@ -40,29 +40,30 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-XYZ-JaguarInput.py'
+program = "nTranslate-XYZ-JaguarInput.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     snippet = sys.argv[1]
 except IndexError:
-    snippet = '-h'
+    snippet = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if snippet == '-h':
-    argv.append('-h')
-    argv.append('-h')
+if snippet == "-h":
+    argv.append("-h")
+    argv.append("-h")
 
 # Unless the charge is stated via the -s argument the charge will be assumed to be 0
 
@@ -73,18 +74,19 @@ charge = 0
 multi = 1
 modred = []
 writemod = 0
-ionicCM = ''
+ionicCM = ""
 ionicswitch = 0
 debug = 0
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'c:m:dh', ['mod=',
-                                   'ionic='])
+    (myopts, args) = getopt.getopt(sys.argv[2:], "c:m:dh", ["mod=", "ionic="])
 except getopt.GetoptError:
-    print program \
-        + ''' <snippet> -c <charge> -m <multiplicity> --mod \"constraint\" --ionic=reg/mno -d'''
+    print(
+        program
+        + """ <snippet> -c <charge> -m <multiplicity> --mod \"constraint\" --ionic=reg/mno -d"""
+    )
     sys.exit(2)
 
 ###############################
@@ -93,69 +95,72 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-c':
+    if o == "-c":
         charge = a
-    elif o == '-m':
+    elif o == "-m":
         multi = a
-    elif o == '-d':
+    elif o == "-d":
         debug += 1
-    elif o == '--mod':
+    elif o == "--mod":
         modred.append(a)
         writemod = 1
-    elif o == '--ionic':
+    elif o == "--ionic":
         ionicCM = a
         ionicswitch = 1
-    elif o == '-h':
-        print program \
-            + ''' <snippet> -c <charge> -m <multiplicity> --mod \"constraint\" --ionic=reg/mno -d'''
+    elif o == "-h":
+        print(
+            program
+            + """ <snippet> -c <charge> -m <multiplicity> --mod \"constraint\" --ionic=reg/mno -d"""
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod "constraint" --ionic=reg/mno -d' \
+        print(
+            'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod "constraint" --ionic=reg/mno -d'
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if debug >= 1:
-    print 'Charge: ' + charge
-    print 'Multiplicity: ' + multi
-    print 'Snippet: ' + snippet
-    print 'Modredundant Variable: '
-    print modred
+    print("Charge: " + charge)
+    print("Multiplicity: " + multi)
+    print("Snippet: " + snippet)
+    print("Modredundant Variable: ")
+    print(modred)
 
 # Grab the snippet information
 
-(config, ecp, closelines, writeecp, writeclose) = \
-    etaatom.parse_snippet(snippet)
+(config, ecp, closelines, writeecp, writeclose) = etaatom.parse_snippet(snippet)
 
 if debug >= 1:
-    print 'Configuration:'
-    print config
-    print 'ECP Input: ' + ecp
-    print 'Additional Lines: '
-    print closelines
+    print("Configuration:")
+    print(config)
+    print("ECP Input: " + ecp)
+    print("Additional Lines: ")
+    print(closelines)
 
 ### --- Make NEWJOBS folder --- ###
 
-if not os.path.exists('NEWJOBS.JAG'):
-    os.makedirs('NEWJOBS.JAG')
+if not os.path.exists("NEWJOBS.JAG"):
+    os.makedirs("NEWJOBS.JAG")
 
 ### --- Open and parse the xyz files in the folder --- ###
 
-print 'Currently Translating:'
+print("Currently Translating:")
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.out'):
+    if i.endswith(".out"):
         ifile = i
-        print i
+        print(i)
 
-    # Parse XYZ file into a list of lists
+        # Parse XYZ file into a list of lists
 
         (ifilelol, charge, multi) = etaatom.parse_output_jaguar(ifile)
 
-    # ## --- Calculate charge from file --- ###
+        # ## --- Calculate charge from file --- ###
 
         if ionicswitch == 1:
             charge = etaatom.ionic(ionicswitch, ionicCM, ifilelol)
 
-    # ## --- Out put the G0X input files --- ###
+        # ## --- Out put the G0X input files --- ###
 
         etaatom.output_jaguar(
             ifile,
@@ -169,7 +174,7 @@ for i in os.listdir(os.getcwd()):
             writeclose,
             closelines,
             ifilelol,
-            )
+        )
 
     # #####################################################################
     # ## END OF SCRIPT

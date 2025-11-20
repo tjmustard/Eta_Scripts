@@ -40,28 +40,34 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
 
-print '----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
-print 'SCF              ZPE         Internal       Enthalpy       Gibbs         Freq1     Freq2   NBasis PntGrp Stoichiometry        File Name     '
-print '----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
+from EtaLib import etaatom
+
+print(
+    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+)
+print(
+    "SCF              ZPE         Internal       Enthalpy       Gibbs         Freq1     Freq2   NBasis PntGrp Stoichiometry        File Name     "
+)
+print(
+    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+)
 
 pwd = os.getcwd()
 for i in os.listdir(pwd):
-    if i.endswith('.Turbomole'):
+    if i.endswith(".Turbomole"):
         for j in os.listdir(i):
-            if j.endswith('.log'):
-                logfile = i + '/' + j
-                printLines = etaatom.translate_tm_output(logfile, 'list'
-                        , 'none')
+            if j.endswith(".log"):
+                logfile = i + "/" + j
+                printLines = etaatom.translate_tm_output(logfile, "list", "none")
                 for line in printLines:
-                    print line
+                    print(line)
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

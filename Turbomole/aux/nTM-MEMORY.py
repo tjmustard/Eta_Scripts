@@ -40,15 +40,15 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
+import math
+import os
+import sys
+from sys import *
 
 ### --- Arguments --- ###
 
-program = 'nTM-MEMORY.py'
+program = "nTM-MEMORY.py"
 
 # Grab the first argument from the command and use that as the snippet
 
@@ -58,44 +58,45 @@ try:
     cpus = int(sys.argv[3])
     ratio = sys.argv[4]
 except IndexError:
-    controlfile = '-h'
-    memory = '-h'
+    controlfile = "-h"
+    memory = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if memory == '-h':
-    print program \
-        + ''' <control file> <memory> <cpus> <ratio= genral or freq> -h (this)'''
+if memory == "-h":
+    print(
+        program
+        + """ <control file> <memory> <cpus> <ratio= genral or freq> -h (this)"""
+    )
     sys.exit(0)
 
-if ratio == 'general':
+if ratio == "general":
     ratiori = 1
-    ratiomax = .9
-    ratiorpa = .1
-elif ratio == 'freq':
+    ratiomax = 0.9
+    ratiorpa = 0.1
+elif ratio == "freq":
     ratiori = 1
-    ratiomax = .9
-    ratiorpa = .1
+    ratiomax = 0.9
+    ratiorpa = 0.1
 else:
-    print program \
-        + ''' <control file> <memory> <cpus> <ratio> -h (this)'''
+    print(program + """ <control file> <memory> <cpus> <ratio> -h (this)""")
     sys.exit(0)
 
-f = open(controlfile, 'r')
+f = open(controlfile, "r")
 controllines = f.readlines()
 f.close()
-f = open(controlfile, 'w')
+f = open(controlfile, "w")
 for (i, line) in enumerate(controllines):
-    if '$ricore' in line:
-        f.write('$ricore ' + str(memory / cpus * 1) + '\n')
-    elif '$maxcor' in line:
-        f.write('$maxcor ' + str(memory * .9) + '\n')
-    elif '$rpacor' in line:
-        f.write('$rpacor ' + str(memory * .1) + '\n')
+    if "$ricore" in line:
+        f.write("$ricore " + str(memory / cpus * 1) + "\n")
+    elif "$maxcor" in line:
+        f.write("$maxcor " + str(memory * 0.9) + "\n")
+    elif "$rpacor" in line:
+        f.write("$rpacor " + str(memory * 0.1) + "\n")
     else:
         f.write(line)
 f.close()
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

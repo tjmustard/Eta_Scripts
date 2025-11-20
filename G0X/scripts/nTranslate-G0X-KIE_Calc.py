@@ -40,38 +40,42 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-import sys
 import getopt
-import etaatom
-import etanumpy
+import math
+import os
 import shutil
+import sys
+
 import numpy
+
+from EtaLib import etaatom, etanumpy
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-G0X-KIE_Calc.py'
-tsnatfile = ''
-tsisofile = ''
-subnatfile = ''
-subisofile = ''
+program = "nTranslate-G0X-KIE_Calc.py"
+tsnatfile = ""
+tsisofile = ""
+subnatfile = ""
+subisofile = ""
 numatoms = 0
 debug = 0
 temp = 298.15
 scaling = 1.0000
-method = ''
+method = ""
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 't:s:c:S:dh', ['tsnat='
-                                   , 'tsiso=', 'subnat=', 'subiso='])
+    (myopts, args) = getopt.getopt(
+        sys.argv[1:], "t:s:c:S:dh", ["tsnat=", "tsiso=", "subnat=", "subiso="]
+    )
 except getopt.GetoptError:
-    print program \
-        + ' --tsnat=<natural isotope TS log> --tsiso=<unnatural isotope TS log> \n' \
-        + '--subnat=<natural isotope sub log> --subiso=<unnatural isotope sub log>\n' \
-        + '-t <temp in K> -c <temp in C> -s <scalling> -S <method B3LYP, M06, etc>'
+    print(
+        program
+        + " --tsnat=<natural isotope TS log> --tsiso=<unnatural isotope TS log> \n"
+        + "--subnat=<natural isotope sub log> --subiso=<unnatural isotope sub log>\n"
+        + "-t <temp in K> -c <temp in C> -s <scalling> -S <method B3LYP, M06, etc>"
+    )
     sys.exit(2)
 
 ###############################
@@ -80,54 +84,60 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         debug += 1
-    elif o == '-t':
+    elif o == "-t":
         temp = float(a)
-    elif o == '-c':
+    elif o == "-c":
         temp = float(a) + 273.15
-    elif o == '-s':
+    elif o == "-s":
         scaling = float(a)
-    elif o == '-S':
+    elif o == "-S":
         method = a
-    elif o == '--tsnat':
+    elif o == "--tsnat":
         tsnatfile = a
-    elif o == '--tsiso':
+    elif o == "--tsiso":
         tsisofile = a
-    elif o == '--subnat':
+    elif o == "--subnat":
         subnatfile = a
-    elif o == '--subiso':
+    elif o == "--subiso":
         subisofile = a
-    elif o == '-h':
-        print program \
-            + ' --tsnat=<natural isotope TS log> --tsiso=<unnatural isotope TS log> \n' \
-            + '--subnat=<natural isotope sub log> --subiso=<unnatural isotope sub log>\n' \
-            + '-t <temp in K> -c <temp in C> -s <scalling> -S <method B3LYP, M06, etc>'
+    elif o == "-h":
+        print(
+            program
+            + " --tsnat=<natural isotope TS log> --tsiso=<unnatural isotope TS log> \n"
+            + "--subnat=<natural isotope sub log> --subiso=<unnatural isotope sub log>\n"
+            + "-t <temp in K> -c <temp in C> -s <scalling> -S <method B3LYP, M06, etc>"
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s --tsnat=<natural isotope TS log> --tsiso=<unnatural isotope TS log> \n' \
-            + '--subnat=<natural isotope sub log> --subiso=<unnatural isotope sub log>\n' \
-            + '-t <temp in K> -c <temp in C> -s <scalling> -S <method B3LYP, M06, etc>' \
+        print(
+            "Usage: %s --tsnat=<natural isotope TS log> --tsiso=<unnatural isotope TS log> \n"
+            + "--subnat=<natural isotope sub log> --subiso=<unnatural isotope sub log>\n"
+            + "-t <temp in K> -c <temp in C> -s <scalling> -S <method B3LYP, M06, etc>"
             % sys.argv[0]
+        )
         sys.exit(0)
 
 # Print out some information
 
-print '\nComputing the KIE and quantum KIE from four G0X output files:'
-print '- the TS w/ natural isotopes'
-print '- the TS w/ an unnatural isotope'
-print '- the Substrate w/ natural isotopes'
-print '- the Substrate w/ an unnatural isotope'
-print ''
-print 'Make sure that the isotope replacement is identical for both the TS and Substrate.\n'
+print("\nComputing the KIE and quantum KIE from four G0X output files:")
+print("- the TS w/ natural isotopes")
+print("- the TS w/ an unnatural isotope")
+print("- the Substrate w/ natural isotopes")
+print("- the Substrate w/ an unnatural isotope")
+print("")
+print(
+    "Make sure that the isotope replacement is identical for both the TS and Substrate.\n"
+)
 
 # If method is set, set the scaling factor
 
-if method.upper() == 'M062X':
-    print 'Using the scaling factor 0.961 for method M062X.\n'
+if method.upper() == "M062X":
+    print("Using the scaling factor 0.961 for method M062X.\n")
     scaling = 0.961
-elif method.upper() == 'B3LYP':
-    print 'Using the scaling factor 0.961 for method B3LYP.\n'
+elif method.upper() == "B3LYP":
+    print("Using the scaling factor 0.961 for method B3LYP.\n")
     scaling = 0.963
 
 # Run the KIE computation
@@ -139,10 +149,10 @@ elif method.upper() == 'B3LYP':
     etaatom.g0x_vibrations(subisofile),
     temp,
     scaling,
-    )
-print 'KIE:               KIE w/ Quantum Effects:'
-print str(kie) + '      ' + str(qkie)
+)
+print("KIE:               KIE w/ Quantum Effects:")
+print(str(kie) + "      " + str(qkie))
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

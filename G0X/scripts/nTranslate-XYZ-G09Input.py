@@ -40,34 +40,35 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-from sys import *
-import sys
 import getopt
-import etaatom
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-XYZ-G09Input.py'
+program = "nTranslate-XYZ-G09Input.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     snippet = sys.argv[1]
 except IndexError:
-    snippet = '-h'
+    snippet = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if snippet == '-h':
-    argv.append('-h')
-    argv.append('-h')
+if snippet == "-h":
+    argv.append("-h")
+    argv.append("-h")
 
 # If interactive mode is wanted allow the skipping of a snippet
 
-if snippet == '-i':
-    argv.append('-i')
-    argv.append('-i')
+if snippet == "-i":
+    argv.append("-i")
+    argv.append("-i")
 
 # Unless the charge is stated via the -c argument the charge will be assumed to be 0
 
@@ -80,7 +81,7 @@ multi = 1
 multiset = False
 modred = []
 writemod = 0
-ionicCM = ''
+ionicCM = ""
 ionicswitch = 0
 debug = 0
 interactive = 0
@@ -88,11 +89,12 @@ interactive = 0
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'c:m:dih', ['mod=',
-                                   'ionic='])
+    (myopts, args) = getopt.getopt(sys.argv[2:], "c:m:dih", ["mod=", "ionic="])
 except getopt.GetoptError:
-    print program \
-        + ''' <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d'''
+    print(
+        program
+        + """ <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d"""
+    )
     sys.exit(2)
 
 ###############################
@@ -101,37 +103,41 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-c':
+    if o == "-c":
         charge = a
         chargeset = True
-    elif o == '-m':
+    elif o == "-m":
         multi = a
         multiset = True
-    elif o == '-d':
+    elif o == "-d":
         debug += 1
-    elif o == '--mod':
+    elif o == "--mod":
         modred.append(a)
         writemod = 1
-    elif o == '--ionic':
+    elif o == "--ionic":
         ionicCM = a
         ionicswitch = 1
-    elif o == '-i':
+    elif o == "-i":
         interactive = 1
-    elif o == '-h':
-        print program \
-            + ''' <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d'''
+    elif o == "-h":
+        print(
+            program
+            + """ <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d"""
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod="constraint" --ionic=reg/mno -d' \
+        print(
+            'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod="constraint" --ionic=reg/mno -d'
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if debug >= 1:
-    print 'Charge: ' + str(charge)
-    print 'Multiplicity: ' + str(multi)
-    print 'Snippet: ' + snippet
-    print 'Modredundant Variable: '
-    print modred
+    print("Charge: " + str(charge))
+    print("Multiplicity: " + str(multi))
+    print("Snippet: " + snippet)
+    print("Modredundant Variable: ")
+    print(modred)
 
 ### --- OK Now setup the input variables for the first time --- ###
 
@@ -145,61 +151,61 @@ G0XInput = etaatom.InputArguments()
 
 ### --- Make NEWJOBS folder --- ###
 
-if not os.path.exists('NEWJOBS.G0X'):
-    os.makedirs('NEWJOBS.G0X')
+if not os.path.exists("NEWJOBS.G0X"):
+    os.makedirs("NEWJOBS.G0X")
 
 ### --- Open and parse the xyz files in the folder --- ###
 
-print 'Currently Translating:'
+print("Currently Translating:")
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.xyz'):
+    if i.endswith(".xyz"):
         ifile = i
-        print i
+        print(i)
 
         if debug >= 2:
-            print snippet
+            print(snippet)
 
-    # Parse XYZ file into a list of lists
+        # Parse XYZ file into a list of lists
 
         ifilelol = etaatom.xyz_lol(ifile)
 
-    # ## Copy the charge, multi and modredundant lines to the G0XInput
+        # ## Copy the charge, multi and modredundant lines to the G0XInput
 
         if len(modred) > 0:
             G0XInput.writemod = 1
         for line in modred:
             G0XInput.modred.append(line)
         if chargeset:
-            print 'YES'
+            print("YES")
             G0XInput.charge = charge
         if multiset:
             G0XInput.multi = multi
 
-    # ## --- Calculate charge from file --- ###
+        # ## --- Calculate charge from file --- ###
 
         if ionicswitch == 1:
-            G0XInput.charge = etaatom.ionic(ionicswitch, ionicCM,
-                    ifilelol)
+            G0XInput.charge = etaatom.ionic(ionicswitch, ionicCM, ifilelol)
 
-    # ## --- Generate the ECP list for files if needed --- ###
+        # ## --- Generate the ECP list for files if needed --- ###
 
         if interactive == 0:
             G0XInput = etaatom.parse_snippet_g0x(snippet, G0XInput)
 
         if G0XInput.writeecp == 1:
-            (G0XInput.config, G0XInput.ecplines) = \
-                etaatom.g0x_ecp(G0XInput.ecp, G0XInput.config, ifilelol)
+            (G0XInput.config, G0XInput.ecplines) = etaatom.g0x_ecp(
+                G0XInput.ecp, G0XInput.config, ifilelol
+            )
 
         if G0XInput.writecloseecp == 1:
-            (G0XInput.closelines, G0XInput.closeecplines) = \
-                etaatom.g0x_ecp(G0XInput.closeecp, G0XInput.closelines,
-                                ifilelol)
+            (G0XInput.closelines, G0XInput.closeecplines) = etaatom.g0x_ecp(
+                G0XInput.closeecp, G0XInput.closelines, ifilelol
+            )
 
-    # ## --- Out put the G0X input files --- ###
+        # ## --- Out put the G0X input files --- ###
 
         etaatom.output_g0x(ifile, G0XInput, ifilelol)
 
-    # ## --- RESET THE VARIABLES --- ###
+        # ## --- RESET THE VARIABLES --- ###
 
         G0XInput = etaatom.reset_input_variables(G0XInput)
 

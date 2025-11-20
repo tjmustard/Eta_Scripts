@@ -40,42 +40,43 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nJT.py'
+program = "nJT.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     logfile = sys.argv[1]
 except IndexError:
-    logfile = '-h'
+    logfile = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if logfile == '-h':
-    argv.append('-h')
-    argv.append('-h')
-if logfile == '-a':
-    argv.append('-a')
-    argv.append('-a')
+if logfile == "-h":
+    argv.append("-h")
+    argv.append("-h")
+if logfile == "-a":
+    argv.append("-a")
+    argv.append("-a")
 debug = 0
-printType = 'none'
+printType = "none"
 allInDir = 0
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'dhela')
+    (myopts, args) = getopt.getopt(sys.argv[2:], "dhela")
 except getopt.GetoptError:
-    print program + ' <log file> -d -e -l -a'
+    print(program + " <log file> -d -e -l -a")
     sys.exit(2)
 
 ###############################
@@ -84,42 +85,46 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         debug += 1
-    elif o == '-l':
-        printType = 'long'
-    elif o == '-e':
-        printType = 'extra'
-    elif o == '-a':
+    elif o == "-l":
+        printType = "long"
+    elif o == "-e":
+        printType = "extra"
+    elif o == "-a":
         allInDir = 1
-    elif o == '-h':
-        print program + ''' <log file> -d -l -e -a'''
+    elif o == "-h":
+        print(program + """ <log file> -d -l -e -a""")
         sys.exit(0)
     else:
-        print 'Usage: %s  <log file> -d -l -e -a' % sys.argv[0]
+        print("Usage: %s  <log file> -d -l -e -a" % sys.argv[0])
         sys.exit(0)
 
 if debug >= 1:
-    print logfile
+    print(logfile)
+
 
 def parse():
     if allInDir == 1:
         for i in os.listdir(os.getcwd()):
-            if i.endswith('.out'):
+            if i.endswith(".out"):
                 logfile = i
                 if debug >= 1:
-                    print logfile
-                print '##############################################################################'
-                printLines = etaatom.translate_jaguar_output(logfile,
-                    'translate', printType)
+                    print(logfile)
+                print(
+                    "##############################################################################"
+                )
+                printLines = etaatom.translate_jaguar_output(
+                    logfile, "translate", printType
+                )
                 for line in printLines:
-                    print line
+                    print(line)
     else:
-        printLines = etaatom.translate_jaguar_output(logfile,
-                'translate', printType)
+        printLines = etaatom.translate_jaguar_output(logfile, "translate", printType)
         for line in printLines:
-            print line
+            print(line)
     return
+
 
 try:
     parse()
@@ -127,8 +132,8 @@ except:
     if debug >= 1:
         parse()
     else:
-        print 'Something failed. Make sure the/a log file exists.'
+        print("Something failed. Make sure the/a log file exists.")
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

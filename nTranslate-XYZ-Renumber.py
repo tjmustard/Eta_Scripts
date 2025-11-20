@@ -40,20 +40,21 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
-import etanumpy
+import math
+import os
+import sys
 from decimal import *
+from sys import *
+
 from numpy import *
+
+from EtaLib import etaatom, etanumpy
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-XYZ-Renumber.py'
-mainfile = ''
+program = "nTranslate-XYZ-Renumber.py"
+mainfile = ""
 debug = 0
 autofind = 0
 atomNum = -1
@@ -61,12 +62,15 @@ atomNum = -1
 # Define what type of job we will be running
 
 if len(argv) == 1:
-    argv.append('-a')
+    argv.append("-a")
     autofind = 1
-elif argv[1] == '-h':
-    print '======================================================================================================'
-    print program \
-        + '''<main file>.xyz -a <auto select> -h
+elif argv[1] == "-h":
+    print(
+        "======================================================================================================"
+    )
+    print(
+        program
+        + """<main file>.xyz -a <auto select> -h
 ======================================================================================================
 
 This script will renumber all the xyz files within the current directory to a specified key structure.
@@ -76,22 +80,23 @@ any unmatched atoms will be appended to the end of the file.
 
 All renumbered files are saved in the folder "RENUMBERED" including the key structure.
 
-If you do not specify a structure the smallest one will be chosen for you.'''
+If you do not specify a structure the smallest one will be chosen for you."""
+    )
     sys.exit(0)
 else:
     mainfile = argv[1]
 
 ### --- Make RENUMBERED folder --- ###
 
-if not os.path.exists('RENUMBERED'):
-    os.makedirs('RENUMBERED')
+if not os.path.exists("RENUMBERED"):
+    os.makedirs("RENUMBERED")
 
 ### --- If asked to do so iterate through the folder for other .xyz files and find the smallest one --- ###
 
 if autofind == 1:
     for i in os.listdir(os.getcwd()):
-        if i.endswith('.xyz'):
-            f = open(i, 'r')
+        if i.endswith(".xyz"):
+            f = open(i, "r")
             for (j, line) in enumerate(f):
                 if j >= 1:
                     break
@@ -107,27 +112,27 @@ if autofind == 1:
 
 mainfileAtom = etaatom.xyz_lol(mainfile)
 
-print 'Renumbering all structures to ' + mainfile + '.'
+print("Renumbering all structures to " + mainfile + ".")
 
 # Output the main file to the renumbered folder
 
-etaatom.output_xyz('RENUMBERED/' + mainfile, mainfileAtom)
+etaatom.output_xyz("RENUMBERED/" + mainfile, mainfileAtom)
 
 # Iterate through the folder for other .xyz files
 
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.xyz') and i != mainfile:
+    if i.endswith(".xyz") and i != mainfile:
         ifile = i
 
-    # Print out the current job for the user
+        # Print out the current job for the user
 
-        print ifile
+        print(ifile)
 
-    # Get the XYZ lol/Atom data from the child file (ifile)
+        # Get the XYZ lol/Atom data from the child file (ifile)
 
         childfileAtom = etaatom.xyz_lol(ifile)
 
-    # Build a holder for the Atom data and copy the first two lines
+        # Build a holder for the Atom data and copy the first two lines
 
         if len(childfileAtom) > len(mainfileAtom):
             ofileAtom = [0] * len(childfileAtom)
@@ -136,26 +141,28 @@ for i in os.listdir(os.getcwd()):
         ofileAtom[0] = childfileAtom[0]
         ofileAtom[1] = childfileAtom[1]
 
-    # Make a holder for matched and unmatched atom numbers to use later
+        # Make a holder for matched and unmatched atom numbers to use later
 
         matchedatoms = []
         matchedatomsdist = []
         unmatchedatoms = []
 
-    # Build a holder for the distance matrix
+        # Build a holder for the distance matrix
 
-        distanceMatrix = [[0 for x in xrange(len(childfileAtom) - 2)]
-                          for x in xrange(len(mainfileAtom) - 2)]
+        distanceMatrix = [
+            [0 for x in range(len(childfileAtom) - 2)]
+            for x in range(len(mainfileAtom) - 2)
+        ]
 
-    # Build the distance matrix
+        # Build the distance matrix
 
         for j in range(2, len(mainfileAtom)):
             for k in range(2, len(childfileAtom)):
-                distanceMatrix[j - 2][k - 2] = \
-                    etanumpy.two_structure_get_distance(j, k,
-                        mainfileAtom, childfileAtom)
+                distanceMatrix[j - 2][k - 2] = etanumpy.two_structure_get_distance(
+                    j, k, mainfileAtom, childfileAtom
+                )
 
-    # Find the best nearest neighbor and if not already used
+        # Find the best nearest neighbor and if not already used
 
         for j in range(len(mainfileAtom) - 2):
             nearestNeighbor = 0
@@ -167,7 +174,7 @@ for i in os.listdir(os.getcwd()):
 
             if nearestNeighbor + 2 not in matchedatoms:
 
-        # ofileAtom[j+2] = childfileAtom[nearestNeighbor + 2]
+                # ofileAtom[j+2] = childfileAtom[nearestNeighbor + 2]
 
                 matchedatoms.append(nearestNeighbor + 2)
                 matchedatomsdist.append(nearestNeighborDist)
@@ -175,45 +182,46 @@ for i in os.listdir(os.getcwd()):
 
                 for l in range(len(matchedatoms)):
 
-          # print str(l) + "   " + str(matchedatoms[l]) + "  " + str(matchedatomsdist[l])
+                    # print str(l) + "   " + str(matchedatoms[l]) + "  " + str(matchedatomsdist[l])
 
-                    if nearestNeighbor + 2 == matchedatoms[l] \
-                        and nearestNeighborDist < matchedatomsdist[l]:
+                    if (
+                        nearestNeighbor + 2 == matchedatoms[l]
+                        and nearestNeighborDist < matchedatomsdist[l]
+                    ):
 
-            # ofileAtom[j+2] = childfileAtom[nearestNeighbor + 2]
+                        # ofileAtom[j+2] = childfileAtom[nearestNeighbor + 2]
 
                         matchedatoms[l] = nearestNeighbor + 2
                         matchedatomsdist[l] = nearestNeighborDist
 
-    # Iterate throught the matched atom list and add them to the end on the ofile atom/lol
+        # Iterate throught the matched atom list and add them to the end on the ofile atom/lol
 
         for k in range(len(matchedatoms)):
 
-      # print unmatchedatoms[k]
+            # print unmatchedatoms[k]
 
             ofileAtom[2 + k] = childfileAtom[matchedatoms[k]]
 
-    # Iterate through the child file and if an atom is not matched add it to the unmatched atom list
+        # Iterate through the child file and if an atom is not matched add it to the unmatched atom list
 
         for k in range(2, len(childfileAtom)):
             if k not in matchedatoms:
 
-        # print k
+                # print k
 
                 unmatchedatoms.append(k)
 
-    # Iterate throught the unmatched atom list and add them to the end on the ofile atom/lol
+        # Iterate throught the unmatched atom list and add them to the end on the ofile atom/lol
 
         for k in range(len(unmatchedatoms)):
 
-      # print unmatchedatoms[k]
+            # print unmatchedatoms[k]
 
-            ofileAtom[len(matchedatoms) + 2 + k] = \
-                childfileAtom[unmatchedatoms[k]]
+            ofileAtom[len(matchedatoms) + 2 + k] = childfileAtom[unmatchedatoms[k]]
 
-    # Output the newly renumbered file to the renumbered folder
+        # Output the newly renumbered file to the renumbered folder
 
-        etaatom.output_xyz('RENUMBERED/' + ifile, ofileAtom)
+        etaatom.output_xyz("RENUMBERED/" + ifile, ofileAtom)
 
 ######################################################################
 ### END OF SCRIPT

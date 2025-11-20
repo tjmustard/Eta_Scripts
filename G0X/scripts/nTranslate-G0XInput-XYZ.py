@@ -40,17 +40,18 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-from sys import *
-import sys
 import getopt
-import etaatom
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-G0XInput-XYZ.py'
-ifile = ''
-ofile = ''
+program = "nTranslate-G0XInput-XYZ.py"
+ifile = ""
+ofile = ""
 allInDir = 0
 
 numAtoms = 0
@@ -62,24 +63,23 @@ finalgeom = []
 try:
     ifile = sys.argv[1]
 except IndexError:
-    ifile = '-h'
+    ifile = "-h"
 
 # If help is wanted allow the skipping of a input file
 
-if ifile == '-h':
-    argv.append('-h')
-    argv.append('-h')
-elif ifile == '-d':
-    argv.append('-d')
-    argv.append('-d')
+if ifile == "-h":
+    argv.append("-h")
+    argv.append("-h")
+elif ifile == "-d":
+    argv.append("-d")
+    argv.append("-d")
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'd:h')
+    (myopts, args) = getopt.getopt(sys.argv[2:], "d:h")
 except getopt.GetoptError:
-    print program \
-        + ' <input file (G0X com)> -d (all in current directory) '
+    print(program + " <input file (G0X com)> -d (all in current directory) ")
     sys.exit(2)
 
 ###############################
@@ -88,48 +88,47 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         allInDir = 1
-    elif o == '-g':
+    elif o == "-g":
         geometry = int(a)
         trajectory = 2
-    elif o == '-h':
-        print program \
-            + ' <input file (G0X log)> -d (all in current directory)'
+    elif o == "-h":
+        print(program + " <input file (G0X log)> -d (all in current directory)")
         sys.exit(0)
     else:
-        print 'Usage: %s  <input file (G0X log)> -d (all in current directory)' \
+        print(
+            "Usage: %s  <input file (G0X log)> -d (all in current directory)"
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if allInDir == 1:
     for i in os.listdir(os.getcwd()):
-        if i.endswith('.com'):
+        if i.endswith(".com"):
             ifile = i
-            ofile = etaatom.basename(ifile, '.com') + '.xyz'
-            print ifile + ' ----> ' + ofile
+            ofile = etaatom.basename(ifile, ".com") + ".xyz"
+            print(ifile + " ----> " + ofile)
 
-      # Extract the geometry from the G0X input file
+            # Extract the geometry from the G0X input file
 
-            (config, endlines, charge, multi, ifilelol) = \
-                etaatom.parse_input_g0x(ifile)
+            (config, endlines, charge, multi, ifilelol) = etaatom.parse_input_g0x(ifile)
 
-      # Ouput the geometry(ies) to the ofile
+            # Ouput the geometry(ies) to the ofile
 
             etaatom.output_xyz(ofile, ifilelol)
 else:
 
-  # Extract the geometry from the G0X input file
+    # Extract the geometry from the G0X input file
 
-    (config, endlines, charge, multi, ifilelol) = \
-        etaatom.parse_input_g0x(ifile)
-    ofile = etaatom.basename(ifile, '.com') + '.xyz'
-    print ifile + ' ----> ' + ofile
+    (config, endlines, charge, multi, ifilelol) = etaatom.parse_input_g0x(ifile)
+    ofile = etaatom.basename(ifile, ".com") + ".xyz"
+    print(ifile + " ----> " + ofile)
 
-  # Ouput the geometry(ies) to the ofile
+    # Ouput the geometry(ies) to the ofile
 
     etaatom.output_xyz(ofile, ifilelol)
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

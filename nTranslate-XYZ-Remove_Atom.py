@@ -40,29 +40,32 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
 from decimal import *
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-XYZ-Remove_Atom.py'
-ifile = ''
-ofile = ''
+program = "nTranslate-XYZ-Remove_Atom.py"
+ifile = ""
+ofile = ""
 deleteAtoms = []
 allindir = 0
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 'i:o:a:dh')
+    (myopts, args) = getopt.getopt(sys.argv[1:], "i:o:a:dh")
 except getopt.GetoptError:
-    print program \
-        + ' -i <inputfile.xyz> -o <outputfile.xyz> -a <delete_atom> -d (all in dir)'
+    print(
+        program
+        + " -i <inputfile.xyz> -o <outputfile.xyz> -a <delete_atom> -d (all in dir)"
+    )
     sys.exit(2)
 
 ###############################
@@ -71,71 +74,82 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-i':
+    if o == "-i":
         ifile = a
-    elif o == '-o':
+    elif o == "-o":
         ofile = a
-    elif o == '-a':
+    elif o == "-a":
         deleteAtoms.append(int(a))
-    elif o == '-d':
+    elif o == "-d":
         allindir = 1
-    elif o == '-h':
-        print program \
-            + ' -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>'
+    elif o == "-h":
+        print(program + " -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>")
         sys.exit(0)
     else:
-        print 'Usage: %s -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>' \
+        print(
+            "Usage: %s -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>"
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if allindir == 0:
 
-  # ## --- Open parent file --- ###
+    # ## --- Open parent file --- ###
 
     ifilelol = etaatom.xyz_lol(ifile)
 
-  # ## --- Output file in Z-matrix format --- ###
+    # ## --- Output file in Z-matrix format --- ###
 
-    f = open(ofile, 'w+')
-    f.write(str(ifilelol[0] - len(deleteAtoms)) + '\n')
-    f.write(ifilelol[1] + '\n')
+    f = open(ofile, "w+")
+    f.write(str(ifilelol[0] - len(deleteAtoms)) + "\n")
+    f.write(ifilelol[1] + "\n")
     for i in range(2, len(ifilelol)):
         if i - 1 not in deleteAtoms:
-            line = ifilelol[i].e + '  ' \
-                + str('{:.6f}'.format(ifilelol[i].x)) + '  ' \
-                + str('{:.6f}'.format(ifilelol[i].y)) + '  ' \
-                + str('{:.6f}'.format(ifilelol[i].z))
-            f.write(line + '\n')
+            line = (
+                ifilelol[i].e
+                + "  "
+                + str("{:.6f}".format(ifilelol[i].x))
+                + "  "
+                + str("{:.6f}".format(ifilelol[i].y))
+                + "  "
+                + str("{:.6f}".format(ifilelol[i].z))
+            )
+            f.write(line + "\n")
         else:
-            print 'Removing atom: ' + str(i - 1)
+            print("Removing atom: " + str(i - 1))
     f.close()
 elif allindir == 1:
 
-    etaatom.make_dir('REMOVED')
+    etaatom.make_dir("REMOVED")
     for i in os.listdir(os.getcwd()):
-        if i.endswith('.xyz'):
+        if i.endswith(".xyz"):
             ifile = i
-            ofile = 'REMOVED/' + ifile
-            print i
+            ofile = "REMOVED/" + ifile
+            print(i)
 
-      # ## --- Open parent file --- ###
+            # ## --- Open parent file --- ###
 
             ifilelol = etaatom.xyz_lol(ifile)
 
-      # ## --- Output file in Z-matrix format --- ###
+            # ## --- Output file in Z-matrix format --- ###
 
-            f = open(ofile, 'w+')
-            f.write(str(ifilelol[0] - len(deleteAtoms)) + '\n')
-            f.write(ifilelol[1] + '\n')
+            f = open(ofile, "w+")
+            f.write(str(ifilelol[0] - len(deleteAtoms)) + "\n")
+            f.write(ifilelol[1] + "\n")
             for j in range(2, len(ifilelol)):
                 if j - 1 not in deleteAtoms:
-                    line = ifilelol[j].e + '  ' \
-                        + str('{:.6f}'.format(ifilelol[j].x)) + '  ' \
-                        + str('{:.6f}'.format(ifilelol[j].y)) + '  ' \
-                        + str('{:.6f}'.format(ifilelol[j].z))
-                    f.write(line + '\n')
+                    line = (
+                        ifilelol[j].e
+                        + "  "
+                        + str("{:.6f}".format(ifilelol[j].x))
+                        + "  "
+                        + str("{:.6f}".format(ifilelol[j].y))
+                        + "  "
+                        + str("{:.6f}".format(ifilelol[j].z))
+                    )
+                    f.write(line + "\n")
                 else:
-                    print 'Removing atom: ' + str(j - 1)
+                    print("Removing atom: " + str(j - 1))
             f.close()
 
 ######################################################################

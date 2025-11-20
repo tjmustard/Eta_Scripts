@@ -40,28 +40,28 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
 from decimal import *
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-XYZ-RMSD.py'
-ifile = ''
-ofile = ''
+program = "nTranslate-XYZ-RMSD.py"
+ifile = ""
+ofile = ""
 deleteAtoms = []
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 'i:o:d:h')
+    (myopts, args) = getopt.getopt(sys.argv[1:], "i:o:d:h")
 except getopt.GetoptError:
-    print program \
-        + ' -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>'
+    print(program + " -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>")
     sys.exit(2)
 
 ###############################
@@ -70,19 +70,20 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-i':
+    if o == "-i":
         ifile = a
-    elif o == '-o':
+    elif o == "-o":
         ofile = a
-    elif o == '-d':
+    elif o == "-d":
         deleteAtoms.append(int(a))
-    elif o == '-h':
-        print program \
-            + ' -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>'
+    elif o == "-h":
+        print(program + " -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>")
         sys.exit(0)
     else:
-        print 'Usage: %s -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>' \
+        print(
+            "Usage: %s -i <inputfile.xyz> -o <outputfile.xyz> -d <delete_atom>"
             % sys.argv[0]
+        )
         sys.exit(0)
 
 ### --- Open parent file --- ###
@@ -92,7 +93,7 @@ ifilelol = etaatom.xyz_lol(ifile)
 ### --- Iterating through a folder of files --- ###
 
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.xyz'):
+    if i.endswith(".xyz"):
         childFile = i
 
 ######################################################################

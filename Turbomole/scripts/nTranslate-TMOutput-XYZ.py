@@ -40,18 +40,19 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-TMOut-XYZ.py'
-ifile = ''
-ofile = ''
+program = "nTranslate-TMOut-XYZ.py"
+ifile = ""
+ofile = ""
 allInDir = 0
 trajectory = 0
 
@@ -64,25 +65,27 @@ finalgeom = []
 try:
     ifile = sys.argv[1]
 except IndexError:
-    ifile = '-h'
+    ifile = "-h"
 
 # If help is wanted allow the skipping of a input file
 
-if ifile == '-h':
-    argv.append('-h')
-    argv.append('-h')
-elif ifile == '-d':
-    argv.append('-d')
-elif ifile == '-t':
-    argv.append('-t')
+if ifile == "-h":
+    argv.append("-h")
+    argv.append("-h")
+elif ifile == "-d":
+    argv.append("-d")
+elif ifile == "-t":
+    argv.append("-t")
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'dtg:h')
+    (myopts, args) = getopt.getopt(sys.argv[2:], "dtg:h")
 except getopt.GetoptError:
-    print program \
-        + ' <input file (TM log)> -d (all in current directory) -t (output entire trajectory) -g ## (export geom number ##)'
+    print(
+        program
+        + " <input file (TM log)> -d (all in current directory) -t (output entire trajectory) -g ## (export geom number ##)"
+    )
     sys.exit(2)
 
 ###############################
@@ -91,82 +94,82 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         allInDir = 1
-    elif o == '-t':
+    elif o == "-t":
         trajectory = 1
-    elif o == '-g':
+    elif o == "-g":
         geometry = int(a)
         trajectory = 2
-    elif o == '-h':
-        print program \
-            + ' <input file (TM log)> -d (all in current directory) -t (output entire trajectory) -g ## (export geom number ##)'
+    elif o == "-h":
+        print(
+            program
+            + " <input file (TM log)> -d (all in current directory) -t (output entire trajectory) -g ## (export geom number ##)"
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s  <input file (TM log)> -d (all in current directory) -t (output entire trajectory) -g ## (export geom number ##)' \
+        print(
+            "Usage: %s  <input file (TM log)> -d (all in current directory) -t (output entire trajectory) -g ## (export geom number ##)"
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if allInDir == 1:
     for i in os.listdir(os.getcwd()):
-        if i.endswith('.log'):
+        if i.endswith(".log"):
             ifile = i
-            ofile = etaatom.basename(ifile, '.log') + '.xyz'
-            print ifile + ' ----> ' + ofile
+            ofile = etaatom.basename(ifile, ".log") + ".xyz"
+            print(ifile + " ----> " + ofile)
             if trajectory == 1:
 
-        # Extract the entire trajectory from the Turbomole log file
+                # Extract the entire trajectory from the Turbomole log file
 
-                (ifilelol, charge, multi) = \
-                    etaatom.parse_output_tm_traj(ifile)
+                (ifilelol, charge, multi) = etaatom.parse_output_tm_traj(ifile)
             elif trajectory == 2:
 
-        # Extract the entire trajectory from the G0X log file
+                # Extract the entire trajectory from the G0X log file
 
-                (trajectory, charge, multi) = \
-                    etaatom.parse_output_tm_traj(ifile)
+                (trajectory, charge, multi) = etaatom.parse_output_tm_traj(ifile)
                 ifilelol = etaatom.get_geom_n(trajectory, geometry)
             else:
 
-        # Extract the last geometry from the Turbomole log file
+                # Extract the last geometry from the Turbomole log file
 
-                (ifilelol, charge, multi) = \
-                    etaatom.parse_output_tm(ifile)
+                (ifilelol, charge, multi) = etaatom.parse_output_tm(ifile)
 
-      # Ouput the geometry(ies) to the ofile
+            # Ouput the geometry(ies) to the ofile
 
             etaatom.output_xyz(ofile, ifilelol)
 else:
     if trajectory == 1:
 
-    # Extract the last geometry from the Turbomole log file
+        # Extract the last geometry from the Turbomole log file
 
         (ifilelol, charge, multi) = etaatom.parse_output_tm_traj(ifile)
     elif trajectory == 2:
 
-    # Extract the entire trajectory from the G0X log file
+        # Extract the entire trajectory from the G0X log file
 
-        (trajectory, charge, multi) = \
-            etaatom.parse_output_tm_traj(ifile)
+        (trajectory, charge, multi) = etaatom.parse_output_tm_traj(ifile)
         ifilelol = etaatom.get_geom_n(trajectory, geometry)
     else:
 
-    # Extract the last geometry from the Turbomole log file
+        # Extract the last geometry from the Turbomole log file
 
         (ifilelol, charge, multi) = etaatom.parse_output_tm(ifile)
-    ofiletmp = ifile.split('.')
-    ofile = ''
+    ofiletmp = ifile.split(".")
+    ofile = ""
     for i in range(len(ofiletmp)):
         if i != len(ofiletmp) - 1:
-            ofile += ofiletmp[i] + '.'
+            ofile += ofiletmp[i] + "."
         elif i == len(ofiletmp) - 1:
-            ofile += 'xyz'
-    print ifile + ' ----> ' + ofile
+            ofile += "xyz"
+    print(ifile + " ----> " + ofile)
 
-  # Ouput the geometry(ies) to the ofile
+    # Ouput the geometry(ies) to the ofile
 
     etaatom.output_xyz(ofile, ifilelol)
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

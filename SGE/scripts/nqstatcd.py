@@ -40,40 +40,47 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-from sys import *
-import sys
 import getopt
+import os
+import sys
+from sys import *
 
 jobnum = str(sys.argv[1])
 joblist = []
-print ''
-if jobnum == 'all':
+print("")
+if jobnum == "all":
 
-    qstat = os.popen('qstat').read().splitlines()
+    qstat = os.popen("qstat").read().splitlines()
     for i in range(2, len(qstat)):
         joblist.append(qstat[i].split()[0])
     for i in joblist:
-        SGEWD = os.popen('qstat -explain c -j ' + i
-                         + " |grep sge_o_workdir |sed -e 's/sge_o_workdir:              //'"
-                         ).read()
-        SGEFN = os.popen('qstat -explain c -j ' + i
-                         + " |grep stdout_path_list |sed -e 's/stdout_path_list:           //'|sed -e 's/.joblog//'"
-                         ).read()
-        print 'Job Name:      ' + str(SGEFN).split(':')[-1].strip()
-        print 'Job Directory: ' + str(SGEWD).strip()
-elif jobnum == '':
-    print 'This script changes to the location of the job ID you have supplied.'
-    print 'Please supply a job ID.'
-    print 'For example: qstatw 12324'
+        SGEWD = os.popen(
+            "qstat -explain c -j "
+            + i
+            + " |grep sge_o_workdir |sed -e 's/sge_o_workdir:              //'"
+        ).read()
+        SGEFN = os.popen(
+            "qstat -explain c -j "
+            + i
+            + " |grep stdout_path_list |sed -e 's/stdout_path_list:           //'|sed -e 's/.joblog//'"
+        ).read()
+        print("Job Name:      " + str(SGEFN).split(":")[-1].strip())
+        print("Job Directory: " + str(SGEWD).strip())
+elif jobnum == "":
+    print("This script changes to the location of the job ID you have supplied.")
+    print("Please supply a job ID.")
+    print("For example: qstatw 12324")
 else:
-    print 'Parsing the physical location of JOB ID: ' + jobnum
-    SGEWD = os.popen('qstat -explain c -j ' + jobnum
-                     + " |grep sge_o_workdir |sed -e 's/sge_o_workdir:              //'"
-                     ).read()
-    SGEFN = os.popen('qstat -explain c -j ' + jobnum
-                     + " |grep stdout_path_list |sed -e 's/stdout_path_list:           //'|sed -e 's/.joblog//'"
-                     ).read()
-    print 'Job Name:      ' + str(SGEFN).split(':')[-1].strip()
-    print 'Job Directory: ' + str(SGEWD).strip()
-
+    print("Parsing the physical location of JOB ID: " + jobnum)
+    SGEWD = os.popen(
+        "qstat -explain c -j "
+        + jobnum
+        + " |grep sge_o_workdir |sed -e 's/sge_o_workdir:              //'"
+    ).read()
+    SGEFN = os.popen(
+        "qstat -explain c -j "
+        + jobnum
+        + " |grep stdout_path_list |sed -e 's/stdout_path_list:           //'|sed -e 's/.joblog//'"
+    ).read()
+    print("Job Name:      " + str(SGEFN).split(":")[-1].strip())
+    print("Job Directory: " + str(SGEWD).strip())

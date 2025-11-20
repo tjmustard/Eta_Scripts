@@ -40,15 +40,16 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-from sys import *
-import sys
 import getopt
-import etaatom
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-TLEAP-from-G0XOutput.py'
+program = "nTranslate-TLEAP-from-G0XOutput.py"
 
 # Grab the first argument from the command and use that as the snippet
 # Unless the charge is stated via the -c argument the charge will be assumed to be 0
@@ -62,7 +63,7 @@ multi = 1
 multiset = False
 modred = []
 writemod = 0
-ionicCM = ''
+ionicCM = ""
 ionicswitch = 0
 debug = 0
 interactive = 0
@@ -70,11 +71,12 @@ interactive = 0
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 'c:m:dih', ['mod=',
-                                   'ionic='])
+    (myopts, args) = getopt.getopt(sys.argv[1:], "c:m:dih", ["mod=", "ionic="])
 except getopt.GetoptError:
-    print program \
-        + ''' <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d'''
+    print(
+        program
+        + """ <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d"""
+    )
     sys.exit(2)
 
 ###############################
@@ -83,128 +85,127 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-c':
+    if o == "-c":
         charge = a
         chargeset = True
-    elif o == '-m':
+    elif o == "-m":
         multi = a
         multiset = True
-    elif o == '-d':
+    elif o == "-d":
         debug += 1
-    elif o == '--mod':
+    elif o == "--mod":
         modred.append(a)
         writemod = 1
-    elif o == '--ionic':
+    elif o == "--ionic":
         ionicCM = a
         ionicswitch = 1
-    elif o == '-i':
+    elif o == "-i":
         interactive = 1
-    elif o == '-h':
-        print program \
-            + ''' <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d'''
+    elif o == "-h":
+        print(
+            program
+            + """ <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d"""
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod="constraint" --ionic=reg/mno -d' \
+        print(
+            'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod="constraint" --ionic=reg/mno -d'
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if debug >= 1:
-    print 'Charge: ' + str(charge)
-    print 'Multiplicity: ' + str(multi)
-    print 'Snippet: ' + snippet
-    print 'Modredundant Variable: '
-    print modred
+    print("Charge: " + str(charge))
+    print("Multiplicity: " + str(multi))
+    print("Snippet: " + snippet)
+    print("Modredundant Variable: ")
+    print(modred)
 
 ### --- Open and parse the xyz files in the folder --- ###
 
-print 'Currently Translating:'
+print("Currently Translating:")
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.mol2'):
+    if i.endswith(".mol2"):
         ifile = i
-        print i
-        ofile = etaatom.basename(ifile, '.mol2')
+        print(i)
+        ofile = etaatom.basename(ifile, ".mol2")
 
-    # ## --- Create the frcmod file --- ###
+        # ## --- Create the frcmod file --- ###
 
-        os.system('parmchk -i ' + ofile + '.mol2 -f mol2 -o ' + ofile
-                  + '.frcmod')
+        os.system("parmchk -i " + ofile + ".mol2 -f mol2 -o " + ofile + ".frcmod")
 
-    # ## --- Edit the frcmod file --- ###
+        # ## --- Edit the frcmod file --- ###
 
-        f = open(ofile + '.frcmod', 'r')
+        f = open(ofile + ".frcmod", "r")
         frclines = f.readlines()
         f.close()
-        f = open(ofile + '.frcmod', 'w')
+        f = open(ofile + ".frcmod", "w")
         mass = False
         nonbon = False
         for line in frclines:
-            if 'MASS' in line:
+            if "MASS" in line:
                 mass = True
                 f.write(line)
-            elif 'NONBON' in line:
+            elif "NONBON" in line:
                 nonbon = True
                 f.write(line)
-            elif line.strip() == '':
+            elif line.strip() == "":
                 mass = False
                 nonbon = False
                 f.write(line)
             elif mass:
-                if line.strip()[0] == 'A':
-                    f.write('Al 26.98         0.000\n')
-                elif line.split()[0] == 'Cl':
-                    f.write('Cl 35.450         0.000\n')
-                elif line.split()[0] == 'Nb':
-                    f.write('Nb 92.910         0.000\n')
+                if line.strip()[0] == "A":
+                    f.write("Al 26.98         0.000\n")
+                elif line.split()[0] == "Cl":
+                    f.write("Cl 35.450         0.000\n")
+                elif line.split()[0] == "Nb":
+                    f.write("Nb 92.910         0.000\n")
             elif nonbon:
 
-                if line.strip()[0] == 'A':
-                    f.write('  Al          0.6750  0.1000\n')
-                elif line.strip()[0] == 'Cl':
-                    f.write('  Cl          1.9200  0.2000\n')
-                elif line.strip()[0] == 'Nb':
-                    f.write('  Nb          0.8600  0.1000\n')
-            elif line.split()[0] == 'Al-OH':
+                if line.strip()[0] == "A":
+                    f.write("  Al          0.6750  0.1000\n")
+                elif line.strip()[0] == "Cl":
+                    f.write("  Cl          1.9200  0.2000\n")
+                elif line.strip()[0] == "Nb":
+                    f.write("  Nb          0.8600  0.1000\n")
+            elif line.split()[0] == "Al-OH":
 
-      # Al bond/angle/dihedral section
+                # Al bond/angle/dihedral section
 
-                f.write('Al-OH    1.00   1.900\n')
-            elif line.split()[0] == 'Al-OH-HO':
-                f.write('Al-OH-HO    1.000      90.000\n')
-            elif line.split()[0] == 'OH-Al-OH':
-                f.write('OH-Al-OH    1.000      90.000\n')
-            elif line.split()[0] == 'OH-Al-OH-HO':
-                f.write('OH-Al-OH-HO   1    0.000         180.000           3.000\n'
-                        )
-            elif line.split()[0] == 'Al-Cl':
-                f.write('Al-Cl    1.00   3.650\n')
-            elif line.split()[0] == 'Cl-Al-OH':
-                f.write('Cl-Al-OH    1.000      90.000\n')
-            elif line.split()[0] == 'Cl-Al-Cl':
-                f.write('Cl-Al-Cl    1.000      90.000\n')
-            elif line.split()[0] == 'HO-OH-Al-Cl':
-                f.write('HO-OH-Al-Cl   1    0.000       180.000           3.000\n'
-                        )
-            elif line.split()[0] == 'Nb-OH':
+                f.write("Al-OH    1.00   1.900\n")
+            elif line.split()[0] == "Al-OH-HO":
+                f.write("Al-OH-HO    1.000      90.000\n")
+            elif line.split()[0] == "OH-Al-OH":
+                f.write("OH-Al-OH    1.000      90.000\n")
+            elif line.split()[0] == "OH-Al-OH-HO":
+                f.write("OH-Al-OH-HO   1    0.000         180.000           3.000\n")
+            elif line.split()[0] == "Al-Cl":
+                f.write("Al-Cl    1.00   3.650\n")
+            elif line.split()[0] == "Cl-Al-OH":
+                f.write("Cl-Al-OH    1.000      90.000\n")
+            elif line.split()[0] == "Cl-Al-Cl":
+                f.write("Cl-Al-Cl    1.000      90.000\n")
+            elif line.split()[0] == "HO-OH-Al-Cl":
+                f.write("HO-OH-Al-Cl   1    0.000       180.000           3.000\n")
+            elif line.split()[0] == "Nb-OH":
 
-      # Nb bond/angle/dihedral section
+                # Nb bond/angle/dihedral section
 
-                f.write('Nb-OH    1.00   1.900\n')
-            elif line.split()[0] == 'Nb-OH-HO':
-                f.write('Nb-OH-HO    1.000      90.000\n')
-            elif line.split()[0] == 'OH-Nb-OH':
-                f.write('OH-Nb-OH    1.000      90.000\n')
-            elif line.split()[0] == 'OH-Nb-OH-HO':
-                f.write('OH-Nb-OH-HO   1    0.000         180.000           3.000\n'
-                        )
-            elif line.split()[0] == 'Nb-Cl':
-                f.write('Nb-Cl    1.00   3.650\n')
-            elif line.split()[0] == 'Cl-Nb-OH':
-                f.write('Cl-Nb-OH    1.000      90.000\n')
-            elif line.split()[0] == 'Cl-Nb-Cl':
-                f.write('Cl-Nb-Cl    1.000      90.000\n')
-            elif line.split()[0] == 'HO-OH-Nb-Cl':
-                f.write('HO-OH-Nb-Cl   1    0.000       180.000           3.000\n'
-                        )
+                f.write("Nb-OH    1.00   1.900\n")
+            elif line.split()[0] == "Nb-OH-HO":
+                f.write("Nb-OH-HO    1.000      90.000\n")
+            elif line.split()[0] == "OH-Nb-OH":
+                f.write("OH-Nb-OH    1.000      90.000\n")
+            elif line.split()[0] == "OH-Nb-OH-HO":
+                f.write("OH-Nb-OH-HO   1    0.000         180.000           3.000\n")
+            elif line.split()[0] == "Nb-Cl":
+                f.write("Nb-Cl    1.00   3.650\n")
+            elif line.split()[0] == "Cl-Nb-OH":
+                f.write("Cl-Nb-OH    1.000      90.000\n")
+            elif line.split()[0] == "Cl-Nb-Cl":
+                f.write("Cl-Nb-Cl    1.000      90.000\n")
+            elif line.split()[0] == "HO-OH-Nb-Cl":
+                f.write("HO-OH-Nb-Cl   1    0.000       180.000           3.000\n")
             else:
 
                 f.write(line)
@@ -213,4 +214,3 @@ for i in os.listdir(os.getcwd()):
     # #####################################################################
     # ## END OF SCRIPT
     # #####################################################################
-

@@ -40,34 +40,35 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-from sys import *
-import sys
 import getopt
-import etaatom
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-G0XOutput-KIE_g0xinput.py'
+program = "nTranslate-G0XOutput-KIE_g0xinput.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     snippet = sys.argv[1]
 except IndexError:
-    snippet = '-h'
+    snippet = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if snippet == '-h':
-    argv.append('-h')
-    argv.append('-h')
+if snippet == "-h":
+    argv.append("-h")
+    argv.append("-h")
 
 # If interactive mode is wanted allow the skipping of a snippet
 
-if snippet == '-i':
-    argv.append('-i')
-    argv.append('-i')
+if snippet == "-i":
+    argv.append("-i")
+    argv.append("-i")
 
 # Unless the charge is stated via the -c argument the charge will be assumed to be 0
 
@@ -82,7 +83,7 @@ pressure = 1.0
 multiset = False
 modred = []
 writemod = 0
-ionicCM = ''
+ionicCM = ""
 ionicswitch = 0
 debug = 0
 interactive = 0
@@ -90,10 +91,12 @@ interactive = 0
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'c:m:t:p:dih')
+    (myopts, args) = getopt.getopt(sys.argv[2:], "c:m:t:p:dih")
 except getopt.GetoptError:
-    print program \
-        + ''' <snippet> -c <charge> -m <multiplicity> -t <temp in kelvin> -p <pressure> -d'''
+    print(
+        program
+        + """ <snippet> -c <charge> -m <multiplicity> -t <temp in kelvin> -p <pressure> -d"""
+    )
     sys.exit(2)
 
 ###############################
@@ -102,33 +105,37 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-c':
+    if o == "-c":
         charge = a
         chargeset = True
-    elif o == '-m':
+    elif o == "-m":
         multi = a
         multiset = True
-    elif o == '-d':
+    elif o == "-d":
         debug += 1
-    elif o == '-t':
+    elif o == "-t":
         temp = float(a)
-    elif o == '-p':
+    elif o == "-p":
         pressure = float(a)
-    elif o == '-h':
-        print program \
-            + ''' <snippet> -c <charge> -m <multiplicity> -t <temp in kelvin> -p <pressure> -d'''
+    elif o == "-h":
+        print(
+            program
+            + """ <snippet> -c <charge> -m <multiplicity> -t <temp in kelvin> -p <pressure> -d"""
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s <snippet> -c <charge> -m <multiplicity> -t <temp in kelvin> -p <pressure> -d' \
+        print(
+            "Usage: %s <snippet> -c <charge> -m <multiplicity> -t <temp in kelvin> -p <pressure> -d"
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if debug >= 1:
-    print 'Charge: ' + str(charge)
-    print 'Multiplicity: ' + str(multi)
-    print 'Snippet: ' + snippet
-    print 'Temp: ' + temp
-    print 'Pressure: ' + pressure
+    print("Charge: " + str(charge))
+    print("Multiplicity: " + str(multi))
+    print("Snippet: " + snippet)
+    print("Temp: " + temp)
+    print("Pressure: " + pressure)
 
 ### --- OK Now setup the input variables for the first time --- ###
 
@@ -142,48 +149,48 @@ g0xinput = etaatom.InputArguments()
 
 ### --- Make NEWJOBS folder --- ###
 
-if not os.path.exists('NEWJOBS.G0X'):
-    os.makedirs('NEWJOBS.G0X')
+if not os.path.exists("NEWJOBS.G0X"):
+    os.makedirs("NEWJOBS.G0X")
 
 ### --- Open and parse the xyz files in the folder --- ###
 
-print 'Currently Translating:'
+print("Currently Translating:")
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.log'):
+    if i.endswith(".log"):
         ifile = i
-        print i
+        print(i)
 
-        basename = etaatom.basename(ifile, '.log')
+        basename = etaatom.basename(ifile, ".log")
 
         if debug >= 2:
-            print snippet
+            print(snippet)
 
-    # Parse XYZ file into a list of lists
+        # Parse XYZ file into a list of lists
 
-        (ifilelol, g0xinput.charge, g0xinput.multi) = \
-            etaatom.parse_output_g0x(ifile)
+        (ifilelol, g0xinput.charge, g0xinput.multi) = etaatom.parse_output_g0x(ifile)
 
-    # Change the charge if it has been set by the user
+        # Change the charge if it has been set by the user
 
         if chargeset:
             g0xinput.charge = charge
         if multiset:
             g0xinput.multi = multi
 
-    # ## --- Generate the configurationa and ECP list for files if needed --- ###
+        # ## --- Generate the configurationa and ECP list for files if needed --- ###
 
         g0xinput = etaatom.parse_snippet_g0x(snippet, g0xinput)
 
         if g0xinput.writeecp == 1:
-            (g0xinput.config, g0xinput.ecplines) = \
-                etaatom.g0x_ecp(g0xinput.ecp, g0xinput.config, ifilelol)
+            (g0xinput.config, g0xinput.ecplines) = etaatom.g0x_ecp(
+                g0xinput.ecp, g0xinput.config, ifilelol
+            )
 
         if g0xinput.writecloseecp == 1:
-            (g0xinput.closelines, g0xinput.closeecplines) = \
-                etaatom.g0x_ecp(g0xinput.closeecp, g0xinput.closelines,
-                                ifilelol)
+            (g0xinput.closelines, g0xinput.closeecplines) = etaatom.g0x_ecp(
+                g0xinput.closeecp, g0xinput.closelines, ifilelol
+            )
 
-    # ## --- Make a KIE output for each C and H in the system --- ###
+        # ## --- Make a KIE output for each C and H in the system --- ###
 
         g0xinput.writemod = 1
 
@@ -194,31 +201,42 @@ for i in os.listdir(os.getcwd()):
 
         for i in range(len(changeiso)):
             g0xinput.modred = []
-            g0xinput.modred.append(str(temp) + ' ' + str(pressure))
+            g0xinput.modred.append(str(temp) + " " + str(pressure))
             for j in range(2, len(ifilelol)):
                 if j == changeiso[i][0] + 1:
-                    g0xinput.modred.append(str(etaatom.elementIsotope[ifilelol[j].en
-                            - 1][1]))
+                    g0xinput.modred.append(
+                        str(etaatom.elementIsotope[ifilelol[j].en - 1][1])
+                    )
                 else:
-                    g0xinput.modred.append(str(etaatom.elementIsotope[ifilelol[j].en
-                            - 1][0]))
+                    g0xinput.modred.append(
+                        str(etaatom.elementIsotope[ifilelol[j].en - 1][0])
+                    )
 
-      # ## --- Out put the G0X input files --- ###
+            # ## --- Out put the G0X input files --- ###
 
-            etaatom.output_g0x(etaatom.get_element_name(changeiso[i][1])
-                               + str(changeiso[i][0]) + '-' + ifile,
-                               g0xinput, ifilelol)
+            etaatom.output_g0x(
+                etaatom.get_element_name(changeiso[i][1])
+                + str(changeiso[i][0])
+                + "-"
+                + ifile,
+                g0xinput,
+                ifilelol,
+            )
 
-            etaatom.copy_file(basename + '.chk', 'NEWJOBS.G0X/'
-                              + etaatom.get_element_name(changeiso[i][1])
-                              + str(changeiso[i][0]) + '-' + basename
-                              + '.chk')
+            etaatom.copy_file(
+                basename + ".chk",
+                "NEWJOBS.G0X/"
+                + etaatom.get_element_name(changeiso[i][1])
+                + str(changeiso[i][0])
+                + "-"
+                + basename
+                + ".chk",
+            )
 
-    # ## --- RESET THE VARIABLES --- ###
+        # ## --- RESET THE VARIABLES --- ###
 
         g0xinput = etaatom.reset_input_variables(g0xinput)
 
 ######################################################################
 ### END OF SCRIPT
 ######################################################################
-

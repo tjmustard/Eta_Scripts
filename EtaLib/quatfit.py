@@ -30,27 +30,29 @@
 import copy
 from math import fabs, sqrt
 
+
 def matrix_minus_vect(m, v):
-    """
-    """
+    """ """
     result = []
     for coords in m:
-      result.append([coords[0] - v[0], coords[1] - v[1], coords[2] - v[2]])
+        result.append([coords[0] - v[0], coords[1] - v[1], coords[2] - v[2]])
     return result
 
+
 def matrix_plus_vect(m, v):
-  """
-  """
-  result = []
-  for coords in m:
-    result.append([coords[0] + v[0], coords[1] + v[1], coords[2] + v[2]])
-  return result
+    """ """
+    result = []
+    for coords in m:
+        result.append([coords[0] + v[0], coords[1] + v[1], coords[2] + v[2]])
+    return result
+
 
 def transpose(a):
     """
     transposes a matrix
     """
     return list(zip(*a))
+
 
 def rotmol(frag_atoms, rotmat):
     """
@@ -64,9 +66,21 @@ def rotmol(frag_atoms, rotmat):
     """
     atoms = copy.deepcopy(frag_atoms)
     for i in range(len(atoms)):
-        yx = rotmat[0][0] * atoms[i][0] + rotmat[1][0] * atoms[i][1] + rotmat[2][0] * atoms[i][2]
-        yy = rotmat[0][1] * atoms[i][0] + rotmat[1][1] * atoms[i][1] + rotmat[2][1] * atoms[i][2]
-        yz = rotmat[0][2] * atoms[i][0] + rotmat[1][2] * atoms[i][1] + rotmat[2][2] * atoms[i][2]
+        yx = (
+            rotmat[0][0] * atoms[i][0]
+            + rotmat[1][0] * atoms[i][1]
+            + rotmat[2][0] * atoms[i][2]
+        )
+        yy = (
+            rotmat[0][1] * atoms[i][0]
+            + rotmat[1][1] * atoms[i][1]
+            + rotmat[2][1] * atoms[i][2]
+        )
+        yz = (
+            rotmat[0][2] * atoms[i][0]
+            + rotmat[1][2] * atoms[i][1]
+            + rotmat[2][2] * atoms[i][2]
+        )
         atoms[i][0] = yx  # x
         atoms[i][1] = yy  # y
         atoms[i][2] = yz  # z
@@ -146,7 +160,9 @@ def jacobi(matrix, maxsweeps):
                         eigenvect[k][j] = s * eigenvect[k][i] + c * eigenvect[k][j]
                         eigenvect[k][i] = vtemp
                     dtemp = c * c * eigenval[i] + s * s * eigenval[j] - 2.0 * c * s * b
-                    eigenval[j] = s * s * eigenval[i] + c * c * eigenval[j] + 2.0 * c * s * b
+                    eigenval[j] = (
+                        s * s * eigenval[i] + c * c * eigenval[j] + 2.0 * c * s * b
+                    )
                     eigenval[i] = dtemp
     # print(m)
     for j in range(3):
@@ -178,20 +194,31 @@ def q2mat(quaternion):
       rotmat (u)      - the rotation matrix
     """
     rotmat = [[float(0.0) for x in range(3)] for x in range(3)]
-    rotmat[0][0] = quaternion[0] * quaternion[0] + quaternion[1] * quaternion[1] - quaternion[2] * quaternion[2] - \
-                   quaternion[3] * quaternion[3]
+    rotmat[0][0] = (
+        quaternion[0] * quaternion[0]
+        + quaternion[1] * quaternion[1]
+        - quaternion[2] * quaternion[2]
+        - quaternion[3] * quaternion[3]
+    )
     rotmat[1][0] = 2.0 * (quaternion[1] * quaternion[2] - quaternion[0] * quaternion[3])
     rotmat[2][0] = 2.0 * (quaternion[1] * quaternion[3] + quaternion[0] * quaternion[2])
     rotmat[0][1] = 2.0 * (quaternion[2] * quaternion[1] + quaternion[0] * quaternion[3])
-    rotmat[1][1] = quaternion[0] * quaternion[0] - quaternion[1] * quaternion[1] + quaternion[2] * quaternion[2] - \
-                   quaternion[3] * quaternion[3]
+    rotmat[1][1] = (
+        quaternion[0] * quaternion[0]
+        - quaternion[1] * quaternion[1]
+        + quaternion[2] * quaternion[2]
+        - quaternion[3] * quaternion[3]
+    )
     rotmat[2][1] = 2.0 * (quaternion[2] * quaternion[3] - quaternion[0] * quaternion[1])
     rotmat[0][2] = 2.0 * (quaternion[3] * quaternion[1] - quaternion[0] * quaternion[2])
     rotmat[1][2] = 2.0 * (quaternion[3] * quaternion[2] + quaternion[0] * quaternion[1])
-    rotmat[2][2] = quaternion[0] * quaternion[0] - quaternion[1] * quaternion[1] - quaternion[2] * quaternion[2] + \
-                   quaternion[3] * quaternion[3]
+    rotmat[2][2] = (
+        quaternion[0] * quaternion[0]
+        - quaternion[1] * quaternion[1]
+        - quaternion[2] * quaternion[2]
+        + quaternion[3] * quaternion[3]
+    )
     return rotmat
-
 
 
 def qtrfit(parent_coords, child_coords, maxsweeps=30):
@@ -280,8 +307,8 @@ def qtrfit(parent_coords, child_coords, maxsweeps=30):
     # diagonalize c
     eigenvect, eigenval = jacobi(matrix, maxsweeps)
 
-    #print(eigenvect)
-    #print(eigenval)
+    # print(eigenvect)
+    # print(eigenval)
 
     # extract the desired quaternion
     quaternion[0] = eigenvect[0][3]
@@ -346,6 +373,7 @@ def rmsd(V, W):
         d += sum([(h - k) ** 2 for h, k in zip(v, w)])
     return sqrt(d / len(V))
 
+
 def fit_fragment(child_atoms, child_align_atoms, parent_align_atoms):
     """
     Takes a list of fragment atoms (child_atoms) and fits them to the position of target atoms.
@@ -367,7 +395,7 @@ def fit_fragment(child_atoms, child_align_atoms, parent_align_atoms):
     rmsd: float
         RMSD (root mean square deviation)
     """
-    #Find the centroids of the two alignment coordinate lists
+    # Find the centroids of the two alignment coordinate lists
     Ccentroid = centroid(child_align_atoms)
     Pcentroid = centroid(parent_align_atoms)
 
@@ -376,9 +404,11 @@ def fit_fragment(child_atoms, child_align_atoms, parent_align_atoms):
     centered_parent_align_atoms = matrix_minus_vect(parent_align_atoms, Pcentroid)
 
     # get the Kabsch rotation matrix:
-    quaternion, U = qtrfit(centered_parent_align_atoms, centered_child_allign_atoms, maxsweeps=30)
+    quaternion, U = qtrfit(
+        centered_parent_align_atoms, centered_child_allign_atoms, maxsweeps=30
+    )
 
-    #Move the child_atoms to the center before rotation
+    # Move the child_atoms to the center before rotation
     centered_child_atoms = matrix_minus_vect(child_atoms, Ccentroid)
 
     # rotate all child_atoms (instead of child_allign_atoms):
@@ -392,4 +422,3 @@ def fit_fragment(child_atoms, child_align_atoms, parent_align_atoms):
 
     rms = rmsd(centered_parent_align_atoms, rotated_child)
     return aligned_child, rms
-
