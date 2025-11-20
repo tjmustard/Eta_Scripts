@@ -40,44 +40,45 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'Submit.All.G09.Core=12-GEN04.py'
+program = "Submit.All.G09.Core=12-GEN04.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     inputfile = sys.argv[1]
 except IndexError:
-    inputfile = 'all'
+    inputfile = "all"
 
 # If help is wanted allow the skipping of a snippet
 
-if inputfile == '-h':
-    argv.append('-h')
-    argv.append('-h')
-elif inputfile == '-d':
-    argv.append('-d')
-    argv.append('-d')
-elif inputfile == '--hold':
-    argv.append('--hold')
-    argv.append('--hold')
+if inputfile == "-h":
+    argv.append("-h")
+    argv.append("-h")
+elif inputfile == "-d":
+    argv.append("-d")
+    argv.append("-d")
+elif inputfile == "--hold":
+    argv.append("--hold")
+    argv.append("--hold")
 debug = 0
 hold = 0
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'dh', ['hold'])
+    (myopts, args) = getopt.getopt(sys.argv[2:], "dh", ["hold"])
 except getopt.GetoptError:
-    print program + ''' -d --hold'''
+    print(program + """ -d --hold""")
     sys.exit(2)
 
 ###############################
@@ -86,62 +87,62 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         debug += 1
-    elif o == '--hold':
+    elif o == "--hold":
         hold = 1
-    elif o == '-h':
-        print program + ''' -d --hold'''
+    elif o == "-h":
+        print(program + """ -d --hold""")
         sys.exit(0)
     else:
-        print 'Usage: %s  -d --hold' % sys.argv[0]
+        print("Usage: %s  -d --hold" % sys.argv[0])
         sys.exit(0)
 
 if debug >= 1:
-    print inputfile
+    print(inputfile)
 
 #########################################################
 ### --- Job settings --- ###
 
-program = 'G09'
+program = "G09"
 nodeprocs = 48  # Number of procs on node
 nodemem = 256000  # Total memory on node in MB
 nproc = 12  # Number of procs to be used
 memory = str(int(math.floor(nodemem / nodeprocs * nproc * 0.90)))
-queue = 'gen04'  # Queue name
-EtaDir = os.environ['ETADIR']
+queue = "gen04"  # Queue name
+EtaDir = os.environ["ETADIR"]
 
-header = EtaDir + '/SGE/headers/Woodward.SMP.sget'
-snippet = EtaDir + '/SGE/snippets/hidden/G09-POTS-OPT.sget'
+header = EtaDir + "/SGE/headers/Woodward.SMP.sget"
+snippet = EtaDir + "/SGE/snippets/hidden/G09-POTS-OPT.sget"
 
 #########################################################
 
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.com'):
+    if i.endswith(".com"):
         inputfile = i
 
-    # ## --- Get the 'basename' of the file --- ###
-    # Assuming the input file ends with '.com'
-    # basename = inputfile[::-1].replace('moc.', '')[::-1]
+        # ## --- Get the 'basename' of the file --- ###
+        # Assuming the input file ends with '.com'
+        # basename = inputfile[::-1].replace('moc.', '')[::-1]
 
-        basename = etaatom.basename(inputfile, '.com')
+        basename = etaatom.basename(inputfile, ".com")
 
-        f = open(inputfile, 'r')
+        f = open(inputfile, "r")
         ifileList = f.readlines()
         f.close()
 
         deleteList = []
         for (j, line) in enumerate(ifileList):
-            if '%chk=' in line:
-                ifileList[j] = 'DELETE'
-            elif '%nproc=' in line:
-                ifileList[j] = 'DELETE'
-            elif '%mem=' in line:
-                ifileList[j] = 'DELETE'
+            if "%chk=" in line:
+                ifileList[j] = "DELETE"
+            elif "%nproc=" in line:
+                ifileList[j] = "DELETE"
+            elif "%mem=" in line:
+                ifileList[j] = "DELETE"
 
-    # ## --- Clean up the ifileList by removing any chk, mem, and nproc settings --- ###
+        # ## --- Clean up the ifileList by removing any chk, mem, and nproc settings --- ###
 
-        ifileListCLEAN = [x for x in ifileList if x != 'DELETE']
+        ifileListCLEAN = [x for x in ifileList if x != "DELETE"]
 
         headerLines = etaatom.return_modified_snippet(
             basename,
@@ -150,7 +151,7 @@ for i in os.listdir(os.getcwd()):
             nproc,
             memory,
             header,
-            )
+        )
         snippetLines = etaatom.return_modified_snippet(
             basename,
             program,
@@ -158,23 +159,23 @@ for i in os.listdir(os.getcwd()):
             nproc,
             memory,
             snippet,
-            )
+        )
 
-        f = open(inputfile, 'w')
-        f.write('%chk=' + str(basename) + '.chk\n')
-        f.write('%mem=' + str(memory) + 'MB\n')
-        f.write('%nproc=' + str(nproc) + '\n')
+        f = open(inputfile, "w")
+        f.write("%chk=" + str(basename) + ".chk\n")
+        f.write("%mem=" + str(memory) + "MB\n")
+        f.write("%nproc=" + str(nproc) + "\n")
         for line in ifileListCLEAN:
-            if 'link1' in line.lower():
+            if "link1" in line.lower():
                 f.write(line)
-                f.write('%chk=' + str(basename) + '.chk\n')
-                f.write('%mem=' + str(memory) + 'MB\n')
-                f.write('%nproc=' + str(nproc) + '\n')
+                f.write("%chk=" + str(basename) + ".chk\n")
+                f.write("%mem=" + str(memory) + "MB\n")
+                f.write("%nproc=" + str(nproc) + "\n")
             else:
                 f.write(line)
         f.close()
 
-        f = open(basename + '.sge', 'w')
+        f = open(basename + ".sge", "w")
         for line in headerLines:
             f.write(line)
         for line in snippetLines:
@@ -182,11 +183,9 @@ for i in os.listdir(os.getcwd()):
         f.close()
 
         if hold == 0:
-            os.system('qsub ' + basename + '.sge |tee ' + basename
-                      + '.joblog')
+            os.system("qsub " + basename + ".sge |tee " + basename + ".joblog")
         else:
-            print 'The job ' + basename \
-                + '.sge will be made but not submitted.'
+            print("The job " + basename + ".sge will be made but not submitted.")
 
 ###################################################################
 ### END OF SCRIPT

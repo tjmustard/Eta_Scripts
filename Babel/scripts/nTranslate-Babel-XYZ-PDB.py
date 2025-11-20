@@ -40,26 +40,27 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
 from decimal import *
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-Babel-XYZ-PDB.py'
-ifile = ''
-ofile = ''
+program = "nTranslate-Babel-XYZ-PDB.py"
+ifile = ""
+ofile = ""
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 'i:ah', ['atoms='])
+    (myopts, args) = getopt.getopt(sys.argv[1:], "i:ah", ["atoms="])
 except getopt.GetoptError:
-    print program
+    print(program)
     sys.exit(2)
 
 ###############################
@@ -68,39 +69,50 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-i':
+    if o == "-i":
         ifile = a
-    elif o == '-h':
-        print program + ' -h'
-        print 'This script uses babel to convert an entire folder of files between two types of files.'
+    elif o == "-h":
+        print(program + " -h")
+        print(
+            "This script uses babel to convert an entire folder of files between two types of files."
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s -h' % sys.argv[0]
-        print 'This script uses babel to convert an entire folder of files between two types of files.'
+        print("Usage: %s -h" % sys.argv[0])
+        print(
+            "This script uses babel to convert an entire folder of files between two types of files."
+        )
         sys.exit(0)
 
 # -----------------------------------
 # Babel conversion variables
 
-inputfiletype = 'xyz'
-outputfiletype = 'pdb'
+inputfiletype = "xyz"
+outputfiletype = "pdb"
 
 # -----------------------------------
 
 ### --- Iterating through a folder of files --- ###
 
 for i in os.listdir(os.getcwd()):
-    if i.lower().endswith('.' + inputfiletype):
+    if i.lower().endswith("." + inputfiletype):
         ifile = i
-        ofile = etaatom.basename(ifile, '.' + inputfiletype) + '.' \
+        ofile = etaatom.basename(ifile, "." + inputfiletype) + "." + outputfiletype
+        print("Converting " + ifile + " ----> " + ofile)
+
+        # ## Running program outside the script. ###
+
+        os.system(
+            "babel -i"
+            + inputfiletype
+            + " "
+            + ifile
+            + " -o"
             + outputfiletype
-        print 'Converting ' + ifile + ' ----> ' + ofile
-
-    # ## Running program outside the script. ###
-
-        os.system('babel -i' + inputfiletype + ' ' + ifile + ' -o'
-                  + outputfiletype + ' ' + ofile)
-print '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+            + " "
+            + ofile
+        )
+print("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
 
 ######################################################################
 ### END OF SCRIPT

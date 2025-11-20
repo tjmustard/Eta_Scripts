@@ -40,18 +40,19 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
 from decimal import *
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-XYZ-Quatfit.py'
-ifile = ''
+program = "nTranslate-XYZ-Quatfit.py"
+ifile = ""
 allAtoms = 0
 atomList = []
 atomListTemp = []
@@ -59,10 +60,9 @@ atomListTemp = []
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 'i:ah', ['atoms='])
+    (myopts, args) = getopt.getopt(sys.argv[1:], "i:ah", ["atoms="])
 except getopt.GetoptError:
-    print program \
-        + ' -i <inputfile.xyz> --atoms="<alignment atoms>" -a <all atoms>'
+    print(program + ' -i <inputfile.xyz> --atoms="<alignment atoms>" -a <all atoms>')
     sys.exit(2)
 
 ###############################
@@ -71,20 +71,21 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-i':
+    if o == "-i":
         ifile = a
-    elif o == '-a':
+    elif o == "-a":
         allAtoms = 1
-    elif o == '--atoms':
+    elif o == "--atoms":
         for i in a.split():
             atomListTemp.append(i)
-    elif o == '-h':
-        print program \
-            + ' -i <inputfile.xyz> --atoms=<delete_atom> -a <all atoms>'
+    elif o == "-h":
+        print(program + " -i <inputfile.xyz> --atoms=<delete_atom> -a <all atoms>")
         sys.exit(0)
     else:
-        print 'Usage: %s -i <inputfile.xyz> --atoms=<delete_atom> -a <all atoms>' \
+        print(
+            "Usage: %s -i <inputfile.xyz> --atoms=<delete_atom> -a <all atoms>"
             % sys.argv[0]
+        )
         sys.exit(0)
 
 ### --- Open parent file --- ###
@@ -95,55 +96,70 @@ ifilelol = etaatom.xyz_lol(ifile)
 
 if allAtoms == 1:
     atomListTemp = []
-    f = open(ifile, 'r')
+    f = open(ifile, "r")
     ifileList = f.readlines()
     f.close()
-    atomListTemp.append('1-' + ifileList[0].strip())
+    atomListTemp.append("1-" + ifileList[0].strip())
 
 ### Make directories if they do not exist
 
-if not os.path.exists('ALIGNED'):
-    os.makedirs('ALIGNED')
+if not os.path.exists("ALIGNED"):
+    os.makedirs("ALIGNED")
 
 ### --- Expand upon the atomListTemp list if
 # there are certain characters to denote multiple atoms.
 ###
 
 for i in range(len(atomListTemp)):
-    if '-' in str(atomListTemp[i]):  # Use the '-' symbol to denote all atoms between the former and latter
-        line = str(atomListTemp[i]).split('-')
+    if "-" in str(
+        atomListTemp[i]
+    ):  # Use the '-' symbol to denote all atoms between the former and latter
+        line = str(atomListTemp[i]).split("-")
         start = int(line[0])
-        for j in xrange(int(line[0]), int(line[1]) + 1):
+        for j in range(int(line[0]), int(line[1]) + 1):
 
-      # print j
+            # print j
 
             atomList.append(j)
-    if '-' not in str(atomListTemp[i]):  # If not one of the special symbols just add it to the final list
+    if "-" not in str(
+        atomListTemp[i]
+    ):  # If not one of the special symbols just add it to the final list
         atomList.append(int(atomListTemp[i]))
 
 ### --- Make the align files for quatfit. --- ###
 
-f = open('align.txt', 'w+')
-f.write(str(len(atomList)) + '\n')
+f = open("align.txt", "w+")
+f.write(str(len(atomList)) + "\n")
 for i in range(len(atomList)):
-    print ifilelol[i + 2].en
-    linetemp = str(atomList[i]) + ' ' + str(atomList[i]) + ' ' \
-        + str(ifilelol[i + 2].en) + '\n'  # ie. 3 4 1 (atoms 3 and 4 will be aligned with a weight of 1)
+    print(ifilelol[i + 2].en)
+    linetemp = (
+        str(atomList[i]) + " " + str(atomList[i]) + " " + str(ifilelol[i + 2].en) + "\n"
+    )  # ie. 3 4 1 (atoms 3 and 4 will be aligned with a weight of 1)
     f.write(linetemp)
 f.close()
 
 ### --- Iterating through a folder of files --- ###
 
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.xyz'):
+    if i.endswith(".xyz"):
         childFile = i
-        print 'Aligning ' + ifile + ' and ' + i
+        print("Aligning " + ifile + " and " + i)
 
-    # ## Running program outside the script. ###
+        # ## Running program outside the script. ###
 
-        os.system('quatfit -r' + ifile + ' -f ' + childFile + ' -p '
-                  + 'align.txt -o ' + 'ALIGNED/' + childFile)
-        print '++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++'
+        os.system(
+            "quatfit -r"
+            + ifile
+            + " -f "
+            + childFile
+            + " -p "
+            + "align.txt -o "
+            + "ALIGNED/"
+            + childFile
+        )
+        print(
+            "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+        )
 
 ######################################################################
 ### END OF SCRIPT

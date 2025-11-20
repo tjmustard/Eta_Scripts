@@ -40,46 +40,46 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
+import math
+import os
+import sys
+from sys import *
 
 ### --- Arguments --- ###
 
-program = 'nTM-TS.py'
+program = "nTM-TS.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     controlfile = sys.argv[1]
 except IndexError:
-    controlfile = '-h'
+    controlfile = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if controlfile == '-h':
-    print program + ''' <control file> <ts = 1 opt = 0> -h (this)'''
+if controlfile == "-h":
+    print(program + """ <control file> <ts = 1 opt = 0> -h (this)""")
     sys.exit(0)
 
 if sys.argv[2] == str(0) or sys.argv[2] == str(1):
     yep = 0
 else:
-    print 'You must specify 1 for TS or 0 for OPT.'
+    print("You must specify 1 for TS or 0 for OPT.")
     sys.exit(0)
 
-f = open(controlfile, 'r')
+f = open(controlfile, "r")
 controllines = f.readlines()
 f.close()
-f = open(controlfile, 'w')
+f = open(controlfile, "w")
 for (i, line) in enumerate(controllines):
-    if 'itrvec' in line:
-        f.write('   itrvec ' + sys.argv[2] + '\n')
+    if "itrvec" in line:
+        f.write("   itrvec " + sys.argv[2] + "\n")
     else:
         f.write(line)
 f.close()
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

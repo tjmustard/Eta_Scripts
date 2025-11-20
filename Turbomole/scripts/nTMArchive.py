@@ -40,108 +40,109 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Make NEWJOBS folder --- ###
 
-if not os.path.exists('ARCHIVE'):
-    os.makedirs('ARCHIVE')
-if not os.path.exists('ARCHIVE/PUB'):
-    os.makedirs('ARCHIVE/PUB')
-if not os.path.exists('ARCHIVE/TABLE'):
-    os.makedirs('ARCHIVE/TABLE')
-f = open('ARCHIVE/TABLE/Table-Energy-Equationed.txt', 'w')
-f.write('File_Name,SCF,ZPE,T*S,H,G,dG(Hart),dG(kcal/mol)\n')
+if not os.path.exists("ARCHIVE"):
+    os.makedirs("ARCHIVE")
+if not os.path.exists("ARCHIVE/PUB"):
+    os.makedirs("ARCHIVE/PUB")
+if not os.path.exists("ARCHIVE/TABLE"):
+    os.makedirs("ARCHIVE/TABLE")
+f = open("ARCHIVE/TABLE/Table-Energy-Equationed.txt", "w")
+f.write("File_Name,SCF,ZPE,T*S,H,G,dG(Hart),dG(kcal/mol)\n")
 f.close()
-f = open('ARCHIVE/TABLE/Table-Energy-Totals.txt', 'w')
-f.write('File_Name,SCF,ZPE,T*S,H,G,dG(Hart),dG(kcal/mol)\n')
+f = open("ARCHIVE/TABLE/Table-Energy-Totals.txt", "w")
+f.write("File_Name,SCF,ZPE,T*S,H,G,dG(Hart),dG(kcal/mol)\n")
 f.close()
-if not os.path.exists('ARCHIVE/XYZ'):
-    os.makedirs('ARCHIVE/XYZ')
-if not os.path.exists('ARCHIVE/JOBLOG'):
-    os.makedirs('ARCHIVE/JOBLOG')
-if not os.path.exists('ARCHIVE/LOG'):
-    os.makedirs('ARCHIVE/LOG')
-if not os.path.exists('ARCHIVE/INPUT'):
-    os.makedirs('ARCHIVE/INPUT')
+if not os.path.exists("ARCHIVE/XYZ"):
+    os.makedirs("ARCHIVE/XYZ")
+if not os.path.exists("ARCHIVE/JOBLOG"):
+    os.makedirs("ARCHIVE/JOBLOG")
+if not os.path.exists("ARCHIVE/LOG"):
+    os.makedirs("ARCHIVE/LOG")
+if not os.path.exists("ARCHIVE/INPUT"):
+    os.makedirs("ARCHIVE/INPUT")
 
 pwd = os.getcwd()
 
 # Go into each Turbomole folder
 
 for i in os.listdir(pwd):
-    if i.endswith('.Turbomole'):
+    if i.endswith(".Turbomole"):
 
-    # Archive each log file
+        # Archive each log file
 
         for j in os.listdir(i):
-            if j.endswith('.log'):
+            if j.endswith(".log"):
 
-        # Get the basename for the logfile
+                # Get the basename for the logfile
 
-                basefile = j.replace('.log', '', 1)
-                logfile = i + '/' + j
-                print 'Archiving ' + basefile
+                basefile = j.replace(".log", "", 1)
+                logfile = i + "/" + j
+                print("Archiving " + basefile)
 
-        # Grab the final geometry and the translated output for the pub file
+                # Grab the final geometry and the translated output for the pub file
 
-                (finalgeom, charge, multi) = \
-                    etaatom.parse_output_tm(logfile)
-                (printLines, tableLines) = \
-                    etaatom.translate_tm_output(logfile, 'archive',
-                        'none')
+                (finalgeom, charge, multi) = etaatom.parse_output_tm(logfile)
+                (printLines, tableLines) = etaatom.translate_tm_output(
+                    logfile, "archive", "none"
+                )
 
-        # Output the pub files
+                # Output the pub files
 
-                f = open('ARCHIVE/PUB/' + basefile + '.pub', 'w')
+                f = open("ARCHIVE/PUB/" + basefile + ".pub", "w")
                 for line in printLines:
-                    if 'GEOM DATA!' in line:
+                    if "GEOM DATA!" in line:
                         for k in range(len(finalgeom)):
 
-              # if k <= 1:
-              #  print finalgeom[i]
+                            # if k <= 1:
+                            #  print finalgeom[i]
 
                             if k >= 2:
-                                f.write(etaatom.get_element_name(etaatom.get_element_num(str(finalgeom[k].e)))
-                                        + '      '
-                                        + str(finalgeom[k].x) + '      '
-                                         + str(finalgeom[k].y)
-                                        + '      '
-                                        + str(finalgeom[k].z) + '\n')
+                                f.write(
+                                    etaatom.get_element_name(
+                                        etaatom.get_element_num(str(finalgeom[k].e))
+                                    )
+                                    + "      "
+                                    + str(finalgeom[k].x)
+                                    + "      "
+                                    + str(finalgeom[k].y)
+                                    + "      "
+                                    + str(finalgeom[k].z)
+                                    + "\n"
+                                )
                     else:
-                        f.write(line + '\n')
+                        f.write(line + "\n")
                 f.close()
 
-        # Output the Table files
+                # Output the Table files
 
                 for (k, line) in enumerate(tableLines):
                     if k == 0:
-                        f = \
-                            open('ARCHIVE/TABLE/Table-Energy-Equationed.txt'
-                                 , 'a')
-                        f.write(line + '\n')
+                        f = open("ARCHIVE/TABLE/Table-Energy-Equationed.txt", "a")
+                        f.write(line + "\n")
                         f.close()
                     elif k == 1:
-                        f = open('ARCHIVE/TABLE/Table-Energy-Totals.txt'
-                                 , 'a')
-                        f.write(line + '\n')
+                        f = open("ARCHIVE/TABLE/Table-Energy-Totals.txt", "a")
+                        f.write(line + "\n")
                         f.close()
                     elif j == 2:
-                        f = open('ARCHIVE/TABLE/Table-Energy-SCF.txt',
-                                 'a')
-                        f.write(line + '\n')
+                        f = open("ARCHIVE/TABLE/Table-Energy-SCF.txt", "a")
+                        f.write(line + "\n")
                         f.close()
 
-        # Output the final geometry in xyz format
+                # Output the final geometry in xyz format
 
-                etaatom.output_xyz('ARCHIVE/XYZ/' + basefile + '.xyz',
-                                   finalgeom)
+                etaatom.output_xyz("ARCHIVE/XYZ/" + basefile + ".xyz", finalgeom)
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

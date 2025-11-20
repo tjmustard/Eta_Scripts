@@ -40,36 +40,37 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTMMolden.py'
+program = "nTMMolden.py"
 
 # If help is wanted allow the skipping of a snippet
 
-if sys.argv[1] == '-h':
-    print program + ''' -h (this)'''
+if sys.argv[1] == "-h":
+    print(program + """ -h (this)""")
     sys.exit(0)
 
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.tmol'):
-        base = etaatom.basename(i, '.tmol')
-        f = open('ntmmolden.in', 'w')
-        f.write(base + '.mldn\n')
-        f.write('n\n')
-        f.write('y\n')
-        f.write('\n')
-        f.write('\n')
+    if i.endswith(".tmol"):
+        base = etaatom.basename(i, ".tmol")
+        f = open("ntmmolden.in", "w")
+        f.write(base + ".mldn\n")
+        f.write("n\n")
+        f.write("y\n")
+        f.write("\n")
+        f.write("\n")
         f.close()
-        os.system('tm2molden < tm2molden.in > tm2molden.out')
-        os.system('rm tm2molden.in tm2molden.out')
-        os.system('molden -S -l ' + base + '.mldn')
+        os.system("tm2molden < tm2molden.in > tm2molden.out")
+        os.system("rm tm2molden.in tm2molden.out")
+        os.system("molden -S -l " + base + ".mldn")
 
 ######################################################################
 ### END OF SCRIPT

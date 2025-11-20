@@ -40,18 +40,19 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-SANDER-Input.py'
-ifile = ''
-ofile = ''
+program = "nTranslate-SANDER-Input.py"
+ifile = ""
+ofile = ""
 allInDir = 0
 charge = 0
 
@@ -60,22 +61,22 @@ charge = 0
 try:
     ifile = sys.argv[1]
 except IndexError:
-    ifile = '-h'
+    ifile = "-h"
 
 # If help is wanted allow the skipping of a input file
 
-if ifile == '-h':
-    argv.append('-h')
-    argv.append('-h')
-elif ifile == '-a':
-    argv.append('-a')
+if ifile == "-h":
+    argv.append("-h")
+    argv.append("-h")
+elif ifile == "-a":
+    argv.append("-a")
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'a:c:h')
+    (myopts, args) = getopt.getopt(sys.argv[2:], "a:c:h")
 except getopt.GetoptError:
-    print program + ' -a (all in current directory)'
+    print(program + " -a (all in current directory)")
     sys.exit(2)
 
 ###############################
@@ -84,69 +85,69 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-a':
+    if o == "-a":
         allInDir = 1
-    elif o == '-c':
+    elif o == "-c":
         charge = a
-    elif o == '-h':
-        print program + ' -a (all in current directory)'
+    elif o == "-h":
+        print(program + " -a (all in current directory)")
         sys.exit(0)
     else:
-        print 'Usage: %s  -a (all in current directory)' % sys.argv[0]
+        print("Usage: %s  -a (all in current directory)" % sys.argv[0])
         sys.exit(0)
 
 ##################################################
 
-EtaDir = os.environ['ETADIR']
-minFile = EtaDir + '/Amber/snippets/hidden/Min.amb'
-heatFile = EtaDir + '/Amber/snippets/hidden/Heat.amb'
-prodFile = EtaDir + '/Amber/snippets/hidden/Prod.amb'
+EtaDir = os.environ["ETADIR"]
+minFile = EtaDir + "/Amber/snippets/hidden/Min.amb"
+heatFile = EtaDir + "/Amber/snippets/hidden/Heat.amb"
+prodFile = EtaDir + "/Amber/snippets/hidden/Prod.amb"
 
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.prmtop'):
+    if i.endswith(".prmtop"):
         ifile = i
-        ofile = etaatom.basename(ifile, '.prmtop')
+        ofile = etaatom.basename(ifile, ".prmtop")
 
         minlines = etaatom.return_modified_snippet(
             ofile,
-            'Amber14',
+            "Amber14",
             charge,
             8,
             48,
             minFile,
-            )
+        )
         heatlines = etaatom.return_modified_snippet(
             ofile,
-            'Amber14',
+            "Amber14",
             charge,
             8,
             48,
             heatFile,
-            )
+        )
         prodlines = etaatom.return_modified_snippet(
             ofile,
-            'Amber14',
+            "Amber14",
             charge,
             8,
             48,
             prodFile,
-            )
+        )
 
-        f = open(ofile + '_Min.in', 'w')
+        f = open(ofile + "_Min.in", "w")
         for line in minlines:
             f.write(line)
         f.close()
 
-        f = open(ofile + '_Heat.in', 'w')
+        f = open(ofile + "_Heat.in", "w")
         for line in heatlines:
             f.write(line)
         f.close()
 
-        f = open(ofile + '_Prod.in', 'w')
+        f = open(ofile + "_Prod.in", "w")
         for line in prodlines:
             f.write(line)
         f.close()
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

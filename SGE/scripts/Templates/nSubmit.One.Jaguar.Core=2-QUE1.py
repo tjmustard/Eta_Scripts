@@ -40,38 +40,39 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'Submit.One.Jaguar.Core=2-QUE1.py'
+program = "Submit.One.Jaguar.Core=2-QUE1.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     inputfile = sys.argv[1]
 except IndexError:
-    inputfile = '-h'
+    inputfile = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if inputfile == '-h':
-    argv.append('-h')
-    argv.append('-h')
+if inputfile == "-h":
+    argv.append("-h")
+    argv.append("-h")
 debug = 0
 hold = 0
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'dh', ['hold'])
+    (myopts, args) = getopt.getopt(sys.argv[2:], "dh", ["hold"])
 except getopt.GetoptError:
-    print program + ''' <Jaguar input file> -d --hold'''
+    print(program + """ <Jaguar input file> -d --hold""")
     sys.exit(2)
 
 ###############################
@@ -80,39 +81,39 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         debug += 1
-    elif o == '--hold':
+    elif o == "--hold":
         hold = 1
-    elif o == '-h':
-        print program + ''' <Jaguar input file> -d --hold'''
+    elif o == "-h":
+        print(program + """ <Jaguar input file> -d --hold""")
         sys.exit(0)
     else:
-        print 'Usage: %s  <Jaguar input file> -d --hold' % sys.argv[0]
+        print("Usage: %s  <Jaguar input file> -d --hold" % sys.argv[0])
         sys.exit(0)
 
 if debug >= 1:
-    print inputfile
+    print(inputfile)
 
 ### --- Get the 'basename' of the file --- ###
 # Assuming the input file ends with '.in'
 # basename = inputfile[::-1].replace('ni.', '')[::-1]
 
-basename = etaatom.basename(inputfile, '.in')
+basename = etaatom.basename(inputfile, ".in")
 
 #########################################################
 ### --- Job settings --- ###
 
-program = 'Jaguar'
+program = "Jaguar"
 nodeprocs = 64  # Number of procs on node
 nodemem = 512000  # Total memory on node in MB
 nproc = 2  # Number of procs to be used
 memory = str(int(math.floor(nodemem / nodeprocs * nproc * 0.90)))
-queue = 'que1'  # Queue name
-EtaDir = os.environ['ETADIR']
+queue = "que1"  # Queue name
+EtaDir = os.environ["ETADIR"]
 
-header = EtaDir + '/SGE/headers/Woodward.SMP.sget'
-snippet = EtaDir + '/SGE/snippets/hidden/Jaguar.sget'
+header = EtaDir + "/SGE/headers/Woodward.SMP.sget"
+snippet = EtaDir + "/SGE/snippets/hidden/Jaguar.sget"
 
 #########################################################
 
@@ -123,7 +124,7 @@ headerLines = etaatom.return_modified_snippet(
     nproc,
     memory,
     header,
-    )
+)
 snippetLines = etaatom.return_modified_snippet(
     basename,
     program,
@@ -131,9 +132,9 @@ snippetLines = etaatom.return_modified_snippet(
     nproc,
     memory,
     snippet,
-    )
+)
 
-f = open(basename + '.sge', 'w')
+f = open(basename + ".sge", "w")
 for line in headerLines:
     f.write(line)
 for line in snippetLines:
@@ -141,9 +142,9 @@ for line in snippetLines:
 f.close()
 
 if hold == 0:
-    os.system('qsub ' + basename + '.sge |tee ' + basename + '.joblog')
+    os.system("qsub " + basename + ".sge |tee " + basename + ".joblog")
 else:
-    print 'The job ' + basename + '.sge will be made but not submitted.'
+    print("The job " + basename + ".sge will be made but not submitted.")
 
 ######################################################################
 ### END OF SCRIPT

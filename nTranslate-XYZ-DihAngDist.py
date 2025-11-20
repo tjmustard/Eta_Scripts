@@ -40,22 +40,22 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
-import etanumpy
+import math
+import os
+import sys
+from sys import *
 
-if argv[1] == '-h':
-    print '<input file>.xyz atom1 atom2 atom3 atom4'
+from EtaLib import etaatom, etanumpy
+
+if argv[1] == "-h":
+    print("<input file>.xyz atom1 atom2 atom3 atom4")
     sys.exit(0)
 
 ### --- Arguments --- ###
 
 ifile = argv[1]
-atomTemp = ' '.join(sys.argv[2:] + ['-1', '-1', '-1', '-1'])
+atomTemp = " ".join(sys.argv[2:] + ["-1", "-1", "-1", "-1"])
 atoms = atomTemp.split()
 atom1 = int(atoms[0])
 atom2 = int(atoms[1])
@@ -72,14 +72,21 @@ ifilelol = etaatom.xyz_lol(ifile)
 ### --- Print out the distance, angle, or dihedral --- ###
 
 if atom3 == -1:
-    print ifile + ': ' + str(etanumpy.get_distance(atom1 + 1, atom2
-                             + 1, ifilelol))
+    print(ifile + ": " + str(etanumpy.get_distance(atom1 + 1, atom2 + 1, ifilelol)))
 elif atom4 == -1:
-    print ifile + ': ' + str(etanumpy.get_angle(atom1 + 1, atom2 + 1,
-                             atom3 + 1, ifilelol))
+    print(
+        ifile
+        + ": "
+        + str(etanumpy.get_angle(atom1 + 1, atom2 + 1, atom3 + 1, ifilelol))
+    )
 elif atom4 >= 0:
-    print ifile + ': ' + str(etanumpy.get_dihedral(atom1 + 1, atom2
-                             + 1, atom3 + 1, atom4 + 1, ifilelol))
+    print(
+        ifile
+        + ": "
+        + str(
+            etanumpy.get_dihedral(atom1 + 1, atom2 + 1, atom3 + 1, atom4 + 1, ifilelol)
+        )
+    )
 
 ######################################################################
 ### END OF SCRIPT

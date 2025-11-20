@@ -40,25 +40,31 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
 
-print '----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
-print 'SCF              ZPE         Internal       Enthalpy       Gibbs         Freq1     Freq2   NBasis PntGrp Stoichiometry        File Name     '
-print '----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------'
+from EtaLib import etaatom
+
+print(
+    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+)
+print(
+    "SCF              ZPE         Internal       Enthalpy       Gibbs         Freq1     Freq2   NBasis PntGrp Stoichiometry        File Name     "
+)
+print(
+    "----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------"
+)
 
 pwd = os.getcwd()
 for i in os.listdir(pwd):
-    if i.endswith('.out'):
+    if i.endswith(".out"):
         logfile = i
-        printLines = etaatom.translate_jaguar_output(logfile, 'list',
-                'none')
+        printLines = etaatom.translate_jaguar_output(logfile, "list", "none")
         for line in printLines:
-            print line
+            print(line)
 
 ######################################################################
 ### END OF SCRIPT

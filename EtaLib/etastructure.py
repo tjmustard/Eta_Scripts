@@ -41,28 +41,28 @@
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 import os
-from sys import *
 import shutil
+from sys import *
 
 
 class ChemicalStructure:
     def __init__(self):
         self.title = None  # title of the molecule
-        self.type = None # type of chemical structure (MOLecule, BIOlogical, CRYstal, HELM, etc)
+        self.type = None  # type of chemical structure (MOLecule, BIOlogical, CRYstal, HELM, etc)
         self.properties = {
-            'charge': None,  # charge on the molecule (in elementary charges)
-            'multiplicity': None  # multiplicity of the molecule (1 for singlet, etc.)
+            "charge": None,  # charge on the molecule (in elementary charges)
+            "multiplicity": None,  # multiplicity of the molecule (1 for singlet, etc.)
         }
         self.atoms = []  # dictionary to store atom data
 
     def add_atom(self, element: str, x: float, y: float, z: float):
         """Adds an atom at the specified position with a specific element."""
         new_atom = {
-            'element': str(element),
-            'x': float(x),
-            'y': float(y),
-            'z': float(z)
-            }
+            "element": str(element),
+            "x": float(x),
+            "y": float(y),
+            "z": float(z),
+        }
         self.atoms.append(new_atom)
 
     def get_atoms(self):
@@ -83,11 +83,10 @@ class ChemicalStructure:
 
         self.atom[index][name] = value
 
-
     @classmethod
     def load_xyz(cls, filename):
         """Load XYZ file into a ChemicalStructure instance."""
-        with open(filename, 'r') as f:
+        with open(filename, "r") as f:
             lines = [line.strip() for line in f.readlines()]
 
         if len(lines) < 3 or int(lines[0]) + 2 != len(lines):
@@ -107,7 +106,7 @@ class ChemicalStructure:
 
     def export_xyz(cls, filename, title="Molecule", atoms=None):
         """Export molecule data to an XYZ file."""
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             if atoms is None:
                 f.write(str(len(cls.atoms)) + "\n")
                 if title is None:
@@ -115,10 +114,10 @@ class ChemicalStructure:
                 else:
                     f.write(title + "\n")
                 for atom in cls.atoms:
-                    element = atom['element']
-                    x = atom['x']
-                    y = atom['y']
-                    z = atom['z']
+                    element = atom["element"]
+                    x = atom["x"]
+                    y = atom["y"]
+                    z = atom["z"]
                     line = f"{element} {x:.5f} {y:.5f} {z:.5f}\n"
                     f.write(line)
             else:
@@ -127,8 +126,8 @@ class ChemicalStructure:
                     f.write(cls.title + "\n")
                 else:
                     f.write(title + "\n")
-                for atom in atoms.values():
+                for atom in list(atoms.values()):
                     element = list(atom.keys())[0]
-                    x, y, z = atom[element].values()
+                    x, y, z = list(atom[element].values())
                     line = f"{element} {x:.5f} {y:.5f} {z:.5f}\n"
                     f.write(line)

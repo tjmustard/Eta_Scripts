@@ -40,21 +40,21 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-from decimal import *
+import math
+import os
 import shutil
-import etaatom
-import etamap
+import sys
+from decimal import *
+from sys import *
+
+from EtaLib import etaatom, etamap
 
 ### --- Arguments --- ###
 
-program = 'nMAP.py'
-ifile = ''
-ofile = ''
+program = "nMAP.py"
+ifile = ""
+ofile = ""
 mapinput = etamap.MAPArguments()
 mapinput.debug = 0
 writetemplatemap = False
@@ -63,10 +63,14 @@ triangle = False
 # Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 'i:tThD')
+    (myopts, args) = getopt.getopt(sys.argv[1:], "i:tThD")
 except getopt.GetoptError:
-    print(program \
-        + ' -i <inputfile.map> -t <print out template map file> -T <only build the triangle of the posible combinations>')
+    print(
+        (
+            program
+            + " -i <inputfile.map> -t <print out template map file> -T <only build the triangle of the posible combinations>"
+        )
+    )
     sys.exit(2)
 
 ###############################
@@ -75,21 +79,29 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-i':
+    if o == "-i":
         ifile = a
-    elif o == '-D':
+    elif o == "-D":
         mapinput.debug += 1
-    elif o == '-t':
+    elif o == "-t":
         writetemplatemap = True
-    elif o == '-T':
+    elif o == "-T":
         triangle = True
-    elif o == '-h':
-        print(program \
-            + ' -i <inputfile.map> -t <print out template map file> -T <only build the triangle of the posible combinations>')
+    elif o == "-h":
+        print(
+            (
+                program
+                + " -i <inputfile.map> -t <print out template map file> -T <only build the triangle of the posible combinations>"
+            )
+        )
         sys.exit(0)
     else:
-        print('Usage: %s -i inputfile.map -t <print out template map file> -T <only build the triangle of the posible combinations>' \
-            % sys.argv[0])
+        print(
+            (
+                "Usage: %s -i inputfile.map -t <print out template map file> -T <only build the triangle of the posible combinations>"
+                % sys.argv[0]
+            )
+        )
         sys.exit(0)
 
 if writetemplatemap == 1:
@@ -107,7 +119,7 @@ mapinput = etamap.expand_temp_lists(mapinput)
 ### --- Make the output folder --- ###
 
 etaatom.make_dir(mapinput.outputFolder)
-etaatom.make_dir(mapinput.outputFolder + '/temp')
+etaatom.make_dir(mapinput.outputFolder + "/temp")
 
 ### --- Make the align files for quatfit. --- ###
 

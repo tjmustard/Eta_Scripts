@@ -40,15 +40,16 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-from sys import *
-import sys
 import getopt
-import etaatom
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-TLEAP-from-G0XOutput.py'
+program = "nTranslate-TLEAP-from-G0XOutput.py"
 
 # Grab the first argument from the command and use that as the snippet
 # Unless the charge is stated via the -c argument the charge will be assumed to be 0
@@ -62,7 +63,7 @@ multi = 1
 multiset = False
 modred = []
 writemod = 0
-ionicCM = ''
+ionicCM = ""
 ionicswitch = 0
 debug = 0
 interactive = 0
@@ -70,11 +71,12 @@ interactive = 0
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[1:], 'c:m:dih', ['mod=',
-                                   'ionic='])
+    (myopts, args) = getopt.getopt(sys.argv[1:], "c:m:dih", ["mod=", "ionic="])
 except getopt.GetoptError:
-    print program \
-        + ''' <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d'''
+    print(
+        program
+        + """ <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d"""
+    )
     sys.exit(2)
 
 ###############################
@@ -83,74 +85,79 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-c':
+    if o == "-c":
         charge = a
         chargeset = True
-    elif o == '-m':
+    elif o == "-m":
         multi = a
         multiset = True
-    elif o == '-d':
+    elif o == "-d":
         debug += 1
-    elif o == '--mod':
+    elif o == "--mod":
         modred.append(a)
         writemod = 1
-    elif o == '--ionic':
+    elif o == "--ionic":
         ionicCM = a
         ionicswitch = 1
-    elif o == '-i':
+    elif o == "-i":
         interactive = 1
-    elif o == '-h':
-        print program \
-            + ''' <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d'''
+    elif o == "-h":
+        print(
+            program
+            + """ <snippet> -c <charge> -m <multiplicity> --mod=\"constraint\" --ionic=reg/mno -d"""
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod="constraint" --ionic=reg/mno -d' \
+        print(
+            'Usage: %s  <snippet> -c <charge> -m <multiplicity> --mod="constraint" --ionic=reg/mno -d'
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if debug >= 1:
-    print 'Charge: ' + str(charge)
-    print 'Multiplicity: ' + str(multi)
-    print 'Snippet: ' + snippet
-    print 'Modredundant Variable: '
-    print modred
+    print("Charge: " + str(charge))
+    print("Multiplicity: " + str(multi))
+    print("Snippet: " + snippet)
+    print("Modredundant Variable: ")
+    print(modred)
 
 ### --- Make NEWJOBS folder --- ###
 
-if not os.path.exists('NEWJOBS.Amber'):
-    os.makedirs('NEWJOBS.Amber')
+if not os.path.exists("NEWJOBS.Amber"):
+    os.makedirs("NEWJOBS.Amber")
 
 
 ### --- Replace the wrong atom types to the corrected ones --- ###
 
+
 def replace_strings(mol2lines):
     printLines = []
     for line in mol2lines:
-        if ' Al' in line:
+        if " Al" in line:
             for var in line.split():
-                if var.startswith('Al'):
-                    number = var.replace('Al', '')
-            line = line.replace('Al' + number, 'Al')
-        elif ' O' in line:
+                if var.startswith("Al"):
+                    number = var.replace("Al", "")
+            line = line.replace("Al" + number, "Al")
+        elif " O" in line:
             for var in line.split():
-                if var.startswith('O'):
-                    number = var.replace('O', '')
-            line = line.replace('O' + number, 'OH')
-        elif ' H' in line:
+                if var.startswith("O"):
+                    number = var.replace("O", "")
+            line = line.replace("O" + number, "OH")
+        elif " H" in line:
             for var in line.split():
-                if var.startswith('H'):
-                    number = var.replace('H', '')
-            line = line.replace('H' + number, 'HO')
-        elif ' Cl' in line:
+                if var.startswith("H"):
+                    number = var.replace("H", "")
+            line = line.replace("H" + number, "HO")
+        elif " Cl" in line:
             for var in line.split():
-                if var.startswith('Cl'):
-                    number = var.replace('Cl', '')
-            line = line.replace('Cl' + number, 'Cl')
-        elif ' Nb' in line:
+                if var.startswith("Cl"):
+                    number = var.replace("Cl", "")
+            line = line.replace("Cl" + number, "Cl")
+        elif " Nb" in line:
             for var in line.split():
-                if var.startswith('Nb'):
-                    number = var.replace('Nb', '')
-            line = line.replace('Nb' + number, 'Nb')
+                if var.startswith("Nb"):
+                    number = var.replace("Nb", "")
+            line = line.replace("Nb" + number, "Nb")
         printLines.append(line)
     return printLines
 
@@ -161,32 +168,37 @@ pwd = os.getcwd()
 
 ### --- Open and parse the xyz files in the folder --- ###
 
-print 'Currently Translating:'
+print("Currently Translating:")
 for i in os.listdir(os.getcwd()):
-    if i.endswith('.log'):
+    if i.endswith(".log"):
         ifile = i
-        print i
-        ofile = etaatom.basename(ifile, '.log')
+        print(i)
+        ofile = etaatom.basename(ifile, ".log")
 
-        etaatom.make_dir('NEWJOBS.Amber/' + ofile)
-        ofiledir = 'NEWJOBS.Amber/' + ofile + '/'
+        etaatom.make_dir("NEWJOBS.Amber/" + ofile)
+        ofiledir = "NEWJOBS.Amber/" + ofile + "/"
 
         if debug >= 2:
-            print snippet
+            print(snippet)
 
-    # ## --- Run antechamber on the log files --- ###
+        # ## --- Run antechamber on the log files --- ###
 
-        os.system('antechamber -i ' + ifile + ' -fi gout -o '
-                  + ofiledir + ofile + '.mol2 -fo mol2 -j 0 -c mul -s 2'
-                  )
+        os.system(
+            "antechamber -i "
+            + ifile
+            + " -fi gout -o "
+            + ofiledir
+            + ofile
+            + ".mol2 -fo mol2 -j 0 -c mul -s 2"
+        )
 
-    # ## --- Edit the mol2 file --- ###
+        # ## --- Edit the mol2 file --- ###
 
-        f = open(ofiledir + ofile + '.mol2', 'r')
+        f = open(ofiledir + ofile + ".mol2", "r")
         mol2lines = f.readlines()
         f.close()
         printlines = replace_strings(mol2lines)
-        f = open(ofiledir + ofile + '.mol2', 'w')
+        f = open(ofiledir + ofile + ".mol2", "w")
         for line in printlines:
             f.write(line)
         f.close()
@@ -194,4 +206,3 @@ for i in os.listdir(os.getcwd()):
     # #####################################################################
     # ## END OF SCRIPT
     # #####################################################################
-

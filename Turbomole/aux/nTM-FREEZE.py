@@ -40,41 +40,40 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
+import math
+import os
+import sys
+from sys import *
 
 ### --- Arguments --- ###
 
-program = 'nTM-FREEZE.py'
+program = "nTM-FREEZE.py"
 
 # Grab the first argument from the command and use that as the snippet
 
 try:
     coordfile = sys.argv[1]
 except IndexError:
-    coordfile = '-h'
+    coordfile = "-h"
 
 # If help is wanted allow the skipping of a snippet
 
-if coordfile == '-h':
-    print program \
-        + ''' <coord file> <atom 1> <atom 2> ... <atom n> -h (this)'''
+if coordfile == "-h":
+    print(program + """ <coord file> <atom 1> <atom 2> ... <atom n> -h (this)""")
     sys.exit(0)
 
-f = open(coordfile, 'r')
+f = open(coordfile, "r")
 coordlines = f.readlines()
 f.close()
-f = open(coordfile, 'w')
+f = open(coordfile, "w")
 for (i, line) in enumerate(coordlines):
     if str(i) in sys.argv:
-        f.write(line.strip() + '  f\n')
+        f.write(line.strip() + "  f\n")
     else:
         f.write(line)
 f.close()
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################

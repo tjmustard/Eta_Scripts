@@ -40,18 +40,19 @@
 #   OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 #   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-import os
-import math
-from sys import *
-import sys
 import getopt
-import etaatom
+import math
+import os
+import sys
+from sys import *
+
+from EtaLib import etaatom
 
 ### --- Arguments --- ###
 
-program = 'nTranslate-TCOutput-XYZ.py'
-ifile = ''
-ofile = ''
+program = "nTranslate-TCOutput-XYZ.py"
+ifile = ""
+ofile = ""
 allInDir = 0
 trajectory = 0
 
@@ -64,25 +65,27 @@ finalgeom = []
 try:
     ifile = sys.argv[1]
 except IndexError:
-    ifile = '-h'
+    ifile = "-h"
 
 # If help is wanted allow the skipping of a input file
 
-if ifile == '-h':
-    argv.append('-h')
-    argv.append('-h')
-elif ifile == '-d':
-    argv.append('-d')
-elif ifile == '-t':
-    argv.append('-t')
+if ifile == "-h":
+    argv.append("-h")
+    argv.append("-h")
+elif ifile == "-d":
+    argv.append("-d")
+elif ifile == "-t":
+    argv.append("-t")
 
 ### Read command line args
 
 try:
-    (myopts, args) = getopt.getopt(sys.argv[2:], 'dth')
+    (myopts, args) = getopt.getopt(sys.argv[2:], "dth")
 except getopt.GetoptError:
-    print program \
-        + ' <input file (TC log)> -d (all in current directory) -t (output entire trajectory)'
+    print(
+        program
+        + " <input file (TC log)> -d (all in current directory) -t (output entire trajectory)"
+    )
     sys.exit(2)
 
 ###############################
@@ -91,75 +94,79 @@ except getopt.GetoptError:
 ###############################
 
 for (o, a) in myopts:
-    if o == '-d':
+    if o == "-d":
         allInDir = 1
-    elif o == '-t':
+    elif o == "-t":
         trajectory = 1
-    elif o == '-h':
-        print program \
-            + ' <input file (TC log)> -d (all in current directory) -t (output entire trajectory)'
+    elif o == "-h":
+        print(
+            program
+            + " <input file (TC log)> -d (all in current directory) -t (output entire trajectory)"
+        )
         sys.exit(0)
     else:
-        print 'Usage: %s  <input file (TC log)> -d (all in current directory) -t (output entire trajectory)' \
+        print(
+            "Usage: %s  <input file (TC log)> -d (all in current directory) -t (output entire trajectory)"
             % sys.argv[0]
+        )
         sys.exit(0)
 
 if allInDir == 1:
     for i in os.listdir(os.getcwd()):
-        if i.endswith('.log'):
+        if i.endswith(".log"):
             ifile = i
-            ofile = etaatom.basename(ifile, '.log') + '.xyz'
-            print ifile + ' ----> ' + ofile
-            f = open(ifile, 'r')
+            ofile = etaatom.basename(ifile, ".log") + ".xyz"
+            print(ifile + " ----> " + ofile)
+            f = open(ifile, "r")
             for line in f:
-                if 'Scratch directory:' in line:
-                    optimfile = line.split()[-1] + '/optim.xyz'
+                if "Scratch directory:" in line:
+                    optimfile = line.split()[-1] + "/optim.xyz"
                     f.close()
                     break
             if trajectory == 1:
 
-        # Extract the entire trajectory from the G0X log file
+                # Extract the entire trajectory from the G0X log file
 
                 ifilelol = etaatom.parse_optim_terachem_traj(optimfile)
             else:
 
-        # Extract the last geometry from the G0X log file
+                # Extract the last geometry from the G0X log file
 
                 ifilelol = etaatom.parse_optim_terachem(optimfile)
 
-      # Ouput the geometry(ies) to the ofile
+            # Ouput the geometry(ies) to the ofile
 
             etaatom.output_xyz(ofile, ifilelol)
 else:
-    f = open(ifile, 'r')
+    f = open(ifile, "r")
     for line in f:
-        if 'Scratch directory:' in line:
-            optimfile = line.split()[-1] + '/optim.xyz'
+        if "Scratch directory:" in line:
+            optimfile = line.split()[-1] + "/optim.xyz"
             f.close()
             break
     if trajectory == 1:
 
-    # Extract the last geometry from the G0X log file
+        # Extract the last geometry from the G0X log file
 
         ifilelol = etaatom.parse_optim_terachem_traj(optimfile)
     else:
 
-    # Extract the last geometry from the G0X log file
+        # Extract the last geometry from the G0X log file
 
         ifilelol = etaatom.parse_optim_terachem(optimfile)
-    ofiletmp = ifile.split('.')
-    ofile = ''
+    ofiletmp = ifile.split(".")
+    ofile = ""
     for i in range(len(ofiletmp)):
         if i != len(ofiletmp) - 1:
-            ofile += ofiletmp[i] + '.'
+            ofile += ofiletmp[i] + "."
         elif i == len(ofiletmp) - 1:
-            ofile += 'xyz'
-    print ifile + ' ----> ' + ofile
+            ofile += "xyz"
+    print(ifile + " ----> " + ofile)
 
-  # Ouput the geometry(ies) to the ofile
+    # Ouput the geometry(ies) to the ofile
 
     etaatom.output_xyz(ofile, ifilelol)
 
-  # #####################################################################
-  # ## END OF SCRIPT
-  # #####################################################################
+# #####################################################################
+# ## END OF SCRIPT
+# #####################################################################
