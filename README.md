@@ -36,12 +36,14 @@ Folder Setup:
 ## Installation
 
 1. Clone the repository:
+
    ```bash
    git clone https://github.com/tjmustard/Eta_Scripts.git
    cd Eta_Scripts
    ```
 
 2. Install the package (recommended to use a virtual environment):
+
    ```bash
    pip install -e .
    ```
@@ -53,7 +55,6 @@ Folder Setup:
 * NumPy
   * Required for computational operations
 * See `requirements.txt` for the complete list of dependencies
-
 
 # Psientific Code
 
@@ -198,12 +199,12 @@ To properly run nPersistentOTS you will need:
 The variable you will be SCANing through. It can be a "bond", "angle", or "dihedral" and the atoms associated with that variable.
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# VARIABLE=|bond 35 6        |Will scan along the bond between atoms 35 and 6|
+# VARIABLE=|bond 35 6|Will scan along the bond between atoms 35 and 6
 
-         |angle 3 5 2      |Will scan along the angle between 3-5-2 with 5 being the middle atom.|
-         |dihedral 6 7 3 4 |Will scan along the dihedral 6-7-3-4.|
+|angle 3 5 2|Will scan along the angle between 3-5-2 with 5 being the middle atom.
+|dihedral 6 7 3 4|Will scan along the dihedral 6-7-3-4.
 
 ***
 **\#SCAN**
@@ -211,11 +212,11 @@ Variable|Option|Definition
 If you wish to do a SCAN
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# SCAN=|yes |SCAN function is turned on
+# SCAN=|yes|SCAN function is turned on
 
- |no (or anything else) |SCAN function is tuned off.
+|no (or anything else)|SCAN function is tuned off.
 
 ***
 **\#TS**
@@ -223,12 +224,12 @@ Variable|Option|Definition
 If you wish to implement the TS-SCAN logic
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# TS=|yes |TS-SCAN logic is turned on
+# TS=|yes|TS-SCAN logic is turned on
 
- |dyn |TS-SCAN logic will be turned on when the energy starts to go uphill. Useful for starting scan from far out.
- |no |TS-SCAN logic is off.
+|dyn|TS-SCAN logic will be turned on when the energy starts to go uphill. Useful for starting scan from far out.
+|no|TS-SCAN logic is off.
 
 ***
 **\#SCANLENGTH**
@@ -236,9 +237,9 @@ Variable|Option|Definition
 How many maximum steps you wish to take.
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# SCANLENGTH=|30 |The scan will run for a maximum of 30 steps
+# SCANLENGTH=|30|The scan will run for a maximum of 30 steps
 
 ***
 **\#SCANSTEPNOW**
@@ -246,9 +247,9 @@ Variable|Option|Definition
 What step numper you are currently on. You can edit this number to prematurely kill a SCAN.
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# SCANSTEPNOW=|0 |This is the current step number you are on. This is editable
+# SCANSTEPNOW=|0|This is the current step number you are on. This is editable
 
 ***
 **\#STEPSIZE**
@@ -256,9 +257,9 @@ Variable|Option|Definition
 How much the variable will change between SCAN steps.
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# STEPSIZE=|-0.1 |This number will be in Angstrom for bonds and Degrees for angle and dihedral
+# STEPSIZE=|-0.1|This number will be in Angstrom for bonds and Degrees for angle and dihedral
 
 ***
 **\#WAIT**
@@ -266,9 +267,9 @@ Variable|Option|Definition
 If you want the TS-SCAN logic to wait a number of steps before initializing.
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# WAIT=|0 |Wait X steps before turning on the TS-SCAN logic
+# WAIT=|0|Wait X steps before turning on the TS-SCAN logic
 
 ***
 **\#MINTSSCANSIZE**
@@ -285,13 +286,13 @@ Dihedral:
 `#MINTSSCANSIZE = x/100.0/Mass of atom 1 + Mass of atom 4`
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# MINTSSCANSIZE=|none | x = 50 (C-C bond: 0.021Å)
+# MINTSSCANSIZE=|none|x = 50 (C-C bond: 0.021Å)
 
- |loose | x = 100 (C-C bond: 0.042Å)
- |tight | x = 25 (C-C bond: 0.010Å)
- |verytight | x = 5 (C-C bond: 0.002Å)
+|loose|x = 100 (C-C bond: 0.042Å)
+|tight|x = 25 (C-C bond: 0.010Å)
+|verytight|x = 5 (C-C bond: 0.002Å)
 
 ***
 **\#MINORTS**
@@ -299,12 +300,12 @@ Variable|Option|Definition
 If we should explore minor TSs.
 
 Variable|Option|Definition
----------|:------------------|:---------------------------------------------------------------------|
+---------|:------------------|:---------------------------------------------------------------------
 
-# MINORTS|=one| Allow for one minor TS to be skipped. Useful if a geometric change is necessary for the TS to occur
+# MINORTS=|one|Allow for one minor TS to be skipped. Useful if a geometric change is necessary for the TS to occur
 
- |=yes| Allow for an infinite number of minor TSs to be skipped.
- |=no| Do not allow a single minor TS to be skipped. Once the energy goes down nPersistenceOTS will go back to the last geometry and take a smaller step size.
+|yes|Allow for an infinite number of minor TSs to be skipped.
+|no|Do not allow a single minor TS to be skipped. Once the energy goes down nPersistenceOTS will go back to the last geometry and take a smaller step size.
 
 I hope you like the scripts!
 
