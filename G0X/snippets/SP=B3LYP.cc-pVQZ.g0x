@@ -1,3 +1,0 @@
-#CONFIG
-# b3lyp/cc-pVQZ gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
-#END

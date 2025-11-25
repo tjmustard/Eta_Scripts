@@ -1,3 +1,0 @@
-#CONFIG
-# am1 gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
-#END

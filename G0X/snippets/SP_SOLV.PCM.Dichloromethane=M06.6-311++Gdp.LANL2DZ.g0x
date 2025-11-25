@@ -1,7 +1,0 @@
-#CONFIG
-#m06/gen pseudo=read scf=(maxcycle=300,direct,tight,xqc) density=current
-SCRF=(PCM,SOLVENT=Dichloromethane)
-#END
-#ECP
-6-311++G**/LANL2DZ
-#END

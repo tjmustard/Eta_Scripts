@@ -1,4 +1,0 @@
-#CONFIG
-#m06/6-31G(d) scf=(maxcycle=300,direct,tight) density=current
-SCRF=(PCM,SOLVENT=Dichloromethane)
-#END

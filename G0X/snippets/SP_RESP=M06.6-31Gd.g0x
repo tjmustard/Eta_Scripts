@@ -1,4 +1,0 @@
-#CONFIG
-#M06/6-31G* SCF=tight Pop=MK iop(6/33=2) iop(6/42=6)
-geom=allcheck guess=read
-#END

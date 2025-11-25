@@ -1,4 +1,0 @@
-#CONFIG
-# M06/3-21G* gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
-irc=(forward,reverse,maxpoints=200,maxcyc=250,calcfc,recorrect=never) 
-#END

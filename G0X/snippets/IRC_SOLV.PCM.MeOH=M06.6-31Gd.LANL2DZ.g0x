@@ -1,8 +1,0 @@
-#CONFIG
-# M06/gen pseudo=read gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
-irc=(forward,reverse,maxpoints=200,maxcyc=250,calcfc,recorrect=never) 
- SCRF=(PCM,SOLVENT=MeOH)
-#END
-#ECP
-6-31G*/LANL2DZ
-#END

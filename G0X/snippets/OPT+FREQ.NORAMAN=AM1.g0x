@@ -1,4 +1,0 @@
-#CONFIG
-# am1
-opt=(maxcycle=250) freq=noraman
-#END
