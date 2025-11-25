@@ -1,4 +1,0 @@
-#CONFIG
-# b3lyp/gen  gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
-opt=(maxcycle=250,calcfc,ts,noeigentest) freq=noraman
-#END

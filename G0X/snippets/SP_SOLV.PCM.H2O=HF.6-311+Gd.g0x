@@ -1,4 +1,0 @@
-#CONFIG
-#hf 6-311+G*  scf=(maxcycle=300,direct,tight) density=current
-SCRF=(PCM,SOLVENT=H2O)
-#END

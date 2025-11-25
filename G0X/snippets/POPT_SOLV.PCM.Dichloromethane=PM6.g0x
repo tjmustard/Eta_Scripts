@@ -1,4 +1,0 @@
-#CONFIG
-#pm6 scf=(maxcycle=300,direct,tight) density=current
-SCRF=(PCM,SOLVENT=Dichloromethane) opt=(maxcycle=250,modredundant)
-#END

@@ -1,4 +1,0 @@
-#CONFIG
-#hf/gen  scf=(maxcycle=300,direct,tight) density=current
-SCRF=(PCM,SOLVENT=Toluene) freq=noraman
-#END

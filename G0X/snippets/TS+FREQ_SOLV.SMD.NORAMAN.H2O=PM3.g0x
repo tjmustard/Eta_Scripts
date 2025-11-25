@@ -1,4 +1,0 @@
-#CONFIG
-#pm3 scf=(maxcycle=300,direct,tight) density=current
-SCRF=(PCM,SOLVENT=H2O,SMD) opt=(maxcycle=250,ts,calcfc,noeigentest) freq=noraman
-#END

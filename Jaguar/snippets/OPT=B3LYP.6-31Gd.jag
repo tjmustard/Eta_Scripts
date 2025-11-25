@@ -1,7 +1,0 @@
-#CONFIG
-dftname=B3LYP
-basis=6-31G*
-iacc=2
-igeopt=1
-maxitg=300
-#END

@@ -1,4 +1,0 @@
-#CONFIG
-# M06/6-31G* gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
-freq=noraman
-#END

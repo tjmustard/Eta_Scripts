@@ -1,7 +1,0 @@
-#CONFIG
-#m06/gen pseudo=read scf=(maxcycle=300,direct,tight) density=current
-SCRF=(PCM,SOLVENT=CH3CN,SMD) opt=(maxcycle=250,modredundant)
-#END
-#ECP
-6-31G*/LANL2DZ
-#END

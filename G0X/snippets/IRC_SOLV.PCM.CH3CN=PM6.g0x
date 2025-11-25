@@ -1,5 +1,0 @@
-#CONFIG
-# pm6 gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
-irc=(forward,reverse,maxpoints=200,maxcyc=250,calcfc,recorrect=never) 
- SCRF=(PCM,SOLVENT=CH3CN)
-#END

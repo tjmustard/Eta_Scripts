@@ -1,8 +1,0 @@
-#CONFIG
-#b3lyp/6-31+G(d,p) scf=(maxcycle=300,direct,tight) density=current
-SCRF=(PCM,SOLVENT=Toluene) 
-#END
-#CLOSE
---link1-- 
-#b3lyp/6-31+G(d,p) scf=(direct,xqc,maxcycle=300,tight) guess=read geom=allcheck
-#END

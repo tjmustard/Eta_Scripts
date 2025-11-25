@@ -1,7 +1,0 @@
-#CONFIG
-#m06/gen pseudo=read scf=(maxcycle=300,direct,tight,xqc) density=current
-SCRF=(PCM,SOLVENT=cyclohexane) opt=(maxcycle=250,modredundant,gdiis) iop(1/8=18)
-#END
-#ECP
-6-31G*/LANL2DZ
-#END

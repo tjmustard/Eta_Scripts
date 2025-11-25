@@ -1,4 +1,0 @@
-#CONFIG
-# pm3 gfprint gfinput scf=(direct,tight,maxcycle=300,xqc)
-opt=(maxcycle=250,calcall,ts,noeigentest) 
-#END
