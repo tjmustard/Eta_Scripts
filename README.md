@@ -1,15 +1,11 @@
 THIS CODE WAS INITIALLY CREATED BETWEEN 2010-2015 WHILE I WAS ATTENDING GRADUATE SCHOOL AT OREGON STATE UNIVERSITY. A VERSION OF THIS CODE CAN BE FOUND IN MY THESIS HERE: <https://ir.library.oregonstate.edu/concern/graduate_thesis_or_dissertations/xp68kn058>
 
-### WARNING
-
-Several updates may have broken some scripts/libraries. Please use the 0.4a branch until this notice is changed.
-
 Eta_Scripts
 ======
 
 ## Why Eta_Scripts?
 
-These scripts were written to assist in creating and reading computational job files. Most, if not all, of the scripts are written with Python. This project is Gaussian heavy due my extensive use of it. But I do use other softwares and building upon the Gaussian scripts several other programs are supported.
+These scripts were originally written to assist in creating and reading computational job files.
 
 Credits:
 
@@ -17,14 +13,13 @@ These scripts were written mostly by myself, but I had some help and they deserv
 
 * O. Maduka Ogba helped with numpy integration and Dist/Angle/Dihedral calculations.
 * Prof. Paul Ha-Yeon Cheong was the inspiration for this project. While in grad school Paul wrote several scripts to assist his research. Most of this project is inspired by those scripts.
-* Joshua J. Kincaid was instrumental in making the z-matrix to xyz conversion possible. I had, and still have, no idea how this math works, and Joshua explained the proccess perfectly.
+* Joshua J. Kincaid was instrumental in making the z-matrix to xyz conversion possible.
 * The entire PHYC group for their inspiration and support. (Ryne C. Johston, O. Maduka Ogba, Wojtek Rajski, Ommi Pattawong, Lindsay Wills, Daniel Walden, Kevin Snyder, Jacob Buchanan, Ben Hanken, I-Ya Chang)
 
 You may acknowledge the use of the scripts/programs in published material as:
 Thomas J. L. Mustard, O. Maduka Ogba, Paul Ha-Yeon Cheong. unpublished results.
 
-* [Eta_Scripts](http://tjmustard.github.io/Eta_Scripts/) ("attracticve" one)
-* [Eta_Scripts](http://github.com/tjmustard/Eta_Scripts) (here)
+* [Eta_Scripts](http://github.com/tjmustard/Eta_Scripts)
 * [PHYC Group](http://phyc.chem.oregonstate.edu/)
 
 This repository started in ~2014, all the original code is in my [thesis](https://ir.library.oregonstate.edu/concern/graduate_thesis_or_dissertations/xp68kn058) and some updates were made over the years. The repository was deleted/taken down and then reuploaded with the same name. Recently an update to python 3 was made.
@@ -313,4 +308,4 @@ Variable|Option|Definition
 
 I hope you like the scripts!
 
-TJ Mustard
+Thomas J L Mustard, Ph.D.
